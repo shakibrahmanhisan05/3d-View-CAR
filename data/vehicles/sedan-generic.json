@@ -1,0 +1,171 @@
+{
+  "id": "sedan-generic",
+  "slug": "sedan",
+  "name": {
+    "bn": "সেডান — ১৫০০ সিসি",
+    "en": "1500cc Sedan"
+  },
+  "segment": "car",
+  "asset": {
+    "scale": 1,
+    "cameraStart": [
+      6.2,
+      2.3,
+      6.4
+    ],
+    "cameraTarget": [
+      0,
+      0.78,
+      0
+    ],
+    "interiorCamera": [
+      0.1,
+      1.16,
+      -0.36
+    ],
+    "minDistance": 4.2,
+    "maxDistance": 13,
+    "glbUrl": "/models/sedan-high.c8908213.glb",
+    "lodUrls": [
+      "/models/sedan-high.c8908213.glb",
+      "/models/sedan-mid.33ad416e.glb",
+      "/models/sedan-low.c10cc712.glb"
+    ],
+    "frameExtent": [
+      2.56,
+      0.98
+    ]
+  },
+  "environmentIds": [
+    "showroom",
+    "street",
+    "sunset",
+    "night"
+  ],
+  "basePriceBDT": 1250000,
+  "specs": [
+    {
+      "key": {
+        "bn": "ইঞ্জিন",
+        "en": "Engine"
+      },
+      "value": {
+        "bn": "1496 cc, 4 সিলিন্ডার",
+        "en": "1496 cc, 4 cylinder"
+      }
+    },
+    {
+      "key": {
+        "bn": "ট্রান্সমিশন",
+        "en": "Transmission"
+      },
+      "value": {
+        "bn": "CVT অটোমেটিক",
+        "en": "CVT automatic"
+      }
+    },
+    {
+      "key": {
+        "bn": "মাইলেজ",
+        "en": "Mileage"
+      },
+      "value": {
+        "bn": "16 km/L (শহরে)",
+        "en": "16 km/L (city)"
+      }
+    },
+    {
+      "key": {
+        "bn": "সিট",
+        "en": "Seating"
+      },
+      "value": {
+        "bn": "5 জন",
+        "en": "5"
+      }
+    },
+    {
+      "key": {
+        "bn": "ফুয়েল",
+        "en": "Fuel"
+      },
+      "value": {
+        "bn": "অকটেন",
+        "en": "Octane"
+      }
+    },
+    {
+      "key": {
+        "bn": "বডি",
+        "en": "Body"
+      },
+      "value": {
+        "bn": "4 দরজা সেডান",
+        "en": "4-door sedan"
+      }
+    }
+  ],
+  "hotspots": [
+    {
+      "id": "paint-clearcoat",
+      "index": 1,
+      "label": {
+        "bn": "পেইন্ট — ক্লিয়ারকোট",
+        "en": "Paint — clearcoat"
+      },
+      "detail": {
+        "bn": "পার্ল রঙে তিন কোট লাগে, তাই দাম বেশি। ঘরের আলোয় আর রোদে আলাদা দেখাবে — উপরের আলো বদলে দেখুন।",
+        "en": "Pearl finishes need three coats, which is why they cost more. It looks different indoors and in sunlight — switch the lighting above."
+      },
+      "position": [
+        1.1,
+        1.02,
+        0.4
+      ]
+    },
+    {
+      "id": "wheel-fitment",
+      "index": 2,
+      "label": {
+        "bn": "হুইল — টায়ার আলাদা",
+        "en": "Wheels — tyres extra"
+      },
+      "detail": {
+        "bn": "১৭ ইঞ্চি অ্যালয়ে স্টক টায়ার লাগবে না। টায়ারের দাম এই হিসাবে ধরা নেই।",
+        "en": "17-inch alloys will not take the stock tyres. Tyre cost is not included in this total."
+      },
+      "position": [
+        1.35,
+        0.62,
+        0.9
+      ]
+    },
+    {
+      "id": "tint-legal",
+      "index": 3,
+      "label": {
+        "bn": "টিন্ট — বিআরটিএ নিয়ম",
+        "en": "Tint — BRTA rules"
+      },
+      "detail": {
+        "bn": "সামনের গ্লাসে গাঢ় টিন্ট বাংলাদেশে অনুমোদিত নয়, তাই আমরা শুধু পাশে আর পেছনে দিই।",
+        "en": "Dark tint on the windscreen is not permitted in Bangladesh, so we only apply it to the sides and rear."
+      },
+      "position": [
+        -0.3,
+        1.22,
+        0.79
+      ],
+      "visibleWithOptions": [
+        "tint-light",
+        "tint-dark"
+      ]
+    }
+  ],
+  "licenseId": "sedan-tripo",
+  "optionGroupIds": [
+    "paint",
+    "rimfinish",
+    "interior"
+  ]
+}

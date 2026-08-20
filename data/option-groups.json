@@ -1,0 +1,1486 @@
+[
+  {
+    "id": "paint",
+    "code": "OPT-PAINT",
+    "label": {
+      "bn": "রং",
+      "en": "Paint"
+    },
+    "type": "swatch",
+    "appliesTo": [
+      "car",
+      "motorcycle",
+      "modification"
+    ],
+    "required": true,
+    "multiSelect": false,
+    "defaultOptionId": "pearl-white-iii",
+    "options": [
+      {
+        "id": "attitude-black-mica",
+        "label": {
+          "bn": "অ্যাটিটিউড ব্ল্যাক মাইকা",
+          "en": "Attitude Black Mica"
+        },
+        "note": {
+          "bn": "সলিড",
+          "en": "Solid"
+        },
+        "priceDeltaBDT": 0,
+        "swatchHex": "#16181A",
+        "effects": [
+          {
+            "kind": "material",
+            "targetMeshes": [
+              "body_paint",
+              "tank",
+              "fairing_l",
+              "fairing_r",
+              "fender_front",
+              "fender_rear",
+              "tail_cowl",
+              "spoiler"
+            ],
+            "material": {
+              "color": "#16181A",
+              "metalness": 0.24,
+              "roughness": 0.3,
+              "clearcoat": 1,
+              "clearcoatRoughness": 0.06
+            }
+          }
+        ]
+      },
+      {
+        "id": "pearl-white-iii",
+        "label": {
+          "bn": "পার্ল হোয়াইট থ্রি",
+          "en": "Pearl White III"
+        },
+        "note": {
+          "bn": "পার্ল",
+          "en": "Pearl"
+        },
+        "priceDeltaBDT": 25000,
+        "swatchHex": "#E9EAE4",
+        "effects": [
+          {
+            "kind": "material",
+            "targetMeshes": [
+              "body_paint",
+              "tank",
+              "fairing_l",
+              "fairing_r",
+              "fender_front",
+              "fender_rear",
+              "tail_cowl",
+              "spoiler"
+            ],
+            "material": {
+              "color": "#E9EAE4",
+              "metalness": 0.14,
+              "roughness": 0.28,
+              "clearcoat": 1,
+              "clearcoatRoughness": 0.05
+            }
+          }
+        ]
+      },
+      {
+        "id": "silver-metallic",
+        "label": {
+          "bn": "সিলভার মেটালিক",
+          "en": "Silver Metallic"
+        },
+        "note": {
+          "bn": "মেটালিক",
+          "en": "Metallic"
+        },
+        "priceDeltaBDT": 0,
+        "swatchHex": "#AFB4B7",
+        "effects": [
+          {
+            "kind": "material",
+            "targetMeshes": [
+              "body_paint",
+              "tank",
+              "fairing_l",
+              "fairing_r",
+              "fender_front",
+              "fender_rear",
+              "tail_cowl",
+              "spoiler"
+            ],
+            "material": {
+              "color": "#AFB4B7",
+              "metalness": 0.6,
+              "roughness": 0.35,
+              "clearcoat": 1,
+              "clearcoatRoughness": 0.1
+            }
+          }
+        ]
+      },
+      {
+        "id": "dark-steel-mica",
+        "label": {
+          "bn": "ডার্ক স্টিল মাইকা",
+          "en": "Dark Steel Mica"
+        },
+        "note": {
+          "bn": "মেটালিক",
+          "en": "Metallic"
+        },
+        "priceDeltaBDT": 0,
+        "swatchHex": "#495158",
+        "effects": [
+          {
+            "kind": "material",
+            "targetMeshes": [
+              "body_paint",
+              "tank",
+              "fairing_l",
+              "fairing_r",
+              "fender_front",
+              "fender_rear",
+              "tail_cowl",
+              "spoiler"
+            ],
+            "material": {
+              "color": "#495158",
+              "metalness": 0.52,
+              "roughness": 0.33,
+              "clearcoat": 1,
+              "clearcoatRoughness": 0.09
+            }
+          }
+        ]
+      },
+      {
+        "id": "bordeaux-mica",
+        "label": {
+          "bn": "বোর্দো মাইকা",
+          "en": "Bordeaux Mica"
+        },
+        "note": {
+          "bn": "মাইকা",
+          "en": "Mica"
+        },
+        "priceDeltaBDT": 15000,
+        "swatchHex": "#5C1C24",
+        "effects": [
+          {
+            "kind": "material",
+            "targetMeshes": [
+              "body_paint",
+              "tank",
+              "fairing_l",
+              "fairing_r",
+              "fender_front",
+              "fender_rear",
+              "tail_cowl",
+              "spoiler"
+            ],
+            "material": {
+              "color": "#5C1C24",
+              "metalness": 0.3,
+              "roughness": 0.3,
+              "clearcoat": 1,
+              "clearcoatRoughness": 0.06
+            }
+          }
+        ]
+      },
+      {
+        "id": "racing-blue",
+        "label": {
+          "bn": "রেসিং ব্লু",
+          "en": "Racing Blue"
+        },
+        "note": {
+          "bn": "সলিড",
+          "en": "Solid"
+        },
+        "priceDeltaBDT": 15000,
+        "swatchHex": "#16386B",
+        "effects": [
+          {
+            "kind": "material",
+            "targetMeshes": [
+              "body_paint",
+              "tank",
+              "fairing_l",
+              "fairing_r",
+              "fender_front",
+              "fender_rear",
+              "tail_cowl",
+              "spoiler"
+            ],
+            "material": {
+              "color": "#16386B",
+              "metalness": 0.12,
+              "roughness": 0.32,
+              "clearcoat": 1,
+              "clearcoatRoughness": 0.06
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "wheels",
+    "code": "OPT-WHEEL",
+    "label": {
+      "bn": "হুইল",
+      "en": "Wheels"
+    },
+    "type": "thumbnail",
+    "appliesTo": [
+      "car",
+      "modification"
+    ],
+    "required": true,
+    "multiSelect": false,
+    "defaultOptionId": "wheel-sport",
+    "options": [
+      {
+        "id": "wheel-steel",
+        "label": {
+          "bn": "স্টিল + হাবক্যাপ",
+          "en": "Steel + hubcap"
+        },
+        "note": {
+          "bn": "১৫ ইঞ্চি",
+          "en": "15 inch"
+        },
+        "priceDeltaBDT": -6000,
+        "swatchHex": "#8C9195",
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "wheelset_classic"
+            ],
+            "visible": true
+          }
+        ]
+      },
+      {
+        "id": "wheel-sport",
+        "label": {
+          "bn": "স্পোর্ট ৫-স্পোক",
+          "en": "Sport 5-spoke"
+        },
+        "note": {
+          "bn": "১৬ ইঞ্চি অ্যালয়",
+          "en": "16 inch alloy"
+        },
+        "priceDeltaBDT": 0,
+        "swatchHex": "#C9CDD0",
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "wheelset_sport"
+            ],
+            "visible": true
+          }
+        ]
+      },
+      {
+        "id": "wheel-touring",
+        "label": {
+          "bn": "ট্যুরিং ১০-স্পোক",
+          "en": "Touring 10-spoke"
+        },
+        "note": {
+          "bn": "১৭ ইঞ্চি অ্যালয়",
+          "en": "17 inch alloy"
+        },
+        "priceDeltaBDT": 18000,
+        "swatchHex": "#D8DCDE",
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "wheelset_touring"
+            ],
+            "visible": true
+          }
+        ]
+      },
+      {
+        "id": "wheel-turbine",
+        "label": {
+          "bn": "টারবাইন",
+          "en": "Turbine"
+        },
+        "note": {
+          "bn": "১৭ ইঞ্চি অ্যালয়",
+          "en": "17 inch alloy"
+        },
+        "priceDeltaBDT": 26000,
+        "swatchHex": "#B8BCBF",
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "wheelset_turbine"
+            ],
+            "visible": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "rimfinish",
+    "code": "OPT-RIM",
+    "label": {
+      "bn": "রিম ফিনিশ",
+      "en": "Rim finish"
+    },
+    "type": "swatch",
+    "appliesTo": [
+      "car"
+    ],
+    "required": true,
+    "multiSelect": false,
+    "defaultOptionId": "rim-silver",
+    "options": [
+      {
+        "id": "rim-silver",
+        "label": {
+          "bn": "সিলভার অ্যালয়",
+          "en": "Silver alloy"
+        },
+        "note": {
+          "bn": "স্টক",
+          "en": "Stock"
+        },
+        "priceDeltaBDT": 0,
+        "swatchHex": "#C9CDD0",
+        "effects": [
+          {
+            "kind": "material",
+            "targetMeshes": [
+              "wheel_fl",
+              "wheel_fr",
+              "wheel_rl",
+              "wheel_rr"
+            ],
+            "material": {
+              "color": "#C2C7CB",
+              "metalness": 0.86,
+              "roughness": 0.3
+            }
+          }
+        ]
+      },
+      {
+        "id": "rim-gunmetal",
+        "label": {
+          "bn": "গানমেটাল",
+          "en": "Gunmetal"
+        },
+        "note": {
+          "bn": "পাউডার কোট",
+          "en": "Powder coat"
+        },
+        "priceDeltaBDT": 4000,
+        "swatchHex": "#4A5054",
+        "effects": [
+          {
+            "kind": "material",
+            "targetMeshes": [
+              "wheel_fl",
+              "wheel_fr",
+              "wheel_rl",
+              "wheel_rr"
+            ],
+            "material": {
+              "color": "#464C50",
+              "metalness": 0.82,
+              "roughness": 0.38
+            }
+          }
+        ]
+      },
+      {
+        "id": "rim-black",
+        "label": {
+          "bn": "গ্লস ব্ল্যাক",
+          "en": "Gloss black"
+        },
+        "note": {
+          "bn": "পাউডার কোট",
+          "en": "Powder coat"
+        },
+        "priceDeltaBDT": 5000,
+        "swatchHex": "#17191B",
+        "effects": [
+          {
+            "kind": "material",
+            "targetMeshes": [
+              "wheel_fl",
+              "wheel_fr",
+              "wheel_rl",
+              "wheel_rr"
+            ],
+            "material": {
+              "color": "#141618",
+              "metalness": 0.7,
+              "roughness": 0.22,
+              "clearcoat": 1,
+              "clearcoatRoughness": 0.08
+            }
+          }
+        ]
+      },
+      {
+        "id": "rim-machined",
+        "label": {
+          "bn": "ডায়মন্ড কাট",
+          "en": "Diamond cut"
+        },
+        "note": {
+          "bn": "মেশিন্ড ফেস",
+          "en": "Machined face"
+        },
+        "priceDeltaBDT": 9000,
+        "swatchHex": "#DDE1E4",
+        "effects": [
+          {
+            "kind": "material",
+            "targetMeshes": [
+              "wheel_fl",
+              "wheel_fr",
+              "wheel_rl",
+              "wheel_rr"
+            ],
+            "material": {
+              "color": "#DCE0E3",
+              "metalness": 1,
+              "roughness": 0.14
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tint",
+    "code": "OPT-TINT",
+    "label": {
+      "bn": "গ্লাস টিন্ট",
+      "en": "Window tint"
+    },
+    "type": "toggle-list",
+    "appliesTo": [
+      "car",
+      "modification"
+    ],
+    "required": true,
+    "multiSelect": false,
+    "defaultOptionId": "tint-clear",
+    "options": [
+      {
+        "id": "tint-clear",
+        "label": {
+          "bn": "ক্লিয়ার",
+          "en": "Clear"
+        },
+        "priceDeltaBDT": 0,
+        "effects": [
+          {
+            "kind": "material",
+            "targetMeshes": [
+              "glass_windshield",
+              "glass_side",
+              "glass_rear"
+            ],
+            "material": {
+              "color": "#9FB0B8",
+              "metalness": 0,
+              "roughness": 0.05,
+              "opacity": 0.3,
+              "transmission": 0.92
+            }
+          }
+        ]
+      },
+      {
+        "id": "tint-light",
+        "label": {
+          "bn": "হালকা",
+          "en": "Light"
+        },
+        "priceDeltaBDT": 4500,
+        "effects": [
+          {
+            "kind": "material",
+            "targetMeshes": [
+              "glass_side",
+              "glass_rear"
+            ],
+            "material": {
+              "color": "#4C565C",
+              "metalness": 0,
+              "roughness": 0.07,
+              "opacity": 0.55,
+              "transmission": 0.6
+            }
+          }
+        ]
+      },
+      {
+        "id": "tint-dark",
+        "label": {
+          "bn": "গাঢ়",
+          "en": "Dark"
+        },
+        "priceDeltaBDT": 7500,
+        "effects": [
+          {
+            "kind": "material",
+            "targetMeshes": [
+              "glass_side",
+              "glass_rear"
+            ],
+            "material": {
+              "color": "#191D20",
+              "metalness": 0.05,
+              "roughness": 0.09,
+              "opacity": 0.82,
+              "transmission": 0.22
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bodykit",
+    "code": "OPT-KIT",
+    "label": {
+      "bn": "বডি কিট",
+      "en": "Body kit"
+    },
+    "type": "toggle-list",
+    "appliesTo": [
+      "car",
+      "modification"
+    ],
+    "required": false,
+    "multiSelect": true,
+    "options": [
+      {
+        "id": "kit-spoiler",
+        "label": {
+          "bn": "স্পয়লার",
+          "en": "Rear spoiler"
+        },
+        "priceDeltaBDT": 9500,
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "spoiler"
+            ],
+            "visible": true
+          }
+        ]
+      },
+      {
+        "id": "kit-bullbar",
+        "label": {
+          "bn": "বুল বার",
+          "en": "Bull bar"
+        },
+        "priceDeltaBDT": 12000,
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "bullbar"
+            ],
+            "visible": true
+          }
+        ]
+      },
+      {
+        "id": "kit-roofrack",
+        "label": {
+          "bn": "রুফ র‍্যাক",
+          "en": "Roof rack"
+        },
+        "priceDeltaBDT": 8000,
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "roofrack"
+            ],
+            "visible": true
+          }
+        ]
+      },
+      {
+        "id": "kit-sidesteps",
+        "label": {
+          "bn": "সাইড স্টেপ",
+          "en": "Side steps"
+        },
+        "priceDeltaBDT": 11000,
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "sidesteps"
+            ],
+            "visible": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "interior",
+    "code": "OPT-INT",
+    "label": {
+      "bn": "ইন্টেরিয়র",
+      "en": "Interior"
+    },
+    "type": "swatch",
+    "appliesTo": [
+      "car"
+    ],
+    "required": true,
+    "multiSelect": false,
+    "defaultOptionId": "interior-fabric",
+    "options": [
+      {
+        "id": "interior-fabric",
+        "label": {
+          "bn": "ফ্যাব্রিক — কালো",
+          "en": "Fabric — black"
+        },
+        "priceDeltaBDT": 0,
+        "swatchHex": "#33373A",
+        "effects": [
+          {
+            "kind": "material",
+            "targetMeshes": [
+              "interior_seats"
+            ],
+            "material": {
+              "color": "#33373A",
+              "metalness": 0,
+              "roughness": 0.95
+            }
+          }
+        ]
+      },
+      {
+        "id": "interior-leather-black",
+        "label": {
+          "bn": "লেদার — কালো",
+          "en": "Leather — black"
+        },
+        "priceDeltaBDT": 22000,
+        "swatchHex": "#1C1E20",
+        "effects": [
+          {
+            "kind": "material",
+            "targetMeshes": [
+              "interior_seats"
+            ],
+            "material": {
+              "color": "#1C1E20",
+              "metalness": 0.06,
+              "roughness": 0.52,
+              "clearcoat": 0.25,
+              "clearcoatRoughness": 0.6
+            }
+          }
+        ]
+      },
+      {
+        "id": "interior-leather-beige",
+        "label": {
+          "bn": "লেদার — বেইজ",
+          "en": "Leather — beige"
+        },
+        "priceDeltaBDT": 26000,
+        "swatchHex": "#C4B49A",
+        "effects": [
+          {
+            "kind": "material",
+            "targetMeshes": [
+              "interior_seats"
+            ],
+            "material": {
+              "color": "#C4B49A",
+              "metalness": 0.04,
+              "roughness": 0.55,
+              "clearcoat": 0.22,
+              "clearcoatRoughness": 0.6
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "wrap",
+    "code": "OPT-WRAP",
+    "label": {
+      "bn": "র‍্যাপ",
+      "en": "Wrap"
+    },
+    "type": "thumbnail",
+    "appliesTo": [
+      "modification"
+    ],
+    "required": false,
+    "multiSelect": false,
+    "options": [
+      {
+        "id": "wrap-carbon",
+        "label": {
+          "bn": "কার্বন ফাইবার",
+          "en": "Carbon fibre"
+        },
+        "priceDeltaBDT": 38000,
+        "effects": [
+          {
+            "kind": "texture",
+            "targetMeshes": [
+              "body_paint"
+            ],
+            "map": "procedural:carbon"
+          }
+        ]
+      },
+      {
+        "id": "wrap-matte",
+        "label": {
+          "bn": "ম্যাট ব্ল্যাক",
+          "en": "Matte black"
+        },
+        "priceDeltaBDT": 32000,
+        "effects": [
+          {
+            "kind": "texture",
+            "targetMeshes": [
+              "body_paint"
+            ],
+            "map": "procedural:matte-black"
+          }
+        ]
+      },
+      {
+        "id": "wrap-camo",
+        "label": {
+          "bn": "আরবান ক্যামো",
+          "en": "Urban camo"
+        },
+        "priceDeltaBDT": 42000,
+        "effects": [
+          {
+            "kind": "texture",
+            "targetMeshes": [
+              "body_paint"
+            ],
+            "map": "procedural:camo-urban"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "exhaust",
+    "code": "OPT-EXH",
+    "label": {
+      "bn": "এক্সহস্ট",
+      "en": "Exhaust"
+    },
+    "type": "thumbnail",
+    "appliesTo": [
+      "motorcycle"
+    ],
+    "required": true,
+    "multiSelect": false,
+    "defaultOptionId": "exhaust-stock",
+    "options": [
+      {
+        "id": "exhaust-stock",
+        "label": {
+          "bn": "স্টক",
+          "en": "Stock"
+        },
+        "note": {
+          "bn": "কোম্পানির",
+          "en": "Factory"
+        },
+        "priceDeltaBDT": 0,
+        "swatchHex": "#D8DCDE",
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "exhaust_stock"
+            ],
+            "visible": true
+          },
+          {
+            "kind": "sound",
+            "soundId": "stock"
+          }
+        ]
+      },
+      {
+        "id": "exhaust-slipon",
+        "label": {
+          "bn": "শর্ট স্লিপ-অন",
+          "en": "Short slip-on"
+        },
+        "note": {
+          "bn": "জোরে",
+          "en": "Louder"
+        },
+        "priceDeltaBDT": 12500,
+        "swatchHex": "#B0B5B8",
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "exhaust_slipon"
+            ],
+            "visible": true
+          },
+          {
+            "kind": "sound",
+            "soundId": "slipon"
+          }
+        ]
+      },
+      {
+        "id": "exhaust-full",
+        "label": {
+          "bn": "ফুল সিস্টেম",
+          "en": "Full system"
+        },
+        "note": {
+          "bn": "সবচেয়ে জোরে",
+          "en": "Loudest"
+        },
+        "priceDeltaBDT": 28000,
+        "swatchHex": "#4A4E51",
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "exhaust_full"
+            ],
+            "visible": true
+          },
+          {
+            "kind": "sound",
+            "soundId": "full"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "crashguard",
+    "code": "OPT-GUARD",
+    "label": {
+      "bn": "ক্র্যাশ গার্ড",
+      "en": "Crash guard"
+    },
+    "type": "toggle-list",
+    "appliesTo": [
+      "motorcycle"
+    ],
+    "required": true,
+    "multiSelect": false,
+    "defaultOptionId": "guard-none",
+    "options": [
+      {
+        "id": "guard-none",
+        "label": {
+          "bn": "নেই",
+          "en": "None"
+        },
+        "priceDeltaBDT": 0,
+        "effects": []
+      },
+      {
+        "id": "guard-standard",
+        "label": {
+          "bn": "স্ট্যান্ডার্ড",
+          "en": "Standard"
+        },
+        "priceDeltaBDT": 2800,
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "crashguard_standard"
+            ],
+            "visible": true
+          }
+        ]
+      },
+      {
+        "id": "guard-bull",
+        "label": {
+          "bn": "বুল গার্ড",
+          "en": "Bull guard"
+        },
+        "priceDeltaBDT": 4200,
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "crashguard_bull"
+            ],
+            "visible": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "seat",
+    "code": "OPT-SEAT",
+    "label": {
+      "bn": "সিট",
+      "en": "Seat"
+    },
+    "type": "swatch",
+    "appliesTo": [
+      "motorcycle"
+    ],
+    "required": true,
+    "multiSelect": false,
+    "defaultOptionId": "seat-stock",
+    "options": [
+      {
+        "id": "seat-stock",
+        "label": {
+          "bn": "স্টক",
+          "en": "Stock"
+        },
+        "priceDeltaBDT": 0,
+        "swatchHex": "#33373A",
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "seat_stock"
+            ],
+            "visible": true
+          },
+          {
+            "kind": "material",
+            "targetMeshes": [
+              "seat_stock"
+            ],
+            "material": {
+              "color": "#33373A",
+              "metalness": 0,
+              "roughness": 0.94
+            }
+          }
+        ]
+      },
+      {
+        "id": "seat-gel",
+        "label": {
+          "bn": "জেল সিট",
+          "en": "Gel seat"
+        },
+        "note": {
+          "bn": "লম্বা রাইডে আরাম",
+          "en": "Long-ride comfort"
+        },
+        "priceDeltaBDT": 3800,
+        "swatchHex": "#1F2224",
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "seat_gel"
+            ],
+            "visible": true
+          },
+          {
+            "kind": "material",
+            "targetMeshes": [
+              "seat_gel"
+            ],
+            "material": {
+              "color": "#1F2224",
+              "metalness": 0.05,
+              "roughness": 0.62
+            }
+          }
+        ]
+      },
+      {
+        "id": "seat-split",
+        "label": {
+          "bn": "স্প্লিট সিট",
+          "en": "Split seat"
+        },
+        "priceDeltaBDT": 5200,
+        "swatchHex": "#5C1C24",
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "seat_split"
+            ],
+            "visible": true
+          },
+          {
+            "kind": "material",
+            "targetMeshes": [
+              "seat_split"
+            ],
+            "material": {
+              "color": "#5C1C24",
+              "metalness": 0.06,
+              "roughness": 0.6
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "handlebar",
+    "code": "OPT-BAR",
+    "label": {
+      "bn": "হ্যান্ডেলবার",
+      "en": "Handlebar"
+    },
+    "type": "thumbnail",
+    "appliesTo": [
+      "motorcycle"
+    ],
+    "required": true,
+    "multiSelect": false,
+    "defaultOptionId": "bar-stock",
+    "options": [
+      {
+        "id": "bar-stock",
+        "label": {
+          "bn": "স্টক",
+          "en": "Stock"
+        },
+        "priceDeltaBDT": 0,
+        "swatchHex": "#8C9195",
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "handlebar_stock"
+            ],
+            "visible": true
+          }
+        ]
+      },
+      {
+        "id": "bar-clipon",
+        "label": {
+          "bn": "ক্লিপ-অন",
+          "en": "Clip-on"
+        },
+        "note": {
+          "bn": "স্পোর্টি পজিশন",
+          "en": "Sporty position"
+        },
+        "priceDeltaBDT": 5500,
+        "swatchHex": "#4A4E51",
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "handlebar_clipon"
+            ],
+            "visible": true
+          }
+        ]
+      },
+      {
+        "id": "bar-riser",
+        "label": {
+          "bn": "রাইজার",
+          "en": "Riser"
+        },
+        "note": {
+          "bn": "সোজা হয়ে বসা",
+          "en": "Upright position"
+        },
+        "priceDeltaBDT": 4200,
+        "swatchHex": "#B0B5B8",
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "handlebar_riser"
+            ],
+            "visible": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "lights",
+    "code": "OPT-LAMP",
+    "label": {
+      "bn": "লাইট",
+      "en": "Lights"
+    },
+    "type": "toggle-list",
+    "appliesTo": [
+      "motorcycle"
+    ],
+    "required": false,
+    "multiSelect": true,
+    "options": [
+      {
+        "id": "light-led",
+        "label": {
+          "bn": "এলইডি হেডলাইট",
+          "en": "LED headlight"
+        },
+        "priceDeltaBDT": 4200,
+        "effects": [
+          {
+            "kind": "material",
+            "targetMeshes": [
+              "headlight_lens"
+            ],
+            "material": {
+              "color": "#F2F7FA",
+              "metalness": 0.08,
+              "roughness": 0.05,
+              "emissive": "#CFE4F2",
+              "emissiveIntensity": 2.4
+            }
+          }
+        ]
+      },
+      {
+        "id": "light-aux",
+        "label": {
+          "bn": "অক্সিলিয়ারি ফগ লাইট",
+          "en": "Auxiliary fog lamps"
+        },
+        "priceDeltaBDT": 3600,
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "light_aux_l",
+              "light_aux_r"
+            ],
+            "visible": true
+          },
+          {
+            "kind": "material",
+            "targetMeshes": [
+              "light_aux_l",
+              "light_aux_r"
+            ],
+            "material": {
+              "color": "#FFE9C4",
+              "metalness": 0.1,
+              "roughness": 0.08,
+              "emissive": "#FFC46B",
+              "emissiveIntensity": 2.2
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tyres",
+    "code": "OPT-TYRE",
+    "label": {
+      "bn": "টায়ার",
+      "en": "Tyres"
+    },
+    "type": "thumbnail",
+    "appliesTo": [
+      "motorcycle"
+    ],
+    "required": true,
+    "multiSelect": false,
+    "defaultOptionId": "tyre-stock",
+    "options": [
+      {
+        "id": "tyre-stock",
+        "label": {
+          "bn": "স্টক টিউব",
+          "en": "Stock tube"
+        },
+        "priceDeltaBDT": 0,
+        "swatchHex": "#141617",
+        "effects": []
+      },
+      {
+        "id": "tyre-tubeless",
+        "label": {
+          "bn": "টিউবলেস",
+          "en": "Tubeless"
+        },
+        "note": {
+          "bn": "পাংচারে নিরাপদ",
+          "en": "Safer punctures"
+        },
+        "priceDeltaBDT": 6800,
+        "swatchHex": "#1B1E1F",
+        "effects": [
+          {
+            "kind": "material",
+            "targetMeshes": [
+              "tyre_front",
+              "tyre_rear"
+            ],
+            "material": {
+              "color": "#17191A",
+              "metalness": 0.02,
+              "roughness": 0.82
+            }
+          }
+        ]
+      },
+      {
+        "id": "tyre-wide",
+        "label": {
+          "bn": "ওয়াইড প্রোফাইল",
+          "en": "Wide profile"
+        },
+        "priceDeltaBDT": 9800,
+        "swatchHex": "#0F1112",
+        "effects": [
+          {
+            "kind": "transform",
+            "targetMeshes": [
+              "tyre_rear"
+            ],
+            "scale": [
+              1.03,
+              1.03,
+              1.45
+            ]
+          },
+          {
+            "kind": "transform",
+            "targetMeshes": [
+              "tyre_front"
+            ],
+            "scale": [
+              1.02,
+              1.02,
+              1.3
+            ]
+          },
+          {
+            "kind": "material",
+            "targetMeshes": [
+              "tyre_front",
+              "tyre_rear"
+            ],
+            "material": {
+              "color": "#101213",
+              "metalness": 0.02,
+              "roughness": 0.78
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tankpad",
+    "code": "OPT-PAD",
+    "label": {
+      "bn": "ট্যাংক প্যাড",
+      "en": "Tank pad"
+    },
+    "type": "thumbnail",
+    "appliesTo": [
+      "motorcycle"
+    ],
+    "required": false,
+    "multiSelect": false,
+    "options": [
+      {
+        "id": "pad-carbon",
+        "label": {
+          "bn": "কার্বন",
+          "en": "Carbon"
+        },
+        "priceDeltaBDT": 900,
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "tankpad"
+            ],
+            "visible": true
+          },
+          {
+            "kind": "texture",
+            "targetMeshes": [
+              "tankpad"
+            ],
+            "map": "procedural:carbon"
+          }
+        ]
+      },
+      {
+        "id": "pad-stripe",
+        "label": {
+          "bn": "রেসিং স্ট্রাইপ",
+          "en": "Racing stripe"
+        },
+        "priceDeltaBDT": 750,
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "tankpad"
+            ],
+            "visible": true
+          },
+          {
+            "kind": "texture",
+            "targetMeshes": [
+              "tankpad"
+            ],
+            "map": "procedural:racing-stripe"
+          }
+        ]
+      },
+      {
+        "id": "pad-chequer",
+        "label": {
+          "bn": "চেকার",
+          "en": "Chequer"
+        },
+        "priceDeltaBDT": 750,
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "tankpad"
+            ],
+            "visible": true
+          },
+          {
+            "kind": "texture",
+            "targetMeshes": [
+              "tankpad"
+            ],
+            "map": "procedural:chequer"
+          }
+        ]
+      },
+      {
+        "id": "pad-flame",
+        "label": {
+          "bn": "ফ্লেম",
+          "en": "Flame"
+        },
+        "priceDeltaBDT": 1100,
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "tankpad"
+            ],
+            "visible": true
+          },
+          {
+            "kind": "texture",
+            "targetMeshes": [
+              "tankpad"
+            ],
+            "map": "procedural:flame"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "windscreen",
+    "code": "OPT-SCRN",
+    "label": {
+      "bn": "উইন্ডস্ক্রিন",
+      "en": "Windscreen"
+    },
+    "type": "toggle-list",
+    "appliesTo": [
+      "motorcycle"
+    ],
+    "required": true,
+    "multiSelect": false,
+    "defaultOptionId": "screen-none",
+    "options": [
+      {
+        "id": "screen-none",
+        "label": {
+          "bn": "নেই",
+          "en": "None"
+        },
+        "priceDeltaBDT": 0,
+        "effects": []
+      },
+      {
+        "id": "screen-visor",
+        "label": {
+          "bn": "ভাইজর",
+          "en": "Visor"
+        },
+        "priceDeltaBDT": 2400,
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "windscreen_visor"
+            ],
+            "visible": true
+          }
+        ]
+      },
+      {
+        "id": "screen-touring",
+        "label": {
+          "bn": "ট্যুরিং স্ক্রিন",
+          "en": "Touring screen"
+        },
+        "priceDeltaBDT": 5600,
+        "effects": [
+          {
+            "kind": "visibility",
+            "targetMeshes": [
+              "windscreen_touring"
+            ],
+            "visible": true
+          }
+        ]
+      }
+    ]
+  }
+]

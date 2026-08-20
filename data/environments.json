@@ -1,0 +1,34 @@
+[
+  {
+    "id": "showroom",
+    "label": { "bn": "শোরুম", "en": "Showroom" },
+    "groundColor": "#26292A",
+    "groundRoughness": 0.34,
+    "exposure": 1.05,
+    "background": "#15181A"
+  },
+  {
+    "id": "street",
+    "label": { "bn": "রাস্তা", "en": "Street" },
+    "groundColor": "#232526",
+    "groundRoughness": 0.78,
+    "exposure": 0.95,
+    "background": "#1A1C1D"
+  },
+  {
+    "id": "sunset",
+    "label": { "bn": "গোধূলি", "en": "Sunset" },
+    "groundColor": "#2C221B",
+    "groundRoughness": 0.52,
+    "exposure": 1.18,
+    "background": "#24160F"
+  },
+  {
+    "id": "night",
+    "label": { "bn": "রাত", "en": "Night" },
+    "groundColor": "#0F1214",
+    "groundRoughness": 0.22,
+    "exposure": 0.82,
+    "background": "#07090B"
+  }
+]

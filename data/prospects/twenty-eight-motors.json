@@ -1,0 +1,13 @@
+{
+  "slug": "twenty-eight-motors",
+  "businessName": { "bn": "টুয়েন্টি এইট মোটরস", "en": "Twenty Eight Motors" },
+  "brandAccent": "#0B3D91",
+  "whatsapp": "8801XXXXXXXXX",
+  "phone": "+8801XXXXXXXXX",
+  "address": { "bn": "সিডিএ এভিনিউ, চট্টগ্রাম", "en": "CDA Avenue, Chattogram" },
+  "segment": "motorcycle",
+  "heroVehicleId": "naked-commuter-150",
+  "vehicleIds": ["naked-commuter-150", "sedan-generic"],
+  "expiresAt": "2026-09-01",
+  "ownerName": "—"
+}

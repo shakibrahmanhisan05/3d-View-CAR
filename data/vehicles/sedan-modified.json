@@ -1,0 +1,111 @@
+{
+  "id": "sedan-modified",
+  "slug": "modified",
+  "name": {
+    "bn": "সেডান — মডিফিকেশন",
+    "en": "Sedan — Modification"
+  },
+  "segment": "modification",
+  "asset": {
+    "placeholder": "car",
+    "scale": 1,
+    "cameraStart": [
+      6,
+      2.1,
+      6.2
+    ],
+    "cameraTarget": [
+      0,
+      0.78,
+      0
+    ],
+    "minDistance": 4.2,
+    "maxDistance": 13,
+    "frameExtent": [
+      2.51,
+      0.95
+    ]
+  },
+  "environmentIds": [
+    "street",
+    "showroom",
+    "sunset",
+    "night"
+  ],
+  "optionGroupIds": [
+    "wrap",
+    "wheels",
+    "bodykit",
+    "tint"
+  ],
+  "basePriceBDT": 0,
+  "specs": [
+    {
+      "key": {
+        "bn": "কাজের ধরন",
+        "en": "Work type"
+      },
+      "value": {
+        "bn": "র‍্যাপ, হুইল, বডি কিট, টিন্ট",
+        "en": "Wrap, wheels, body kit, tint"
+      }
+    },
+    {
+      "key": {
+        "bn": "সময়",
+        "en": "Turnaround"
+      },
+      "value": {
+        "bn": "3–5 দিন",
+        "en": "3–5 days"
+      }
+    },
+    {
+      "key": {
+        "bn": "ওয়ারেন্টি",
+        "en": "Warranty"
+      },
+      "value": {
+        "bn": "র‍্যাপে 1 বছর",
+        "en": "1 year on wrap"
+      }
+    }
+  ],
+  "hotspots": [
+    {
+      "id": "wrap-vs-paint",
+      "index": 1,
+      "label": {
+        "bn": "র‍্যাপ, রং নয়",
+        "en": "Wrap, not paint"
+      },
+      "detail": {
+        "bn": "র‍্যাপ তোলা যায়, রং তোলা যায় না। রিসেলের সময় গাড়ির আসল রং অক্ষত থাকে — রিকন্ডিশন্ড মার্কেটে এটা দামে পার্থক্য গড়ে।",
+        "en": "A wrap comes off; paint does not. At resale the original colour is intact, and in the reconditioned market that shows up in the price."
+      },
+      "position": [
+        0.4,
+        1.05,
+        0.6
+      ]
+    },
+    {
+      "id": "before-after",
+      "index": 2,
+      "label": {
+        "bn": "আগে / পরে",
+        "en": "Before / after"
+      },
+      "detail": {
+        "bn": "নিচের স্লাইডারটা টেনে স্টক আর মডিফায়েড পাশাপাশি দেখুন। ক্রেতাকে এটাই দেখাতে হয়।",
+        "en": "Drag the slider below to see stock against modified. This is the thing a customer needs to see."
+      },
+      "position": [
+        -1.4,
+        0.98,
+        0.5
+      ]
+    }
+  ],
+  "licenseId": "placeholder-sedan"
+}

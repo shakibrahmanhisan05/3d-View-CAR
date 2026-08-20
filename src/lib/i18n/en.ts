@@ -1,0 +1,475 @@
+/**
+ * English dictionary.
+ *
+ * `satisfies Dictionary` is doing real work here: it is the compile-time enforcement of
+ * §16's "every string renders in both Bangla and English — including hotspots, options,
+ * errors, empty states". Add a key to bn.ts and this file stops compiling until it is
+ * translated, which is the only way a bilingual site stays bilingual.
+ */
+
+import type { Dictionary } from './bn';
+
+export const en = {
+  common: {
+    brand: 'Phoenix',
+    brandLatin: 'PHOENIX',
+    tagline: '3D showroom websites for Chattogram car and bike dealers',
+    whatsapp: 'Message on WhatsApp',
+    callUs: 'Call us',
+    bookDemo: 'Book a 15-minute demo',
+    close: 'Close',
+    open: 'Open',
+    loading: 'Loading',
+    reset: 'Reset',
+    back: 'Back',
+    next: 'Next',
+    previous: 'Previous',
+    free: 'Free',
+    oneTime: 'One-time',
+    optional: 'Optional',
+    comingSoon: 'Coming soon',
+    skipToContent: 'Skip to content',
+    menu: 'Menu',
+    language: 'Language',
+    copied: 'Copied',
+    copyLink: 'Copy link',
+    share: 'Share',
+    tryAgain: 'Try again',
+    required: 'Required',
+  },
+
+  nav: {
+    home: 'Home',
+    demos: 'Demos',
+    demoCar: 'Car',
+    demoBike: 'Motorcycle',
+    demo360: '360° Real Vehicle',
+    work: 'Work',
+    pricing: 'Pricing',
+    process: 'Process',
+    about: 'About',
+    contact: 'Contact',
+  },
+
+  hero: {
+    code: 'SEC-01',
+    label: 'Home',
+    title: 'Your showroom, open at 2am.',
+    sub: 'Buyers walk around the vehicle, pick the colour, see the price — then arrive at your desk already decided.',
+    ctaPrimary: 'Your bestseller in 3D — free',
+    ctaSecondary: 'Book a 15-minute demo',
+    segmentCar: 'Car',
+    segmentBike: 'Motorcycle',
+    dragHint: 'Drag to rotate',
+    canvasAlt: 'An interactive 3D vehicle — drag to rotate it, tap a swatch to change its colour.',
+  },
+
+  problems: {
+    code: 'SEC-02',
+    label: 'The problem',
+    title: 'What you hear every day',
+    lines: [
+      'The buyer wants a photo in a colour you do not have on the floor.',
+      'Every Facebook message is the same single word — “price?”',
+      'Before he ever visits, the buyer assumes the photos are hiding something.',
+    ],
+    footnote:
+      'All three are one problem: the buyer cannot see enough, so he does not come — or he comes to haggle.',
+  },
+
+  demos: {
+    code: 'SEC-03',
+    label: 'Live demo',
+    title: 'Take it in your hand',
+    sub: 'Tap any tab below. This is exactly what sits on your website.',
+    tabCar: 'Car',
+    tabBike: 'Motorcycle',
+    tabMod: 'Modification',
+    tab360: '360° Real Vehicle',
+    openFull: 'Open full screen',
+  },
+
+  twoProducts: {
+    code: 'SEC-04',
+    label: 'Two different things',
+    title: 'Which one is for you?',
+    sub: 'These are not the same product. Most people conflate them, so here it is plainly.',
+    newTitle: 'Selling new cars or bikes?',
+    newAnswer: 'The configurator.',
+    newBody:
+      'Colour, wheels, accessories — the buyer chooses them himself, sees the price update as he goes, and sends you that exact build on WhatsApp.',
+    newFor: 'Bike showrooms · modification shops · new-brand car dealers',
+    reconTitle: 'Selling reconditioned cars?',
+    reconAnswer: '360° capture.',
+    reconBody:
+      'The actual car standing on your floor, from every angle, every mark included. There is nothing to recolour — because you have exactly one of it.',
+    reconFor: 'Reconditioned car dealers · used-car showrooms',
+    honest:
+      'Offering colour options on a car that exists only once is lying to the buyer. We do not build that.',
+  },
+
+  roi: {
+    code: 'SEC-05',
+    label: 'The maths',
+    title: 'Put your own numbers in',
+    sub: 'Not our estimates — your showroom’s real figures. Let the arithmetic make the argument.',
+    segment: 'What you sell',
+    segmentCar: 'Cars',
+    segmentBike: 'Motorcycles',
+    walkins: 'Walk-ins per month',
+    avgSale: 'Average sale value',
+    closeRate: 'Current close rate',
+    boostSpend: 'Monthly Facebook boost spend',
+    currentRevenue: 'Current monthly revenue',
+    projectedRevenue: 'Projected monthly revenue',
+    additional: 'Additional monthly revenue',
+    payback: 'Time to pay for itself',
+    months: 'months',
+    amortised: 'Phoenix project cost, spread over 12 months',
+    boostCompare: '{percent}% of what you spend on boosting in a year — but once, not every month',
+    assumptionTitle: 'What we assumed',
+    assumption:
+      'We assumed a 15% lift in qualified leads. Foreign vendors quote 40%+; we do not believe those numbers and we will not quote them to you. Close rate, sale value and boost spend are held constant.',
+    disclaimer: 'This is an estimate, not a promise. The numbers are yours; the assumption is ours.',
+  },
+
+  caseStudy: {
+    code: 'SEC-06',
+    label: 'Case study',
+    title: 'First client',
+    pendingTitle: 'This space is empty on purpose.',
+    pendingBody:
+      'We are building the first Chattogram showroom’s site this week, free. The owner’s name, his photo, his real numbers — all of it goes here. We will not write an invented case study.',
+    pendingCta: 'That first showroom could be yours',
+    quoteLabel: 'In the owner’s words',
+    resultsLabel: 'Results',
+  },
+
+  pricingSection: {
+    code: 'SEC-07',
+    label: 'Pricing',
+    title: 'Pricing, in the open',
+    sub: 'We do not trust websites that say “contact us for pricing”. Neither do you.',
+    oneTimeNote: 'Every price is one time, as a project. There is no monthly software rental.',
+    advanceNote: '50% before work starts, the remaining 50% on handover.',
+    from: 'from',
+    perModel: 'per model',
+    perVehicle: 'per vehicle',
+    perYear: 'per year',
+    includes: 'What you get',
+    p1Name: 'Showroom Site',
+    p1For: 'Any car or bike showroom',
+    p1Body:
+      'A fast, bilingual site. You update the inventory yourself, leads arrive on WhatsApp, and one vehicle turns live in 3D on the homepage.',
+    p1Items: [
+      'Bangla and English, Bangla by default',
+      'Inventory listings you update yourself',
+      'Leads straight to WhatsApp',
+      'Google Maps and service booking',
+      'One live 3D vehicle on the homepage',
+      'Fast on mobile — tested on a mid-range Android',
+    ],
+    p2Name: '3D Configurator',
+    p2For: 'Bike showrooms · modification shops · new-brand dealers',
+    p2Body:
+      'One model, forty-plus configurations. Colour, wheels, exhaust, accessories — with a live running total and a “send this build to WhatsApp” button.',
+    p2Items: [
+      'Change colour, wheels and accessories',
+      'Live running total in taka',
+      'Send the configuration to WhatsApp',
+      'Showroom · street · sunset · night lighting',
+      'Exhaust note that changes with the exhaust',
+      'AR on a phone — stand the vehicle on your shop floor',
+    ],
+    p3Name: '360° Vehicle Capture',
+    p3For: 'Reconditioned and used-car dealers',
+    p3Body:
+      'We come to your showroom and shoot the vehicle in 32 frames. The buyer spins it on his phone, with every mark labelled. Repeat when the next container lands.',
+    p3Items: [
+      'We shoot it at your showroom',
+      '32 frames, drag to rotate',
+      'Marks and defects labelled honestly',
+      'Auction-sheet data panel',
+      'Works on old phones — no 3D required',
+      'Volume pricing above 20 vehicles',
+    ],
+    careName: 'Care plan',
+    careBody:
+      'Hosting, backups, small updates and technical support. Decline it and the site is still entirely yours.',
+    faqLink: 'Questions about pricing? Answers below',
+  },
+
+  faq: {
+    code: 'SEC-08',
+    label: 'Questions',
+    title: 'The questions you are going to ask',
+    items: [
+      {
+        q: 'How long does it take?',
+        a: 'A showroom site is 10–14 days. A 3D model on its own is 5–7 days. A 360° capture is 30 minutes of shooting per vehicle and it is live the next day. We put dates in writing, and if we are late that is our problem, not yours.',
+      },
+      {
+        q: 'Who owns the website?',
+        a: 'You do. The domain is in your name and all the content is yours. Once the final payment clears, the domain and hosting logins are handed to you. If you never speak to us again the site keeps running.',
+      },
+      {
+        q: 'I only sell reconditioned cars — I cannot change their colour.',
+        a: 'Correct, and that is exactly why we will not sell you a configurator. You get the 360° capture instead: the actual car on your floor, from every angle, every mark labelled. Buyers trust what they are allowed to inspect.',
+      },
+      {
+        q: 'Will the 3D make my site slow?',
+        a: 'No. The 3D loads separately and afterwards — the page appears first, the vehicle arrives behind it. We test on mid-range Android phones over mobile data, not on a laptop on wifi. If a phone cannot run 3D at all, the site drops to the image version by itself.',
+      },
+      {
+        q: 'What do you need from me?',
+        a: 'Three things: your logo and phone number, a list of the vehicles you sell with prices, and one day of access to the showroom so Omlan can shoot. We write the copy; you read it and correct us.',
+      },
+      {
+        q: 'What happens after handover?',
+        a: 'We sit with you for half an hour and show you how to add a vehicle, change a price and read your leads, plus a short guide in Bangla. After that, take the care plan and we maintain it, or decline it and run it yourself. Both are fine.',
+      },
+      {
+        q: 'I already have a Facebook page — why a separate site?',
+        a: 'Facebook shows your stock. This shows a buyer his own vehicle. And when he messages you, you receive the full specification instead of the word “price?”.',
+      },
+      {
+        q: 'Business is slow right now. Is this the moment to spend?',
+        a: 'Honest answer: that is your call. But do the arithmetic — this costs about what you already spend on a few months of Facebook boosts, once, and it makes those boosts convert better. Put your own numbers into the calculator above.',
+      },
+    ],
+  },
+
+  footer: {
+    creditsLink: 'Asset credits',
+    creditsTitle: 'Asset credits and licences',
+    creditsIntro:
+      'Source and licence for every 3D model, texture, HDRI and sound used on this site. This is what we show a client who asks.',
+    creditsOriginal: 'Made by Phoenix',
+    creditsSource: 'Source',
+    creditsAuthor: 'Author',
+    creditsLicense: 'Licence',
+    creditsModifications: 'Modifications',
+    address: 'Chattogram, Bangladesh',
+    rights: 'Phoenix · Chattogram',
+    builtIn: 'Built in Chattogram',
+    navLabel: 'Footer navigation',
+  },
+
+  configurator: {
+    code: 'CFG',
+    price: 'Price',
+    basePrice: 'Base price',
+    total: 'Total',
+    sendToWhatsapp: 'Send this build to WhatsApp',
+    sendToWhatsappShort: 'Send to WhatsApp',
+    shareBuild: 'Share',
+    shareCopied: 'Link copied',
+    viewInAr: 'View in AR',
+    arHint: 'Open on a phone and stand the vehicle in front of you',
+    specSheet: 'Spec sheet',
+    soundOn: 'Sound on',
+    soundOff: 'Sound off',
+    soundUnavailable: 'No sound for this model',
+    rev: 'Rev it',
+    resetView: 'Reset view',
+    exterior: 'Outside',
+    interior: 'Inside',
+    interiorUnavailable: 'This model has no interior geometry yet',
+    environment: 'Lighting',
+    quality: 'Quality',
+    qualityAuto: 'Auto',
+    qualityLow: 'Low',
+    qualityHigh: 'High',
+    qualityReduced: 'Quality reduced to keep it smooth on this device',
+    loadingModel: 'Loading the vehicle',
+    webglMissing: 'Your browser cannot run 3D — showing the image version instead.',
+    hotspots: 'Points',
+    beforeAfter: 'Before / after',
+    before: 'Before',
+    after: 'After',
+    dragToCompare: 'Drag to compare',
+    riderHeight: 'Rider height',
+    riderHeightHelp: 'Whether your feet reach the ground when seated — see below',
+    feetFlat: 'Both feet flat',
+    feetBall: 'Balls of the feet',
+    feetTiptoe: 'Tip-toe',
+    seatHeight: 'Seat height',
+    selected: 'Selected',
+    optionsFor: 'Options for {name}',
+    noOptions: 'No options for this segment',
+    summaryFor: 'Your configuration',
+    whatsappIntro: 'Assalamu alaikum. I built this configuration:',
+    whatsappOutro: 'Could you tell me the price and availability?',
+  },
+
+  viewer360: {
+    code: '360',
+    title: '360° Real Vehicle',
+    dragHint: 'Drag to rotate',
+    loadingFrames: 'Loading frames',
+    frame: 'Frame',
+    dataPanel: 'Vehicle data',
+    grade: 'Auction grade',
+    year: 'Model year',
+    regYear: 'Registration',
+    mileage: 'Mileage',
+    engine: 'Engine',
+    transmission: 'Transmission',
+    colour: 'Colour',
+    price: 'Price',
+    defectsTitle: 'Everything there is, in the open',
+    defectsIntro: 'We do not hide marks. Every one of them is labelled.',
+    severityNote: 'Note',
+    severityDefect: 'Defect',
+    placeholderNote:
+      'This is a demo sequence. A real shoot puts 32 frames of your own vehicle here.',
+  },
+
+  contact: {
+    code: 'SEC-09',
+    title: 'Let’s talk',
+    sub: 'Fill this in and it goes straight to our WhatsApp. Or just call now.',
+    name: 'Your name',
+    business: 'Showroom name',
+    phone: 'Phone number',
+    segment: 'What you sell',
+    segmentCar: 'Cars',
+    segmentBike: 'Motorcycles',
+    segmentMod: 'Modification / accessories',
+    segmentRecon: 'Reconditioned cars',
+    message: 'Anything you want to add',
+    submit: 'Send on WhatsApp',
+    submitting: 'Sending',
+    successTitle: 'Got it.',
+    successBody: 'WhatsApp is opening. If it does not, message the number directly.',
+    errorTitle: 'That did not send.',
+    errorBody: 'It may be the network. Message us on WhatsApp directly.',
+    errorName: 'Please write your name',
+    errorPhone: 'Enter a valid phone number (11 digits, e.g. 01712345678)',
+    errorBusiness: 'Please write the showroom name',
+    privacy: 'Only we see your number. It is never sold, and there is no newsletter.',
+  },
+
+  work: {
+    code: 'PG-WORK',
+    title: 'Work',
+    sub: 'What we have built, and what we have not built yet. Both honestly.',
+    empty: 'The first client’s work goes here. We do not write invented case studies.',
+  },
+
+  process: {
+    code: 'PG-PROC',
+    title: 'How it works',
+    sub: 'Six steps. What happens, how long it takes, and what you have to do.',
+    yourPart: 'Your part',
+    ourPart: 'Our part',
+    duration: 'Time',
+    days: 'days',
+    steps: [
+      {
+        title: 'A conversation',
+        ourPart:
+          'We sit in your showroom for fifteen minutes. What you sell, what buyers ask, where you get stuck — we listen.',
+        yourPart: 'Give us fifteen minutes, and be honest about where it hurts.',
+        duration: '1 day',
+      },
+      {
+        title: 'A free demo',
+        ourPart:
+          'We build your bestselling model in 3D. No payment, no obligation. It stays live for 14 days.',
+        yourPart: 'Tell us which model sells the most.',
+        duration: '3 days',
+      },
+      {
+        title: 'Your decision',
+        ourPart:
+          'We hand you the demo. If you like it, we talk about the full site. If you do not, you keep the demo anyway.',
+        yourPart: 'Say yes or no. “I’ll let you know later” wastes both our time.',
+        duration: '1 day',
+      },
+      {
+        title: 'The shoot',
+        ourPart:
+          'Omlan spends a day photographing the vehicles and the showroom. For a 360° capture, 30 minutes per vehicle.',
+        yourPart: 'One day of access, and the vehicles cleaned.',
+        duration: '1 day',
+      },
+      {
+        title: 'The build',
+        ourPart:
+          'We build the whole site — your logo, your colours, your number, your stock. You see it once halfway through.',
+        yourPart: 'Logo, phone number, and the vehicle list with prices. Then review the halfway version.',
+        duration: '10–14 days',
+      },
+      {
+        title: 'Handover',
+        ourPart:
+          'We put it live, spend half an hour teaching you to run it, give you a guide in Bangla, and hand over the logins.',
+        yourPart: 'The remaining 50%, and half an hour of your time.',
+        duration: '1 day',
+      },
+    ],
+    paymentTitle: 'Payment',
+    paymentBody:
+      '50% before work starts, 50% on handover. bKash, Nagad or bank transfer — whichever suits you. A one-page agreement in Bangla, signed by both, photographed by both.',
+    ownershipTitle: 'Ownership',
+    ownershipBody:
+      'The domain and hosting logins become yours once the final payment clears. Until then we hold them. That protects both of us.',
+  },
+
+  about: {
+    code: 'PG-ABOUT',
+    title: 'The four of us',
+    sub: 'Four people in Chattogram. Not a large agency, and not pretending to be one.',
+    body:
+      'We are Phoenix, a small studio in Chattogram. We build websites for car and motorcycle showrooms, and we shoot the vehicles ourselves. Doing this properly needs a 3D developer and a photographer in the same room; in this city those two people happen to sit at the same table. That is our only real advantage.',
+    roleLabel: 'Role',
+    team: [
+      { name: 'Hisan', role: 'Build', body: 'The website, the configurator, the 3D pipeline, the hosting. Everything in code.' },
+      { name: 'Tasfia', role: 'Sales', body: 'Showroom visits, meetings, follow-ups. She speaks first, every time.' },
+      { name: 'Omlan', role: 'Production', body: '360° capture, showroom photography, case-study video. The camera is the actual product.' },
+      { name: 'Siam', role: 'Positioning', body: 'The pitch, the answers to objections, and the ROI numbers. He writes down everything said in a meeting.' },
+    ],
+    honestTitle: 'What we are not, yet',
+    honestBody:
+      'We do not have a ten-year portfolio or a wall of brand logos. What we have is this website, which you are holding right now. It is the work sample, not the brochure.',
+  },
+
+  prospect: {
+    demoFor: 'Demo — {name}',
+    expiresOn: 'This demo is live until {date}',
+    expired: 'This demo has expired. Message us to bring it back.',
+    builtFor: 'Built for {name}',
+    notPublic: 'This page is not visible to search engines.',
+    yourNumber: 'These buttons go to your own number — press one.',
+  },
+
+  pitch: {
+    title: 'Presentation mode',
+    cacheReady: 'Assets cached ✓ — ready to present offline',
+    caching: 'Caching assets',
+    cacheFailed: 'Some assets did not cache. Try again while on wifi.',
+    offlineReady: 'Offline ready',
+    exit: 'Exit',
+    nextSlide: 'Next',
+    prevSlide: 'Previous',
+    slides: {
+      hero: 'Open',
+      car: 'Car',
+      bike: 'Bike',
+      capture: '360°',
+      roi: 'Maths',
+      pricing: 'Pricing',
+    },
+  },
+
+  errors: {
+    notFoundTitle: 'That page is not here',
+    notFoundBody: 'The link is wrong, or the page has been taken down.',
+    notFoundCta: 'Back to home',
+    genericTitle: 'Something broke',
+    genericBody: 'That is on our side, not yours. Try refreshing once.',
+    canvasTitle: '3D could not start',
+    canvasBody: 'Your browser does not support 3D, or it is switched off. The image version is below.',
+  },
+} satisfies Dictionary;

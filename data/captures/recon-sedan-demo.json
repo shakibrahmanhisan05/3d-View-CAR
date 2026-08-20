@@ -1,0 +1,163 @@
+{
+  "id": "recon-sedan-demo",
+  "slug": "recon-sedan",
+  "title": {
+    "bn": "রিকন্ডিশন্ড সেডান — ২০১৯",
+    "en": "Reconditioned Sedan — 2019"
+  },
+  "frameCount": 32,
+  "framePattern": "/demo-360/recon-sedan/frame-%s.webp",
+  "width": 1200,
+  "height": 800,
+  "auctionGrade": "4.5 B",
+  "priceBDT": 2150000,
+  "specs": [
+    {
+      "key": {
+        "bn": "অকশন গ্রেড",
+        "en": "Auction grade"
+      },
+      "value": {
+        "bn": "4.5 B",
+        "en": "4.5 B"
+      }
+    },
+    {
+      "key": {
+        "bn": "মডেল ইয়ার",
+        "en": "Model year"
+      },
+      "value": {
+        "bn": "2019",
+        "en": "2019"
+      }
+    },
+    {
+      "key": {
+        "bn": "রেজিস্ট্রেশন",
+        "en": "Registration"
+      },
+      "value": {
+        "bn": "2022",
+        "en": "2022"
+      }
+    },
+    {
+      "key": {
+        "bn": "মাইলেজ",
+        "en": "Mileage"
+      },
+      "value": {
+        "bn": "37,000 km",
+        "en": "37,000 km"
+      }
+    },
+    {
+      "key": {
+        "bn": "ইঞ্জিন",
+        "en": "Engine"
+      },
+      "value": {
+        "bn": "1496 cc",
+        "en": "1496 cc"
+      }
+    },
+    {
+      "key": {
+        "bn": "ট্রান্সমিশন",
+        "en": "Transmission"
+      },
+      "value": {
+        "bn": "CVT",
+        "en": "CVT"
+      }
+    },
+    {
+      "key": {
+        "bn": "রং",
+        "en": "Colour"
+      },
+      "value": {
+        "bn": "পার্ল হোয়াইট",
+        "en": "Pearl White"
+      }
+    },
+    {
+      "key": {
+        "bn": "মালিক",
+        "en": "Owners"
+      },
+      "value": {
+        "bn": "1 (জাপান)",
+        "en": "1 (Japan)"
+      }
+    }
+  ],
+  "hotspots": [
+    {
+      "id": "rear-bumper-scratch",
+      "label": {
+        "bn": "পেছনের বাম্পারে হালকা দাগ",
+        "en": "Light scratch on rear bumper"
+      },
+      "detail": {
+        "bn": "প্রায় ৮ সেন্টিমিটার, শুধু ক্লিয়ারকোটে। পলিশে উঠে যাওয়ার কথা। অকশন শিটে A1 হিসেবে লেখা।",
+        "en": "About 8 cm, clearcoat only. Should polish out. Recorded as A1 on the auction sheet."
+      },
+      "x": 30,
+      "y": 62,
+      "fromFrame": 10,
+      "toFrame": 22,
+      "severity": "defect"
+    },
+    {
+      "id": "alloy-kerb",
+      "label": {
+        "bn": "সামনের বাম হুইলে কার্ব মার্ক",
+        "en": "Kerb mark, front left alloy"
+      },
+      "detail": {
+        "bn": "রিমের কিনারায় ঘষা। চালানোয় কোনো সমস্যা নেই, রিফিনিশ করলে প্রায় ৩,৫০০ টাকা।",
+        "en": "Scuffed rim lip. No effect on driving; refinishing costs about ৳3,500."
+      },
+      "x": 63,
+      "y": 74,
+      "fromFrame": 24,
+      "toFrame": 4,
+      "severity": "defect"
+    },
+    {
+      "id": "paint-original",
+      "label": {
+        "bn": "সব প্যানেলে অরিজিনাল পেইন্ট",
+        "en": "Original paint on every panel"
+      },
+      "detail": {
+        "bn": "কোনো প্যানেল রিপেইন্ট করা হয়নি — গেজ দিয়ে মাপা। রিকন্ডিশন্ড গাড়িতে এটাই সবচেয়ে বড় প্রশ্ন।",
+        "en": "No panel has been resprayed — measured with a gauge. On a reconditioned car this is the question that matters most."
+      },
+      "x": 48,
+      "y": 40,
+      "fromFrame": 4,
+      "toFrame": 14,
+      "severity": "note"
+    },
+    {
+      "id": "interior-clean",
+      "label": {
+        "bn": "ভেতরে ধোঁয়ার গন্ধ নেই",
+        "en": "No smoke odour inside"
+      },
+      "detail": {
+        "bn": "জাপানি অকশন শিটে নন-স্মোকার হিসেবে চিহ্নিত। সিটে কোনো পোড়া দাগ নেই।",
+        "en": "Marked non-smoker on the Japanese auction sheet. No burn marks on the seats."
+      },
+      "x": 44,
+      "y": 46,
+      "fromFrame": 16,
+      "toFrame": 26,
+      "severity": "note"
+    }
+  ],
+  "licenseId": "capture-360-placeholder"
+}

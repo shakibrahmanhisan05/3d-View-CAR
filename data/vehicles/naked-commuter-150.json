@@ -1,0 +1,192 @@
+{
+  "id": "naked-commuter-150",
+  "slug": "commuter-150",
+  "name": {
+    "bn": "নেকেড কমিউটার ১৫০",
+    "en": "Naked Commuter 150"
+  },
+  "segment": "motorcycle",
+  "asset": {
+    "scale": 1,
+    "cameraStart": [
+      3.3,
+      1.55,
+      3.5
+    ],
+    "cameraTarget": [
+      0,
+      0.62,
+      0
+    ],
+    "minDistance": 2.2,
+    "maxDistance": 7,
+    "glbUrl": "/models/bike-high.f6b25152.glb",
+    "lodUrls": [
+      "/models/bike-high.f6b25152.glb",
+      "/models/bike-mid.7b3abfd3.glb",
+      "/models/bike-low.7d2ab499.glb"
+    ],
+    "frameExtent": [
+      1.07,
+      0.66
+    ]
+  },
+  "environmentIds": [
+    "showroom",
+    "street",
+    "sunset",
+    "night"
+  ],
+  "basePriceBDT": 185000,
+  "seatHeightMm": 790,
+  "sounds": {
+    "stock": {
+      "idleUrl": "synth:idle?exhaust=stock",
+      "revUrl": "synth:rev?exhaust=stock",
+      "label": {
+        "bn": "স্টক এক্সহস্ট",
+        "en": "Stock exhaust"
+      }
+    },
+    "slipon": {
+      "idleUrl": "synth:idle?exhaust=slipon",
+      "revUrl": "synth:rev?exhaust=slipon",
+      "label": {
+        "bn": "স্লিপ-অন এক্সহস্ট",
+        "en": "Slip-on exhaust"
+      }
+    },
+    "full": {
+      "idleUrl": "synth:idle?exhaust=full",
+      "revUrl": "synth:rev?exhaust=full",
+      "label": {
+        "bn": "ফুল সিস্টেম",
+        "en": "Full system"
+      }
+    }
+  },
+  "specs": [
+    {
+      "key": {
+        "bn": "ইঞ্জিন",
+        "en": "Engine"
+      },
+      "value": {
+        "bn": "149 cc, সিঙ্গেল সিলিন্ডার",
+        "en": "149 cc, single cylinder"
+      }
+    },
+    {
+      "key": {
+        "bn": "পাওয়ার",
+        "en": "Power"
+      },
+      "value": {
+        "bn": "14.2 bhp",
+        "en": "14.2 bhp"
+      }
+    },
+    {
+      "key": {
+        "bn": "ওজন",
+        "en": "Kerb weight"
+      },
+      "value": {
+        "bn": "137 kg",
+        "en": "137 kg"
+      }
+    },
+    {
+      "key": {
+        "bn": "সিট হাইট",
+        "en": "Seat height"
+      },
+      "value": {
+        "bn": "790 mm",
+        "en": "790 mm"
+      }
+    },
+    {
+      "key": {
+        "bn": "ফুয়েল ট্যাংক",
+        "en": "Fuel tank"
+      },
+      "value": {
+        "bn": "13 L",
+        "en": "13 L"
+      }
+    },
+    {
+      "key": {
+        "bn": "মাইলেজ",
+        "en": "Mileage"
+      },
+      "value": {
+        "bn": "45 km/L",
+        "en": "45 km/L"
+      }
+    }
+  ],
+  "hotspots": [
+    {
+      "id": "exhaust-note",
+      "index": 1,
+      "label": {
+        "bn": "এক্সহস্ট — আওয়াজ বদলায়",
+        "en": "Exhaust — the note changes"
+      },
+      "detail": {
+        "bn": "স্পিকার বোতামটা চালু করে এক্সহস্ট বদলে দেখুন। স্লিপ-অন লাগালে আওয়াজটাই পাল্টে যায়।",
+        "en": "Turn the speaker on, then change the exhaust. Fitting a slip-on changes the note itself."
+      },
+      "position": [
+        -0.42,
+        0.42,
+        0.2
+      ]
+    },
+    {
+      "id": "crashguard-real",
+      "index": 2,
+      "label": {
+        "bn": "ক্র্যাশ গার্ড",
+        "en": "Crash guard"
+      },
+      "detail": {
+        "bn": "বাংলাদেশে প্রায় প্রতিটা নতুন বাইকের সাথেই এটা বিক্রি হয়। ফেয়ারিং বাঁচায়, কিন্তু ওজন বাড়ায়।",
+        "en": "Sold with nearly every new bike in Bangladesh. It saves the fairing, and it adds weight."
+      },
+      "position": [
+        0.3,
+        0.5,
+        0.3
+      ],
+      "visibleWithOptions": [
+        "guard-standard",
+        "guard-bull"
+      ]
+    },
+    {
+      "id": "seat-height",
+      "index": 3,
+      "label": {
+        "bn": "সিট হাইট 790 mm",
+        "en": "Seat height 790 mm"
+      },
+      "detail": {
+        "bn": "৫ ফুট ৪ ইঞ্চির নিচে হলে দুই পা পুরোপুরি মাটিতে না-ও পৌঁছাতে পারে। নিচের রাইডার হাইট টুল দিয়ে দেখে নিন।",
+        "en": "Below 5'4\" both feet may not sit flat. Check with the rider-height tool below."
+      },
+      "position": [
+        -0.4,
+        0.84,
+        0.16
+      ]
+    }
+  ],
+  "licenseId": "bike-tripo",
+  "optionGroupIds": [
+    "paint",
+    "exhaust"
+  ]
+}
