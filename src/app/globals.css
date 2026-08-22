@@ -192,7 +192,8 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  --font-display: var(--font-archivo), 'Archivo', system-ui, sans-serif;
+  --font-display: var(--font-outfit), var(--font-archivo), 'Outfit', 'Archivo', system-ui, sans-serif;
+  --font-outfit: var(--font-outfit), 'Outfit', system-ui, sans-serif;
   --font-bangla: var(--font-hind), 'Hind Siliguri', system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), 'JetBrains Mono', ui-monospace, monospace;
 

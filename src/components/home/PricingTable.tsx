@@ -71,7 +71,7 @@ export function PricingTable({ locale }: { locale: Locale }) {
       <RevealGroup className="grid gap-4 lg:grid-cols-[40fr_32fr_28fr]">
         {tiers.map((tier) => (
           <RevealItem key={tier.code}>
-            <Card interactive className="flex h-full flex-col p-7">
+            <Card interactive className="group relative flex h-full flex-col p-7 border-glass-border hover:border-accent-gold/40 transition-all duration-300">
               <div className="flex items-baseline justify-between gap-3">
                 <span className="sheet-code sheet-code-accent flex items-baseline gap-2">
                   {/* The chip. A real 6px champagne square, on the letters' own baseline. */}
@@ -96,16 +96,25 @@ export function PricingTable({ locale }: { locale: Locale }) {
 
               <p className="mt-5 text-sm leading-relaxed text-ink-soft">{tier.body}</p>
 
-              <div className="mt-6 border-t border-rule-faint pt-5">
+              <div className="mt-6 border-t border-rule-faint pt-5 flex-1">
                 <p className="sheet-code mb-3">{p.includes}</p>
                 <ul className="space-y-2">
                   {tier.items.map((item) => (
                     <li key={item} className="flex gap-2.5 text-sm leading-snug">
-                      <span aria-hidden="true" className="mt-[0.45rem] size-1 shrink-0 rounded-full bg-accent-gold" />
+                      <span aria-hidden="true" className="mt-[0.45rem] size-1.5 shrink-0 rounded-full bg-accent-gold" />
                       <span>{item}</span>
                     </li>
                   ))}
                 </ul>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-rule-faint">
+                <a
+                  href={`/${locale}/contact`}
+                  className="tap flex w-full items-center justify-center gap-2 rounded-xl border border-glass-border-lit bg-glass-strong py-3 text-xs font-700 uppercase tracking-widest text-ink transition-colors duration-200 group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary"
+                >
+                  <span>{dict.hero.ctaPrimary}</span>
+                </a>
               </div>
             </Card>
           </RevealItem>

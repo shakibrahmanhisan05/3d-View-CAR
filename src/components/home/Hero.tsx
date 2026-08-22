@@ -215,45 +215,60 @@ export function Hero({
 
           {/* --- Chrome, all at z-20, all inside the frame inset ----------- */}
 
-          {/* Top-left: the single most important control above the fold. */}
-          <div
-            role="radiogroup"
-            aria-label={dict.roi.segment}
-            className="absolute left-[var(--ph-frame-inset)] top-[calc(var(--ph-frame-inset)+0.5rem)] z-20 flex gap-1 rounded-xl border border-glass-border bg-[color-mix(in_oklab,var(--ph-bay)_70%,transparent)] p-1 backdrop-blur-md"
-          >
-            {(
-              [
-                ['car', dict.hero.segmentCar],
-                ['bike', dict.hero.segmentBike],
-              ] as const
-            ).map(([value, label]) => (
-              <button
-                key={value}
-                type="button"
-                role="radio"
-                aria-checked={segment === value}
-                onClick={() => setSegment(value)}
-                className={cn(
-                  'tap relative rounded-lg px-4 text-sm font-600 transition-colors duration-200',
-                  segment === value ? 'text-paper' : 'text-bay-ink/70 hover:text-bay-ink',
-                )}
-              >
-                {segment === value ? (
-                  <m.span
-                    layoutId={reduced ? undefined : 'ph-hero-segment'}
-                    className="absolute inset-0 -z-10 rounded-lg bg-ink shadow-elev"
-                    transition={{ type: 'spring', stiffness: 400, damping: 34 }}
-                  />
-                ) : null}
-                {label}
-              </button>
-            ))}
+          {/* Top-left: Vehicle segment controls and live telemetry HUD */}
+          <div className="absolute left-[var(--ph-frame-inset)] top-[calc(var(--ph-frame-inset)+0.5rem)] z-20 flex items-center gap-3">
+            <div
+              role="radiogroup"
+              aria-label={dict.roi.segment}
+              className="flex gap-1 rounded-xl border border-glass-border-lit bg-[color-mix(in_oklab,var(--ph-bay)_75%,transparent)] p-1 backdrop-blur-md shadow-elev"
+            >
+              {(
+                [
+                  ['car', dict.hero.segmentCar],
+                  ['bike', dict.hero.segmentBike],
+                ] as const
+              ).map(([value, label]) => (
+                <button
+                  key={value}
+                  type="button"
+                  role="radio"
+                  aria-checked={segment === value}
+                  onClick={() => setSegment(value)}
+                  className={cn(
+                    'tap relative rounded-lg px-4 py-1 text-sm font-600 transition-colors duration-200',
+                    segment === value ? 'text-paper font-700' : 'text-bay-ink/70 hover:text-bay-ink',
+                  )}
+                >
+                  {segment === value ? (
+                    <m.span
+                      layoutId={reduced ? undefined : 'ph-hero-segment'}
+                      className="absolute inset-0 -z-10 rounded-lg bg-ink shadow-elev"
+                      transition={{ type: 'spring', stiffness: 400, damping: 34 }}
+                    />
+                  ) : null}
+                  {label}
+                </button>
+              ))}
+            </div>
+
+            {/* Telemetry Status HUD */}
+            <div className="hidden sm:flex items-center gap-2 rounded-xl border border-glass-border bg-[color-mix(in_oklab,var(--ph-bay)_60%,transparent)] px-3 py-1.5 backdrop-blur-md text-[0.7rem] font-mono tracking-wider">
+              <span className="relative flex size-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
+              </span>
+              <span className="text-ink font-600">60 FPS</span>
+              <span className="text-bay-alu/30">•</span>
+              <span className="text-accent-gold font-600 tracking-widest uppercase">{ready ? 'STUDIO 3D LIVE' : 'INITIALIZING'}</span>
+            </div>
           </div>
 
-          {/* Top-right: the drag affordance. */}
-          <p className="sheet-code absolute right-[var(--ph-frame-inset)] top-[calc(var(--ph-frame-inset)+1rem)] z-20 text-bay-alu">
-            {ready ? dict.hero.dragHint : dict.common.loading}
-          </p>
+          {/* Top-right: the drag affordance with interactive badge. */}
+          <div className="absolute right-[var(--ph-frame-inset)] top-[calc(var(--ph-frame-inset)+0.75rem)] z-20 flex items-center gap-2">
+            <span className="sheet-code rounded-full border border-glass-border bg-[color-mix(in_oklab,var(--ph-bay)_60%,transparent)] px-2.5 py-1 text-[0.65rem] uppercase tracking-widest text-bay-alu backdrop-blur-md">
+              {ready ? dict.hero.dragHint : dict.common.loading}
+            </span>
+          </div>
 
           {/* §16: an accessible text alternative describing the vehicle and its configuration. */}
           <p className="sr-only" aria-live="polite">

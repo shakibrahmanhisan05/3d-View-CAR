@@ -109,20 +109,23 @@ export function Header() {
         {/* --- Centre: the masthead ---------------------------------------- */}
         <Link
           href={localePath(locale, '/')}
-          className="tap flex items-center justify-center gap-2.5 px-2"
+          className="tap flex items-center justify-center gap-2.5 px-2 group"
           aria-label={brand.businessName[locale]}
         >
           {brand.logoUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element -- prospect logos are arbitrary
-            // remote files; adding every dealer's host to next.config remotePatterns would
-            // break the "edit exactly one JSON file" acceptance test (§10).
-            <img src={brand.logoUrl} alt="" width={28} height={28} className="h-7 w-7 object-contain" />
+            <img src={brand.logoUrl} alt="" width={28} height={28} className="h-7 w-7 object-contain transition-transform duration-300 group-hover:scale-105" />
           ) : (
             <PhoenixMark />
           )}
-          <span className="display-wide whitespace-nowrap text-[0.95rem] font-700 uppercase tracking-[0.28em] text-ink">
-            {brand.wordmark}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="display-wide whitespace-nowrap text-[0.95rem] font-700 uppercase tracking-[0.28em] text-ink group-hover:text-paint transition-colors duration-200">
+              {brand.wordmark}
+            </span>
+            <span className="hidden xl:inline-flex items-center gap-1 rounded-full border border-glass-border bg-glass px-2 py-0.5 text-[0.6rem] font-mono text-accent-gold uppercase tracking-wider">
+              <span className="size-1.5 rounded-full bg-signal animate-pulse" />
+              3D SHOWROOM
+            </span>
+          </div>
         </Link>
 
         {/* --- Right: language and the lead path --------------------------- */}

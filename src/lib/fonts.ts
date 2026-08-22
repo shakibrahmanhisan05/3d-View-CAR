@@ -14,14 +14,20 @@
  * - JetBrains Mono carries EVERY numeral on the site — prices, cc, km, grades, ROI output.
  */
 
-import { Archivo, Hind_Siliguri, JetBrains_Mono } from 'next/font/google';
+import { Archivo, Hind_Siliguri, JetBrains_Mono, Outfit } from 'next/font/google';
 
 export const archivo = Archivo({
   subsets: ['latin'],
-  // The width axis is used for section headings; without it `display-wide` silently no-ops.
   axes: ['wdth'],
   display: 'swap',
   variable: '--font-archivo',
+});
+
+export const outfit = Outfit({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700', '800'],
+  display: 'swap',
+  variable: '--font-outfit',
 });
 
 export const hindSiliguri = Hind_Siliguri({
@@ -37,4 +43,4 @@ export const jetbrainsMono = JetBrains_Mono({
   variable: '--font-jetbrains',
 });
 
-export const fontVariables = [archivo.variable, hindSiliguri.variable, jetbrainsMono.variable].join(' ');
+export const fontVariables = [archivo.variable, outfit.variable, hindSiliguri.variable, jetbrainsMono.variable].join(' ');
