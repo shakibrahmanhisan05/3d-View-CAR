@@ -30,6 +30,19 @@ export type SceneProps = {
   showHotspots: boolean;
   /** See CameraRig — the hero disables wheel-dolly so the page still scrolls over it. */
   allowZoom?: boolean;
+  /**
+   * Render the canvas OVER whatever is behind it instead of painting the environment colour.
+   *
+   * The framed hero needs this. The Monolith is a DOM element sitting at z-0 underneath the
+   * canvas, and the vehicle's roofline is only allowed to occlude those letterforms if the
+   * canvas has no ground of its own — that occlusion is the entire depth trick (§6.2).
+   *
+   * Fog goes with it: fog is a distance blend towards the background colour, and with no
+   * background there is nothing to blend towards — leaving it on washes the far end of the
+   * vehicle to transparent. The bay colour is painted by CSS under the canvas instead, so
+   * the scene still reads as sitting in a lit room.
+   */
+  transparentBg?: boolean;
   /** Present only on the §6.3 modification demo. */
   compare?: CompareProps;
   onReady: () => void;
@@ -46,6 +59,7 @@ export default function Scene({
   reducedMotion,
   showHotspots,
   allowZoom,
+  transparentBg = false,
   compare,
   onReady,
   onDowngrade,
@@ -63,7 +77,7 @@ export default function Scene({
       dpr={[0.7, 2]}
       gl={{
         antialias: quality === 'high',
-        alpha: false,
+        alpha: transparentBg,
         powerPreference: 'high-performance',
         // The scene is authored in linear space with a physical environment; ACES is what
         // stops bright showroom lightformers from clipping to flat white on the paint.
@@ -73,12 +87,16 @@ export default function Scene({
       frameloop="always"
       aria-hidden="true"
     >
-      <color attach="background" args={[environment.background]} />
-      <fog attach="fog" args={[environment.background, 14, 42]} />
+      {transparentBg ? null : (
+        <>
+          <color attach="background" args={[environment.background]} />
+          <fog attach="fog" args={[environment.background, 14, 42]} />
+        </>
+      )}
 
       <Suspense fallback={null}>
         <EnvironmentRig preset={environment} />
-        <Stage preset={environment} segment={vehicle.segment} quality={quality} />
+        <Stage preset={environment} segment={vehicle.segment} quality={quality} rimLit={transparentBg} />
         <VehicleModel vehicle={vehicle} selection={selection} glbUrl={glbUrl} compare={compare} onReady={onReady} />
         <HotspotLayer
           hotspots={vehicle.hotspots}

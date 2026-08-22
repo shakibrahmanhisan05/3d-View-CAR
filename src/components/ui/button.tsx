@@ -13,10 +13,34 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 import { cn } from '@/lib/utils';
 
+/*
+ * NO SHAPE OR TYPE SIZE IN THE BASE.
+ *
+ * `cn()` no longer runs tailwind-merge (see src/lib/utils.ts), so two utilities from the same
+ * property group landing in one class list are resolved by stylesheet order rather than by
+ * the caller's intent. A base `rounded-lg` under the `plate` variant's `rounded-full`, or a
+ * base `text-sm` under `size="sm"`'s `text-xs`, are exactly that case.
+ *
+ * Every variant now names its own radius and every size names its own type size, so no two
+ * values from either group are ever emitted together. This is the "inline the two-merge
+ * cases" the design plan lists as the lever to pull when the first-load budget gets tight.
+ */
+/*
+ * NO `whitespace-nowrap`, AND NO FIXED HEIGHTS.
+ *
+ * Both were quietly breaking the default locale. Bangla CTA labels are long — "সেই প্রথম
+ * শোরুমটা আপনার হতে পারে" is a whole sentence — and a nowrap button containing it has a
+ * min-content width of ~500px. Inside a grid item (`min-width: auto`) that propagates all the
+ * way out, and the homepage scrolled sideways by 212px on a 380px phone. The English build
+ * never showed it, because "That first showroom could be yours" is half the width.
+ *
+ * So labels wrap, and `min-h-*` replaces `h-*` so a wrapped label makes the button taller
+ * instead of spilling out of it. A single-line button is pixel-identical to before.
+ */
 const buttonVariants = cva(
   [
-    'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg',
-    'text-sm font-600 leading-none',
+    'inline-flex items-center justify-center gap-2 text-center',
+    'font-600 leading-snug',
     'transition-[transform,box-shadow,background-color,border-color,color] duration-200 ease-out',
     'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ph-accent)]',
     'disabled:pointer-events-none disabled:opacity-45',
@@ -32,22 +56,31 @@ const buttonVariants = cva(
           any hue, and white is the only foreground that survives all of them (§10).
         */
         primary:
-          'bg-signal text-signal-ink shadow-elev hover:brightness-110 hover:shadow-glow',
+          'rounded-lg bg-signal text-signal-ink shadow-elev hover:brightness-110 hover:shadow-glow',
         /* Inverted metal. The neutral confirm. */
-        solid: 'bg-ink text-paper hover:bg-ink/90 shadow-elev',
+        solid: 'rounded-lg bg-ink text-paper hover:bg-ink/90 shadow-elev',
         /* The default surface button — glass on the dark floor. */
         outline:
-          'border border-glass-border bg-glass text-ink hover:border-[var(--ph-glass-border-lit)] hover:bg-glass-strong',
+          'rounded-lg border border-glass-border bg-glass text-ink hover:border-[var(--ph-glass-border-lit)] hover:bg-glass-strong',
         /* Champagne: used for the elegance layer, e.g. "see the spec" affordances. */
-        gold: 'border border-[color-mix(in_oklab,var(--ph-accent)_45%,transparent)] bg-accent-sunk text-accent-gold hover:bg-[color-mix(in_oklab,var(--ph-accent)_22%,var(--ph-paper))]',
-        ghost: 'text-ink-soft hover:bg-glass hover:text-ink',
-        link: 'text-ink underline decoration-rule-strong underline-offset-4 hover:decoration-[var(--ph-accent)] hover:text-accent-gold',
+        gold: 'rounded-lg border border-[color-mix(in_oklab,var(--ph-accent)_45%,transparent)] bg-accent-sunk text-accent-gold hover:bg-[color-mix(in_oklab,var(--ph-accent)_22%,var(--ph-paper))]',
+        /*
+          The plate pill (§12). One shape for every "explore / open / read more" affordance on
+          the site — the two-product links, the case-study CTA, the credits link, the contact
+          card. Before this they were four different underlined links, which is how a site
+          ends up looking assembled rather than designed.
+        */
+        plate:
+          'rounded-full border border-glass-border bg-glass text-ink hover:border-[var(--ph-glass-border-lit)] hover:bg-glass-strong',
+        ghost: 'rounded-lg text-ink-soft hover:bg-glass hover:text-ink',
+        link: 'rounded-lg text-ink underline decoration-rule-strong underline-offset-4 hover:decoration-[var(--ph-accent)] hover:text-paint',
       },
       size: {
-        sm: 'h-9 px-3 text-xs',
-        md: 'h-11 px-5',
-        lg: 'h-12 px-6 text-base',
-        icon: 'size-11',
+        sm: 'min-h-9 px-3 py-2 text-xs',
+        md: 'min-h-11 px-5 py-2.5 text-sm',
+        /* The primary CTA under the hero is now the visual anchor below the frame (§12). */
+        lg: 'min-h-14 px-8 py-3.5 text-base',
+        icon: 'size-11 text-sm',
       },
     },
     defaultVariants: { variant: 'outline', size: 'md' },

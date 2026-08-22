@@ -59,8 +59,14 @@ export function PriceSummary({
         className={`flex items-baseline justify-between gap-4 border-t border-glass-border-lit px-4 py-4 sm:px-5 ${compact ? '' : 'mt-2'}`}
       >
         <span className="text-sm font-600">{dict.configurator.total}</span>
-        {/* aria-live so a screen-reader user hears the total change with the selection. */}
-        <span className="num text-2xl font-700 tabular-nums text-accent-gold" aria-live="polite">
+        {/*
+          EMBER, not champagne (§4.2). This is the number the configurator exists to produce
+          and the last thing read before the WhatsApp button under it — it belongs on the
+          action layer with that button, not on the decorative one.
+
+          aria-live so a screen-reader user hears the total change with the selection.
+        */}
+        <span className="num text-2xl font-700 tabular-nums text-signal-lit" aria-live="polite">
           {formatBDT(breakdown.total)}
         </span>
       </div>

@@ -21,10 +21,10 @@ export default async function ProcessPage({ params }: { params: Promise<{ locale
           every stage on purpose: the objection this page answers is not "how does it work",
           it is "how much of my time is this going to cost me".
         */}
-        <ol className="border-t border-ink">
+        <ol className="border-t border-glass-border-lit">
           {dict.process.steps.map((step, index) => (
             <li key={step.title} className="grid gap-4 border-b border-rule py-7 lg:grid-cols-[4rem_minmax(0,1fr)_minmax(0,1fr)_7rem]">
-              <span className="sheet-code">STEP-{String(index + 1).padStart(2, '0')}</span>
+              <span className="sheet-code sheet-code-accent">STEP-{String(index + 1).padStart(2, '0')}</span>
 
               <div>
                 <h2 className="text-lg font-600">{step.title}</h2>

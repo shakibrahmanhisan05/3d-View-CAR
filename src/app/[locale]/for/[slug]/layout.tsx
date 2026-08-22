@@ -25,6 +25,11 @@ export function generateStaticParams() {
   return getProspects().map((prospect) => ({ slug: prospect.slug }));
 }
 
+/** A 3- or 6-digit hex, or Phoenix ember. Nothing else is allowed near a <style> element. */
+function safeHex(value: string): string {
+  return /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(value.trim()) ? value.trim() : '#c8382a';
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -71,6 +76,19 @@ export default async function ProspectLayout({
         the glow against THIS element's accent. Without it those tokens keep the value they
         were given on :root and the prospect's page shows Phoenix red. See globals.css.
       */}
+      {/*
+        The plume is painted by `body::before`, which sits ABOVE this subtree — so a scoped
+        override alone leaves the room's backdrop lit in Phoenix red while everything inside it
+        goes navy. §15 requires the plume's ember layer to retint with the rest, so the accent
+        is also pushed onto :root.
+
+        The value is re-parsed as a hex first. `brandAccent` is authored JSON rather than user
+        input, but it lands inside a <style> element, and "it is our own data" is exactly the
+        assumption that makes a CSS injection possible two years from now when the field is
+        wired to an admin form.
+      */}
+      <style>{`:root{--ph-signal:${safeHex(prospect.brandAccent)}}`}</style>
+
       <div className="signal-scope" style={{ ['--ph-signal' as string]: prospect.brandAccent }}>
         <a href="#main" className="skip-link">
           {dict.common.skipToContent}

@@ -118,7 +118,7 @@ function ChipStrip({
                 {t(option.label)}
               </span>
               <span
-                className={cn('num mt-1 block text-[0.65rem]', active ? 'text-accent-gold' : 'text-alu')}
+                className={cn('num mt-1 block text-[0.65rem]', active ? 'text-paint' : 'text-alu')}
               >
                 {formatDelta(option.priceDeltaBDT)}
               </span>
@@ -170,7 +170,7 @@ function ThumbnailGrid({
               {option.note ? (
                 <span className="text-[0.62rem] leading-tight text-alu">{t(option.note)}</span>
               ) : null}
-              <span className={cn('num text-[0.65rem]', active ? 'text-accent-gold' : 'text-ink-soft')}>
+              <span className={cn('num text-[0.65rem]', active ? 'text-paint' : 'text-ink-soft')}>
                 {formatDelta(option.priceDeltaBDT)}
               </span>
             </button>
@@ -262,7 +262,7 @@ function ToggleList({
                 ) : null}
               </span>
 
-              <span className={cn('num shrink-0 text-xs', active ? 'text-accent-gold' : 'text-ink-soft')}>
+              <span className={cn('num shrink-0 text-xs', active ? 'text-paint' : 'text-ink-soft')}>
                 {formatDelta(option.priceDeltaBDT)}
               </span>
             </button>

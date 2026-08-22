@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { Arrow, Seal } from '@/components/frame/StageChrome';
 import { Section } from '@/components/sheet/Section';
+import { Button } from '@/components/ui/button';
 import { getDictionary } from '@/lib/i18n';
 import { isLocale, localePath } from '@/lib/i18n/config';
 import type { Locale } from '@/lib/types';
@@ -23,31 +25,52 @@ export default async function WorkPage({ params }: { params: Promise<{ locale: s
         and an invented case study is worse than lorem ipsum — it is the exact thing that
         makes a dealer who has been burned before stop listening.
       */}
-      <div className="max-w-2xl border border-rule bg-paper-raised p-6 sm:p-8">
-        <p className="sheet-code">WIP</p>
-        <p className="display mt-3 text-xl font-700">{dict.caseStudy.pendingTitle}</p>
-        <p className="mt-4 text-sm leading-relaxed text-ink-soft">{dict.work.empty}</p>
-        <p className="mt-3 text-sm leading-relaxed text-ink-soft">{dict.caseStudy.pendingBody}</p>
+      {/*
+        The same sealed-empty-plate treatment as §6 on the homepage: a dashed champagne
+        outline on sunk paper with a real pending code. It must read as RESERVED SPACE, not
+        as a card that failed to load — the last flat pre-Obsidian surface on a public route.
+      */}
+      <div
+        className="relative max-w-3xl overflow-hidden rounded-xl bg-paper-sunk p-6 sm:p-10"
+        style={{ border: '2px dashed color-mix(in oklab, var(--ph-accent) 36%, transparent)' }}
+      >
+        <div className="flex items-start justify-between gap-4">
+          <span className="sheet-code sheet-code-accent">CS-00 · {dict.common.stampPending.toUpperCase()}</span>
+          <Seal size={52} tone="accent" title={dict.common.stampPending}>
+            CS
+            <br />
+            00
+          </Seal>
+        </div>
 
-        <Link
-          href={localePath(locale, '/contact')}
-          className="tap mt-6 inline-flex items-center bg-signal px-5 py-3 text-sm font-600 text-signal-ink hover:brightness-110"
-        >
-          {dict.caseStudy.pendingCta}
-        </Link>
+        <p className="display display-lit mt-8 text-[clamp(1.5rem,3vw,2.5rem)] font-700 leading-[1.12]">
+          {dict.caseStudy.pendingTitle}
+        </p>
+        <p className="mt-5 max-w-xl text-sm leading-relaxed text-ink-soft">{dict.work.empty}</p>
+        <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-soft">{dict.caseStudy.pendingBody}</p>
+
+        <Button asChild variant="primary" size="lg" className="mt-8">
+          <Link href={localePath(locale, '/contact')}>{dict.caseStudy.pendingCta}</Link>
+        </Button>
       </div>
 
       {/* Until there is client work, the demos ARE the portfolio. Say so, and link them. */}
-      <ul className="mt-10 grid gap-px bg-rule sm:grid-cols-3">
+      <ul className="mt-10 grid gap-3 sm:grid-cols-3">
         {[
           { href: '/demo/car', label: dict.nav.demoCar, code: 'D-01' },
           { href: '/demo/bike', label: dict.nav.demoBike, code: 'D-02' },
           { href: '/demo/360', label: dict.nav.demo360, code: 'D-03' },
         ].map((item) => (
-          <li key={item.href} className="bg-paper">
-            <Link href={localePath(locale, item.href)} className="block p-5 hover:bg-paper-sunk">
-              <span className="sheet-code">{item.code}</span>
-              <span className="mt-2 block text-base font-600">{item.label}</span>
+          <li key={item.href}>
+            <Link
+              href={localePath(locale, item.href)}
+              className="surface lit-edge lift group flex items-baseline justify-between gap-3 p-5"
+            >
+              <span>
+                <span className="sheet-code sheet-code-accent">{item.code}</span>
+                <span className="mt-2 block text-base font-600">{item.label}</span>
+              </span>
+              <Arrow className="shrink-0 text-alu transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </li>
         ))}

@@ -197,15 +197,41 @@ export function Viewer360({ capture }: { capture: Capture360 }) {
   const progress = Math.round((loadedCount / capture.frameCount) * 100);
 
   return (
-    <div className="grid lg:grid-cols-[minmax(0,1fr)_340px]">
+    <div className="grid min-w-0 lg:grid-cols-[minmax(0,1fr)_340px]">
       {/* --- Stage --------------------------------------------------------- */}
       <div className="bay relative">
+        {/*
+          THE AUCTION GRADE, STRUCK LARGE (§10).
+
+          This is the highest-ROI product Phoenix sells and the grade is the single fact a
+          reconditioned-car buyer looks for first. It used to be a 12px pill in the bottom
+          bar next to the drag hint. It is now an 80px seal in the top-right corner of the
+          stage — the same object as the ROI ledger's stamp and the contact envelope's, and
+          it is reading real data off the capture, so it is not decoration.
+        */}
+        {/*
+          Size and type size are inline, not utilities: `.seal` is an unlayered rule and beats
+          Tailwind on the same properties, so `size-20 text-base` here would have rendered an
+          80px disc's worth of intent as a 40px one. See <Seal> in StageChrome for the same note.
+        */}
+        <span
+          className="seal absolute right-4 top-4 z-20 font-700 backdrop-blur-sm"
+          style={{ width: 80, height: 80, fontSize: '1.5rem' }}
+        >
+          <span className="sr-only">{dict.common.stampGrade}: </span>
+          <span aria-hidden="true" className="num">
+            {capture.auctionGrade}
+          </span>
+        </span>
+
         <div
           ref={stage}
           className="relative aspect-[3/2] w-full cursor-grab touch-none select-none active:cursor-grabbing"
           role="img"
           aria-label={`${t(capture.title)} — ${dict.viewer360.frame} ${frame + 1}/${capture.frameCount}`}
         >
+          {/* The same ground streak and horizon line the 3D bay stands on. */}
+          <div aria-hidden="true" className="stage-floor z-[1]" />
           {sources.map((src, index) => (
             // Every frame stays mounted and only the current one is opaque: swapping `src` on
             // a single <img> shows a blank flash on each step, which on a drag reads as a
@@ -232,7 +258,7 @@ export function Viewer360({ capture }: { capture: Capture360 }) {
           {visibleHotspots.map((hotspot) => {
             const open = openHotspot === hotspot.id;
             return (
-              <div key={hotspot.id} className="absolute" style={{ left: `${hotspot.x}%`, top: `${hotspot.y}%` }}>
+              <div key={hotspot.id} className="absolute z-10" style={{ left: `${hotspot.x}%`, top: `${hotspot.y}%` }}>
                 <button
                   type="button"
                   onClick={() => setOpenHotspot(open ? null : hotspot.id)}
@@ -269,7 +295,22 @@ export function Viewer360({ capture }: { capture: Capture360 }) {
           })}
         </div>
 
-        <div className="on-bay flex items-center justify-between gap-4 border-t border-bay-rule px-4 py-2.5 text-bay-alu">
+        {/*
+          THE FRAME COUNT, MONUMENTAL (§10).
+
+          It was a subtle progress hint. It is now a monospaced fraction at stat-figure size in
+          the bottom-left of the stage — the same object, in the same corner, as the hero's
+          base price and the configurator's total. Three flagship surfaces, one grammar.
+        */}
+        <div className="pointer-events-none absolute bottom-14 left-6 z-20 hidden sm:block">
+          <p className="flex items-baseline">
+            <span className="stat-figure text-ink">{String(frame + 1).padStart(2, '0')}</span>
+            <span className="stat-unit">/ {capture.frameCount}</span>
+          </p>
+          <span className="stat-label">{dict.viewer360.frame}</span>
+        </div>
+
+        <div className="on-bay relative z-20 flex items-center justify-between gap-4 border-t border-bay-rule px-4 py-2.5 text-bay-alu">
           <span className="sheet-code flex items-center gap-2">
             {/* A drag affordance the visitor can see before they touch anything. */}
             <span aria-hidden="true" className={hasDragged ? 'opacity-0' : 'text-accent-gold'}>
@@ -277,7 +318,6 @@ export function Viewer360({ capture }: { capture: Capture360 }) {
             </span>
             {hasDragged ? `${dict.viewer360.frame} ${frame + 1}/${capture.frameCount}` : dict.viewer360.dragHint}
           </span>
-          <span className="stamp">{capture.auctionGrade}</span>
         </div>
 
         {isProceduralCapture(capture.framePattern) ? (
@@ -285,11 +325,18 @@ export function Viewer360({ capture }: { capture: Capture360 }) {
         ) : null}
       </div>
 
-      {/* --- Auction-sheet data panel (§8) --------------------------------- */}
-      <aside className="border-t border-rule bg-paper lg:border-l lg:border-t-0">
-        <div className="rule-b px-5 py-4">
-          <p className="sheet-code">{dict.viewer360.code}-DATA</p>
-          <h3 className="display mt-1 text-lg font-700">{t(capture.title)}</h3>
+      {/*
+        --- Auction-sheet data panel (§10) ---------------------------------
+        A PLATE with a champagne ceiling strip, matching the configurator's option panel
+        exactly. The two flagship products should read as two sheets from the same folder.
+      */}
+      <aside className="lit-edge border-t border-plate-border bg-plate lg:border-l lg:border-t-0">
+        <div className="flex items-start justify-between gap-3 border-b border-plate-border px-5 py-4">
+          <div className="min-w-0">
+            <p className="sheet-code sheet-code-accent">{dict.viewer360.code}-DATA</p>
+            <h3 className="display mt-1 text-lg font-700">{t(capture.title)}</h3>
+          </div>
+          <span className="sheet-code shrink-0 pt-1">{dict.viewer360.grade}</span>
         </div>
 
         <dl className="data-grid px-5 py-4">

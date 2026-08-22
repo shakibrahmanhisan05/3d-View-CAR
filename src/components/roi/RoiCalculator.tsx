@@ -13,7 +13,7 @@
  */
 
 import { m, useReducedMotion } from 'motion/react';
-import { useId, useMemo, useState } from 'react';
+import { useId, useMemo, useState, type CSSProperties } from 'react';
 import { useDict } from '@/components/i18n/DictionaryProvider';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -132,9 +132,19 @@ export function RoiCalculator({ projectCostBDT = PRICING.roiReferenceProject }: 
       </div>
 
       {/* --- Output --------------------------------------------------------- */}
-      <Card className="overflow-hidden">
-        <div className="border-b border-glass-border px-5 py-4">
+      <Card tone="plate" className="relative overflow-hidden">
+        <div className="flex items-start justify-between gap-4 border-b border-plate-border px-5 py-4">
           <p className="sheet-code sheet-code-accent">{dict.roi.code}-OUT</p>
+          {/*
+            The section's editorial artefact: a struck seal carrying the code of the row this
+            document produces. It is the same object as the auction grade on the 360° viewer
+            and the FORM-A stamp on the contact envelope — one language, three sections.
+          */}
+          <span className="seal shrink-0" aria-hidden="true" style={{ width: 56, height: 56 }}>
+            {dict.roi.code}
+            <br />
+            OUT
+          </span>
         </div>
 
         <dl className="px-5 pt-4">
@@ -143,11 +153,28 @@ export function RoiCalculator({ projectCostBDT = PRICING.roiReferenceProject }: 
         </dl>
 
         <div className="mx-5 mt-5 border-t border-glass-border-lit pt-5">
-          <p className="sheet-code sheet-code-accent">{dict.roi.additional}</p>
-          {/* The one number the whole section exists to produce. */}
-          <p className="num mt-2 text-3xl font-700 leading-none text-accent-gold sm:text-4xl" aria-live="polite">
+          <span className="overline">{dict.roi.additional}</span>
+          {/*
+            The one number the whole section exists to produce — so it gets the whole section's
+            weight: ember (the action layer, because this figure IS the argument), roughly
+            twice its old size, and a champagne hairline ruled directly under it the way a
+            total is underscored on a real invoice.
+          */}
+          <p
+            className="num mt-3 font-700 leading-none text-signal-lit"
+            style={{ fontSize: 'clamp(3rem, 5vw, 4.5rem)' }}
+            aria-live="polite"
+          >
             {formatBDT(result.additional)}
           </p>
+          <div
+            aria-hidden="true"
+            className="mt-3 h-px w-full"
+            style={{
+              background:
+                'linear-gradient(90deg, var(--ph-accent), color-mix(in oklab, var(--ph-accent) 20%, transparent) 60%, transparent)',
+            }}
+          />
 
           <dl className="mt-5">
             <Row label={dict.roi.amortised} value={formatBDT(result.monthlyCost)} small />
@@ -220,6 +247,8 @@ function Slider({
         id={id}
         type="range"
         className="slider mt-1"
+        /* The champagne run to the thumb. See globals.css — one custom property, no JS loop. */
+        style={{ '--ph-slider-fill': `${((value - min) / (max - min)) * 100}%` } as CSSProperties}
         min={min}
         max={max}
         step={step}

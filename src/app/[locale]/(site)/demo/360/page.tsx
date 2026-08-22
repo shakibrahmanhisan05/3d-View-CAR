@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Viewer360 } from '@/components/capture360/Viewer360';
+import { Frame } from '@/components/frame/Frame';
 import { Section } from '@/components/sheet/Section';
 import { getDictionary } from '@/lib/i18n';
 import { isLocale } from '@/lib/i18n/config';
@@ -30,8 +31,11 @@ export default async function Capture360Page({ params }: { params: Promise<{ loc
         <p className="max-w-2xl text-sm text-ink-soft">{dict.twoProducts.honest}</p>
       </Section>
 
-      <div className="rule-t">
-        <Viewer360 capture={capture} />
+      {/* The same cinema container as the hero and the configurator (§10). */}
+      <div className="pb-16">
+        <Frame letterbox={false} shellClassName="shadow-elev-lg">
+          <Viewer360 capture={capture} />
+        </Frame>
       </div>
     </>
   );

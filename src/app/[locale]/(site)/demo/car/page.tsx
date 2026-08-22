@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { ConfiguratorRoot } from '@/components/configurator/ConfiguratorRoot';
+import { DemoStage } from '@/components/frame/DemoStage';
 import { getDictionary } from '@/lib/i18n';
 import { isLocale } from '@/lib/i18n/config';
 import { getVehicleBySegment } from '@/lib/vehicles';
@@ -23,5 +24,9 @@ export default async function CarDemoPage({
   const vehicle = getVehicleBySegment('car');
   if (!vehicle) notFound();
 
-  return <ConfiguratorRoot vehicle={vehicle} initialSelection={c} fullHeight />;
+  return (
+    <DemoStage>
+      <ConfiguratorRoot vehicle={vehicle} initialSelection={c} fullHeight />
+    </DemoStage>
+  );
 }

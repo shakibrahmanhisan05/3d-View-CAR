@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Segmented live demos (§4.3): গাড়ি · মোটরসাইকেল · মডিফিকেশন · ৩৬০° রিয়েল ভেহিকেল.
+ * Segmented live demos: গাড়ি · মোটরসাইকেল · মডিফিকেশন · ৩৬০° রিয়েল ভেহিকেল.
  *
  * ONLY ONE WEBGL CONTEXT ALIVE AT A TIME. The three 3D tabs share a single mounted
  * <ConfiguratorRoot>; switching between them swaps the vehicle DATA, not the canvas. The 360°
@@ -10,13 +10,22 @@
  *
  * §16 requires switching all four tabs six times to leak no GPU memory and not degrade FPS.
  * That is only achievable if the renderer is not rebuilt on every press.
+ *
+ * REVISION 2: the rail was four identical glass pills, which told the visitor nothing about
+ * what was behind them. It is now a SHELF — each tab carries the vehicle's own silhouette, its
+ * name and a monospaced short-code, so the choice is made from the picture rather than from
+ * the word. And the panel below is a real <Frame>: a $60,000 product and a $2,500 product
+ * should not sit in identical rounded rectangles (§8.2, §9).
  */
 
-import { ArrowRight } from 'lucide-react';
 import { m, useReducedMotion } from 'motion/react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useState } from 'react';
+import { Frame } from '@/components/frame/Frame';
+import { Arrow } from '@/components/frame/StageChrome';
+import { VehicleSilhouette } from '@/components/configurator/VehicleSilhouette';
+import { frameSrc } from '@/lib/capture360/placeholder-frames';
 import { cn } from '@/lib/utils';
 
 /*
@@ -31,7 +40,7 @@ const ConfiguratorRoot = dynamic(
 const Viewer360 = dynamic(() => import('@/components/capture360/Viewer360').then((m) => m.Viewer360), {
   loading: () => <PanelSkeleton />,
 });
-import { useDict, useLocale } from '@/components/i18n/DictionaryProvider';
+import { useDict, useLocale, useLocalized } from '@/components/i18n/DictionaryProvider';
 import { localePath } from '@/lib/i18n/config';
 import type { Capture360, Vehicle } from '@/lib/types';
 
@@ -59,14 +68,25 @@ export function DemoTabs({
 }) {
   const dict = useDict();
   const locale = useLocale();
+  const t = useLocalized();
   const reduced = useReducedMotion();
   const [tab, setTab] = useState<TabId>('bike');
 
-  const tabs: Array<{ id: TabId; label: string; href?: string }> = [
-    { id: 'car', label: dict.demos.tabCar, href: '/demo/car' },
-    { id: 'bike', label: dict.demos.tabBike, href: '/demo/bike' },
-    { id: 'mod', label: dict.demos.tabMod, href: '/demo/modification' },
-    { id: 'capture', label: dict.demos.tab360, href: '/demo/360' },
+  /** The paint each tile's silhouette is drawn in — the group's default swatch. */
+  const swatch = (vehicle: Vehicle) =>
+    vehicle.optionGroups.find((group) => group.id === 'paint')?.options[0]?.swatchHex ?? '#3A3F42';
+
+  const tabs: Array<{
+    id: TabId;
+    label: string;
+    code: string;
+    href: string;
+    vehicle?: Vehicle;
+  }> = [
+    { id: 'car', label: dict.demos.tabCar, code: 'CFG-CAR', href: '/demo/car', vehicle: car },
+    { id: 'bike', label: dict.demos.tabBike, code: 'CFG-BIKE', href: '/demo/bike', vehicle: bike },
+    { id: 'mod', label: dict.demos.tabMod, code: 'CFG-MOD', href: '/demo/modification', vehicle: modification },
+    { id: 'capture', label: dict.demos.tab360, code: 'CAP-360', href: '/demo/360' },
   ];
 
   const vehicle = tab === 'car' ? car : tab === 'bike' ? bike : modification;
@@ -77,65 +97,97 @@ export function DemoTabs({
       {/*
         Hand-rolled rather than <Tabs> from src/components/ui: Radix mounts and unmounts a
         <TabsContent> per value, which would rebuild the WebGL context on every tab press and
-        break the one-context guarantee this whole component exists to hold. The rail is
-        styled to match TabsList/TabsTrigger exactly so it still reads as the same control.
+        break the one-context guarantee this whole component exists to hold.
       */}
       <div
         role="tablist"
         aria-label={dict.demos.label}
-        className="no-scrollbar flex w-full items-center gap-1 overflow-x-auto rounded-xl border border-glass-border bg-glass p-1"
+        className="no-scrollbar edge-fade flex w-full items-stretch gap-2 overflow-x-auto pb-1 pt-1"
       >
-        {tabs.map((entry) => (
-          <button
-            key={entry.id}
-            type="button"
-            role="tab"
-            aria-selected={tab === entry.id}
-            aria-controls="demo-panel"
-            id={`demo-tab-${entry.id}`}
-            onClick={() => setTab(entry.id)}
-            className={cn(
-              'tap relative flex-1 whitespace-nowrap rounded-lg px-4 text-sm font-600 transition-colors duration-200',
-              tab === entry.id ? 'text-ink' : 'text-ink-soft hover:text-ink',
-            )}
-          >
-            {tab === entry.id ? (
-              <m.span
-                layoutId={reduced ? undefined : 'ph-demo-tab'}
-                className="absolute inset-0 -z-10 rounded-lg bg-glass-strong shadow-elev-sm"
-                transition={{ type: 'spring', stiffness: 400, damping: 34 }}
-              />
-            ) : null}
-            {entry.label}
-          </button>
-        ))}
+        {tabs.map((entry) => {
+          const selected = tab === entry.id;
+          return (
+            <button
+              key={entry.id}
+              type="button"
+              role="tab"
+              aria-selected={selected}
+              aria-controls="demo-panel"
+              id={`demo-tab-${entry.id}`}
+              onClick={() => setTab(entry.id)}
+              className={cn(
+                'relative flex w-24 shrink-0 flex-col items-stretch gap-1.5 rounded-lg border p-3 text-left',
+                'transition-[transform,border-color,background-color] duration-[260ms] ease-out',
+                selected
+                  ? '-translate-y-[3px] border-[var(--ph-glass-border-lit)] bg-glass-strong'
+                  : 'border-glass-border bg-glass hover:border-[var(--ph-glass-border-lit)]',
+              )}
+            >
+              {/* The champagne ceiling strip on the selected tile. */}
+              {selected ? (
+                <m.span
+                  aria-hidden="true"
+                  layoutId={reduced ? undefined : 'ph-demo-tab-edge'}
+                  className="absolute inset-x-0 top-0 h-px"
+                  style={{
+                    background:
+                      'linear-gradient(90deg, transparent, var(--ph-accent) 22%, var(--ph-accent) 78%, transparent)',
+                  }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 34 }}
+                />
+              ) : null}
+
+              <span className="block overflow-hidden rounded-md bg-bay">
+                {entry.vehicle ? (
+                  <VehicleSilhouette
+                    segment={entry.vehicle.segment}
+                    paintHex={swatch(entry.vehicle)}
+                    className="h-10 w-full p-1"
+                  />
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element -- procedural data URI
+                  // or an R2-hosted frame; next/image would add a round trip to a thumbnail.
+                  <img
+                    src={frameSrc(capture.framePattern, 0, capture.frameCount)}
+                    alt=""
+                    className="h-10 w-full object-cover"
+                  />
+                )}
+              </span>
+
+              <span className={cn('block text-xs font-600 leading-tight', selected ? 'text-ink' : 'text-ink-soft')}>
+                {entry.label}
+              </span>
+              <span className="sheet-code text-[0.55rem]">{entry.code}</span>
+            </button>
+          );
+        })}
       </div>
 
-      <div
-        id="demo-panel"
-        role="tabpanel"
-        aria-labelledby={`demo-tab-${tab}`}
-        className="mt-3 overflow-hidden rounded-2xl border border-glass-border shadow-elev-lg"
-      >
-        {tab === 'capture' ? (
-          <Viewer360 capture={capture} />
-        ) : (
-          <ConfiguratorRoot vehicle={vehicle} showRiderCheck={vehicle.segment === 'motorcycle'} />
-        )}
+      {/*
+        The panel is a cinema frame of its own — no letterbox, because the option panel needs
+        every pixel of vertical space, and the ember rim comes from --ph-frame-shadow.
+      */}
+      <div id="demo-panel" role="tabpanel" aria-labelledby={`demo-tab-${tab}`} className="mt-4">
+        <Frame letterbox={false} bleed shellClassName="shadow-elev-lg">
+          {tab === 'capture' ? (
+            <Viewer360 capture={capture} />
+          ) : (
+            <ConfiguratorRoot vehicle={vehicle} showRiderCheck={vehicle.segment === 'motorcycle'} />
+          )}
+        </Frame>
       </div>
 
-      {active?.href ? (
+      {active ? (
         <p className="mt-5 text-right">
           <Link
             href={localePath(locale, active.href)}
-            className="group inline-flex items-center gap-1.5 text-sm font-600 text-ink-soft transition-colors hover:text-accent-gold"
+            className="group inline-flex items-center gap-2 text-sm font-600 text-ink-soft transition-colors hover:text-paint"
           >
             {dict.demos.openFull}
-            <ArrowRight
-              aria-hidden="true"
-              className="size-4 transition-transform duration-300 group-hover:translate-x-1"
-            />
+            <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
+          <span className="sr-only">{t(vehicle.name)}</span>
         </p>
       ) : null}
     </div>

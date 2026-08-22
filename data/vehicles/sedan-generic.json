@@ -5,6 +5,7 @@
     "bn": "সেডান — ১৫০০ সিসি",
     "en": "1500cc Sedan"
   },
+  "modelCode": "SDG-1500",
   "segment": "car",
   "asset": {
     "scale": 1,

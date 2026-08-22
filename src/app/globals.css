@@ -670,3 +670,516 @@ body::before {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* ==========================================================================
+   REVISION 2 — "THE BAY, FRAMED"
+
+   Everything below this line is the production rebuild (PHOENIX-PRODUCTION-REBUILD-PROMPT).
+   It is append-only on purpose: no token above was renamed or deleted, so the ~300 utility
+   usages already bound to the Rev-1 names keep working untouched.
+
+   Three colour LAYERS, and each one owns exactly one job. This is the rule that stops the
+   page reading as an AI template — previously ember and champagne were used almost
+   interchangeably as decorative text and neither read as "the" anything.
+
+     --ph-signal  (ember)     THE ACTION LAYER     buttons, price total, active pip
+     --ph-accent  (champagne) THE STRUCTURE LAYER  hairlines, ceiling strips, seals, rings
+     --ph-paint   (live)      THE EDITORIAL LAYER  every accented piece of TEXT on the site
+
+   The editorial layer is driven by the vehicle's currently-selected paint. Pick Attitude
+   Black Mica and the giant monolith, the overlines, the stat figures and the headline
+   fall-off all move with it; pick Soul Red and the whole page warms. It is set once per
+   selection by useApplyPaintTint() writing two custom properties on <html>, so it costs one
+   style recalculation rather than a re-render, and every derived value below follows.
+   ========================================================================== */
+
+:root {
+  /* --- The cinema frame ------------------------------------------------- */
+  --ph-frame-radius: 28px;
+  --ph-frame-inset: clamp(12px, 1.6vw, 26px);
+  --ph-frame-rim: color-mix(in oklab, var(--ph-accent) 26%, transparent);
+  --ph-frame-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--ph-accent) 32%, transparent),
+    inset 0 0 0 1px color-mix(in oklab, var(--ph-ink) 8%, transparent),
+    0 40px 80px -40px rgb(0 0 0 / 0.9),
+    0 0 120px -30px color-mix(in oklab, var(--ph-signal) 22%, transparent);
+
+  /* --- The volumetric bay plume — replaces the flat radial --------------- */
+  --ph-plume-ember: color-mix(in oklab, var(--ph-signal) 14%, transparent);
+  --ph-plume-champ: color-mix(in oklab, var(--ph-accent) 9%, transparent);
+
+  /* --- The editorial ink. Set live by the paint selection. --------------- */
+  /*
+    Defaults are champagne so the very first server-rendered paint is already correct and
+    the page never flashes a colour it is about to change. JS then overrides --ph-paint and
+    --ph-paint-lit on <html>; every token below re-substitutes because they are declared
+    HERE, on the same element JS writes to.
+  */
+  --ph-paint: var(--ph-accent);
+  --ph-paint-lit: color-mix(in oklab, var(--ph-accent) 92%, var(--ph-ink));
+  --ph-paint-soft: color-mix(in oklab, var(--ph-paint-lit) 46%, var(--ph-ink-soft));
+  --ph-paint-rim: color-mix(in oklab, var(--ph-paint) 34%, transparent);
+  --ph-paint-sunk: color-mix(in oklab, var(--ph-paint) 13%, var(--ph-paper));
+  --ph-paint-glow: color-mix(in oklab, var(--ph-paint-lit) 26%, transparent);
+
+  /*
+    The giant background wordmark takes the vehicle's own colour, exactly as the reference
+    composition paints its model number in the car's orange.
+  */
+  --ph-monolith: color-mix(in oklab, var(--ph-paint) 58%, var(--ph-bay));
+  --ph-monolith-alu: color-mix(in oklab, var(--ph-ink) 8%, var(--ph-bay));
+
+  /* --- Ground reflection ------------------------------------------------ */
+  --ph-floor-line: color-mix(in oklab, var(--ph-accent) 22%, transparent);
+
+  /* --- The plate: a real object, not text on a background ---------------- */
+  --ph-plate: color-mix(in oklab, var(--ph-ink) 3.5%, var(--ph-paper));
+  --ph-plate-border: color-mix(in oklab, var(--ph-ink) 14%, transparent);
+}
+
+/*
+  5.13 / 15: every token derived from --ph-signal must be re-declared here or a prospect
+  override on /for/[slug] retints bg-signal and leaves the derived value carrying Phoenix red.
+*/
+.signal-scope {
+  --ph-plume-ember: color-mix(in oklab, var(--ph-signal) 14%, transparent);
+  --ph-frame-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--ph-accent) 32%, transparent),
+    inset 0 0 0 1px color-mix(in oklab, var(--ph-ink) 8%, transparent),
+    0 40px 80px -40px rgb(0 0 0 / 0.9),
+    0 0 120px -30px color-mix(in oklab, var(--ph-signal) 22%, transparent);
+}
+
+@theme inline {
+  --color-plate: var(--ph-plate);
+  --color-plate-border: var(--ph-plate-border);
+  /* The editorial text colour. `text-paint` is the utility the whole site accents with. */
+  --color-paint: var(--ph-paint-lit);
+  --color-paint-soft: var(--ph-paint-soft);
+  --color-paint-raw: var(--ph-paint);
+  --color-paint-sunk: var(--ph-paint-sunk);
+}
+
+/* --------------------------------------------------------------------------
+   THE FLOOR, UPGRADED
+
+   Two offset plumes instead of one flat pool, plus a low third that lifts the bottom of the
+   page. Static — no scroll binding, no animation. Animating a fixed full-viewport gradient
+   is the single fastest way to destroy a mid-range Android, and it buys nothing.
+   -------------------------------------------------------------------------- */
+body::before {
+  content: '';
+  position: fixed;
+  inset: -10%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 42rem at 22% 8%, var(--ph-plume-ember), transparent 60%),
+    radial-gradient(72rem 48rem at 82% 18%, var(--ph-plume-champ), transparent 65%),
+    radial-gradient(90rem 38rem at 50% 110%, color-mix(in oklab, var(--ph-signal) 6%, transparent), transparent 60%);
+  transform: translate3d(0, 0, 0);
+}
+
+/* ==========================================================================
+   EDITORIAL TYPOGRAPHY
+   ========================================================================== */
+
+/*
+  The monolith. The giant model code that sits BEHIND the vehicle and is occluded by its
+  roofline — three real depth planes (backdrop, type, vehicle), which is the whole
+  difference between "3D on a page" and "3D inside a scene".
+*/
+.monolith {
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 118;
+  font-weight: 900;
+  letter-spacing: -0.045em;
+  line-height: 0.82;
+  white-space: nowrap;
+  color: var(--ph-monolith);
+  text-shadow:
+    0 0 60px var(--ph-paint-glow),
+    0 0 120px color-mix(in oklab, var(--ph-paint) 14%, transparent);
+  font-size: clamp(9rem, 22vw, 22rem);
+  /*
+    NO `contain: paint` here. It was added to keep the wordmark off the critical paint path,
+    and it clipped the two text-shadows to the span box — which drew the glow as a hard-edged
+    rectangle across the middle of the frame. The bleed IS the effect; the wrapper already
+    clips it at the frame edge.
+  */
+}
+.monolith-narrow {
+  font-variation-settings: 'wdth' 82;
+}
+/*
+  Bangla display faces go unstable at these sizes on conjuncts, so the monolith stays Latin
+  in both locales. It is a model code — SDG-1500 is SDG-1500 on the BRTA papers too.
+*/
+[lang='bn-BD'] .monolith {
+  font-family: var(--font-display);
+}
+
+/* The bottom-left technical pair: base price, and the paint's real manufacturer name. */
+.stat-figure {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(1.75rem, 3.4vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.stat-unit {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  color: var(--ph-alu);
+  text-transform: uppercase;
+  margin-inline-start: 0.35rem;
+}
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  color: var(--ph-alu);
+  text-transform: uppercase;
+  margin-top: 0.5rem;
+  display: block;
+}
+
+/* The bottom-centre model plate. */
+.model-plate {
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 90;
+  font-weight: 800;
+  font-size: clamp(2.5rem, 6vw, 5.75rem);
+  letter-spacing: -0.02em;
+  color: var(--ph-ink);
+  text-shadow: 0 2px 30px rgb(0 0 0 / 0.55);
+  line-height: 0.95;
+}
+
+/* Small, wide, spaced. Sits above every h2 outside the hero. */
+.overline {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  color: var(--ph-paint-lit);
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  display: block;
+}
+
+/* Section codes move onto the editorial layer with everything else that is accented TEXT. */
+.sheet-code-accent {
+  color: var(--ph-paint-lit);
+}
+
+/*
+  The headline treatment, now catching the paint.
+
+  The cap-height band stays pure --ph-ink so contrast at the top of the letterform is never
+  negotiable; the colour arrives in the lower third, the way a headline on a lit metal panel
+  picks up the colour of the thing standing in front of it.
+*/
+.display-lit {
+  background: linear-gradient(
+    177deg,
+    var(--ph-ink) 0%,
+    color-mix(in oklab, var(--ph-paint-lit) 34%, var(--ph-ink)) 58%,
+    color-mix(in oklab, var(--ph-paint-lit) 62%, var(--ph-paper)) 128%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/*
+  Bangla is +1 step of leading against English at the same class, so the default locale never
+  reads as the afterthought translation of the other one.
+*/
+[lang='bn-BD'] .display,
+[lang='bn-BD'] .display-lit {
+  line-height: 1.28;
+}
+[lang='bn-BD'] p {
+  line-height: 1.82;
+}
+
+/* ==========================================================================
+   SURFACES — the plate, the seal, the rules
+   ========================================================================== */
+
+/*
+  The plate. A DOCUMENT surface, as opposed to `.surface`, which is a glass CARD.
+  ROI, the option panel, the 360 data sheet and the contact envelope are all plates: they are
+  paperwork, and paperwork should not float.
+*/
+.plate {
+  background: var(--ph-plate);
+  border: var(--ph-hairline) solid var(--ph-plate-border);
+  border-radius: var(--radius);
+}
+
+/* The editorial stamp — a struck disk carrying a code. One per section, never decorative. */
+.seal {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--ph-signal) 60%, transparent);
+  color: var(--ph-signal-lit);
+  background: var(--ph-signal-sunk);
+  line-height: 1.05;
+}
+.seal-accent {
+  border-color: color-mix(in oklab, var(--ph-accent) 60%, transparent);
+  color: var(--ph-accent);
+  background: var(--ph-accent-sunk);
+}
+
+/* The vertical gradient rule that splits the two-product panels. */
+.rule-v {
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in oklab, var(--ph-accent) 55%, transparent) 18%,
+    color-mix(in oklab, var(--ph-signal) 55%, transparent) 82%,
+    transparent
+  );
+}
+
+/* Soft edge fades for horizontal snap rows, so a strip bleeds instead of clipping. */
+.edge-fade {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 32px, #000 calc(100% - 32px), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 32px, #000 calc(100% - 32px), transparent);
+}
+
+/* ==========================================================================
+   THE FRAME
+   ========================================================================== */
+
+.frame-shell {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--ph-frame-radius);
+  box-shadow: var(--ph-frame-shadow);
+  background: var(--ph-bay);
+}
+/* The champagne hairline rim, drawn as a gradient border so it catches light unevenly. */
+.frame-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    160deg,
+    var(--ph-frame-rim),
+    transparent 34%,
+    transparent 66%,
+    color-mix(in oklab, var(--ph-accent) 14%, transparent)
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+@media (max-width: 639px) {
+  .frame-shell {
+    border-radius: 12px;
+  }
+}
+
+/* The ground streak the vehicle stands on. Zero JS, zero raster. */
+.stage-floor {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 22%;
+  pointer-events: none;
+  background: radial-gradient(60% 100% at 50% 100%, var(--ph-floor-line), transparent 68%);
+}
+.stage-floor::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--ph-floor-line), transparent);
+}
+
+/* ==========================================================================
+   THE BOOT SCREEN — first breath
+   ========================================================================== */
+
+@keyframes ph-boot-sweep {
+  0% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(340%);
+  }
+}
+@keyframes ph-boot-breathe {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+@keyframes ph-boot-trace {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.boot-mark {
+  animation: ph-boot-breathe 2.6s ease-in-out infinite;
+  filter: drop-shadow(0 0 24px color-mix(in oklab, var(--ph-signal) 55%, transparent));
+}
+.boot-sweep {
+  animation: ph-boot-sweep 1.9s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+.boot-trace path,
+.boot-trace circle {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: ph-boot-trace 2.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boot-mark,
+  .boot-sweep,
+  .boot-trace path,
+  .boot-trace circle {
+    animation: none !important;
+  }
+  .boot-trace path,
+  .boot-trace circle {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   SLIDER FILL — the champagne run from the left edge to the thumb.
+
+   A native range input cannot express "filled up to the value" on its own, so the
+   component writes the percentage into --ph-slider-fill and the track paints a hard
+   two-stop gradient at it. No JS per frame, no second element, and the thumb stays the
+   real thumb — so the control is still a range input for a keyboard and a screen reader.
+   -------------------------------------------------------------------------- */
+.slider {
+  --ph-slider-fill: 0%;
+}
+.slider::-webkit-slider-runnable-track {
+  background: linear-gradient(
+    90deg,
+    var(--ph-accent) var(--ph-slider-fill),
+    var(--ph-rule-strong) var(--ph-slider-fill)
+  );
+}
+.slider::-moz-range-track {
+  background: linear-gradient(
+    90deg,
+    var(--ph-accent) var(--ph-slider-fill),
+    var(--ph-rule-strong) var(--ph-slider-fill)
+  );
+}
+
+/* --------------------------------------------------------------------------
+   PAPER-FORWARD FIELDS
+
+   Inside a plate — which today means the contact envelope — a field drops its full glass
+   border for a single champagne rule under it, and the focus rule becomes 2px of ember.
+   A boxed input on a document reads as a web form pasted onto paper; a ruled line reads as
+   the place you write your name.
+
+   Scoped to `.plate` rather than added as a variant class so it cannot be applied by accident
+   somewhere the ground is not a document.
+   -------------------------------------------------------------------------- */
+.plate .field {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid color-mix(in oklab, var(--ph-accent) 42%, transparent);
+  border-radius: 0;
+  padding-inline: 0;
+}
+.plate .field:focus {
+  background: transparent;
+  border-bottom: 2px solid var(--ph-signal);
+  box-shadow: none;
+}
+.plate .field[aria-invalid='true'] {
+  background: transparent;
+  border-bottom-color: var(--ph-signal);
+}
+/* textarea keeps a box — a multi-line rule is a stave, not a field. */
+.plate textarea.field {
+  border: 1px solid color-mix(in oklab, var(--ph-accent) 30%, transparent);
+  border-radius: var(--radius-md);
+  padding-inline: 0.875rem;
+}
+.plate textarea.field:focus {
+  border: 1px solid var(--ph-signal);
+  box-shadow: 0 0 0 1px var(--ph-signal);
+}
+
+/* --------------------------------------------------------------------------
+   MONOLITH CROSS-FADE, IN CSS
+
+   The wordmark swap used AnimatePresence, which pulled motion's animation core into the
+   first-load bundle of every /demo/* route — 44 kB on the three pages with the least room
+   for it, to cross-fade one <span>. A keyed element plus a CSS animation gives the same
+   350ms opacity swap for nothing: React replaces the node on a code change, and a fresh
+   node replays the animation.
+
+   The global prefers-reduced-motion rule already collapses this to ~0ms, which is the
+   required behaviour: an instant swap, not a fast one.
+   -------------------------------------------------------------------------- */
+@keyframes ph-monolith-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.monolith-in {
+  animation: ph-monolith-in 350ms linear both;
+}
+
+/* --------------------------------------------------------------------------
+   REDUCED MOTION — THE CONTENT GUARANTEE
+
+   Every scroll-reveal element carries [data-reveal]. Motion writes `opacity: 0` and a
+   translate as INLINE styles on the first render, before its `useReducedMotion()` hook has
+   had a chance to report the true value — and once the component switches to its reduced
+   branch it is no longer a motion element, so nothing ever clears them. The result was three
+   sections of the homepage rendering permanently invisible for anyone who has reduced motion
+   turned on.
+
+   A media query is resolved by the browser at parse time and needs no hydration, and
+   `!important` outranks the inline style. This is the rule that actually makes "reduced
+   motion renders every element in its final state, with no transition" true.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

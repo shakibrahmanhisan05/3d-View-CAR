@@ -5,6 +5,7 @@
     "bn": "নেকেড কমিউটার ১৫০",
     "en": "Naked Commuter 150"
   },
+  "modelCode": "NC-150",
   "segment": "motorcycle",
   "asset": {
     "scale": 1,

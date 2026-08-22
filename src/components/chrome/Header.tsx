@@ -1,15 +1,26 @@
 'use client';
 
 /**
- * Site header — frosted chrome over the dark floor.
+ * Site header — frosted chrome floating inside the cinema frame.
  *
- * It starts transparent so the hero canvas runs edge to edge under it, and fuses into glass
- * once the page has moved. That transition is the only piece of scroll-linked styling on the
- * site: it is a boolean at a 8px threshold, not a scrubbed value, so it costs one class swap
- * rather than a paint per frame.
+ * It starts transparent so the hero composition runs edge to edge under it, and fuses into
+ * glass once the page has moved. That transition is the only piece of scroll-linked styling
+ * on the site: it is a boolean at an 8px threshold, not a scrubbed value, so it costs one
+ * class swap rather than a paint per frame.
  *
- * The active-nav marker is a shared `layoutId` pill, so moving between routes slides the
- * marker rather than blinking it.
+ * REVISION 2 — THE SILENCE (§2.10)
+ * --------------------------------
+ * The header was a left wordmark, seven centre links and three right controls: eleven things
+ * competing across the top of a composition whose whole job is to have one subject. It is now
+ * three cells — index left, wordmark centred, language and WhatsApp right — and the seven
+ * links live in a sheet one tap away, at every viewport rather than only on mobile.
+ *
+ * This is a deliberate trade: one tap of depth on the nav, in exchange for a masthead that
+ * frames the vehicle instead of crowding it. The sheet is the same component that already
+ * carried the mobile nav, so nothing became less reachable — the links moved, they did not go.
+ *
+ * The scrolled hairline is a warm champagne gradient rather than a flat rule, matching the
+ * footer's ceiling strip: the page is a lit room, and both of its edges catch the same light.
  */
 
 import { AnimatePresence, m, useReducedMotion } from 'motion/react';
@@ -60,116 +71,118 @@ export function Header() {
       : `Hello — I'd like to talk about a website for ${brand.businessName.en}.`,
   );
 
+  const lit = scrolled || menuOpen;
+
   return (
     <header
-      className={`sticky top-0 z-40 transition-[background-color,border-color,backdrop-filter] duration-300 ${
-        scrolled || menuOpen ? 'glass border-b' : 'border-b border-transparent bg-transparent'
+      className={`sticky top-0 z-40 transition-[background-color,backdrop-filter] duration-300 ${
+        lit ? 'glass' : 'bg-transparent'
       }`}
     >
-      <div className="mx-auto flex h-header max-w-page items-center justify-between gap-4 px-4 sm:px-6">
+      {/* The warm hairline. Only present once the header has fused. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-px transition-opacity duration-300"
+        style={{
+          opacity: lit ? 1 : 0,
+          background:
+            'linear-gradient(90deg, transparent, color-mix(in oklab, var(--ph-accent) 55%, transparent) 20%, color-mix(in oklab, var(--ph-accent) 55%, transparent) 80%, transparent)',
+        }}
+      />
+
+      <div className="mx-auto grid h-header max-w-page grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 sm:px-6">
+        {/* --- Left: the index --------------------------------------------- */}
+        <div className="flex items-center justify-start">
+          <button
+            type="button"
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-expanded={menuOpen}
+            aria-controls="ph-site-menu"
+            className="tap -ml-2 flex items-center gap-2.5 rounded-lg px-2 text-ink transition-colors hover:text-paint"
+          >
+            <MenuGlyph open={menuOpen} />
+            <span className="sheet-code hidden sm:block">{menuOpen ? dict.common.close : dict.common.menu}</span>
+            <span className="sr-only sm:hidden">{menuOpen ? dict.common.close : dict.common.menu}</span>
+          </button>
+        </div>
+
+        {/* --- Centre: the masthead ---------------------------------------- */}
         <Link
           href={localePath(locale, '/')}
-          className="tap -mx-2 flex items-center gap-3 px-2"
+          className="tap flex items-center justify-center gap-2.5 px-2"
           aria-label={brand.businessName[locale]}
         >
           {brand.logoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element -- prospect logos are arbitrary
             // remote files; adding every dealer's host to next.config remotePatterns would
             // break the "edit exactly one JSON file" acceptance test (§10).
-            <img src={brand.logoUrl} alt="" width={32} height={32} className="h-8 w-8 object-contain" />
+            <img src={brand.logoUrl} alt="" width={28} height={28} className="h-7 w-7 object-contain" />
           ) : (
             <PhoenixMark />
           )}
-          <span className="flex flex-col leading-none">
-            <span className="display-wide text-[0.95rem] font-700 uppercase tracking-[0.24em] text-ink">
-              {brand.wordmark}
-            </span>
-            <span className="sheet-code mt-1 hidden sm:block">{brand.gutterCode}</span>
+          <span className="display-wide whitespace-nowrap text-[0.95rem] font-700 uppercase tracking-[0.28em] text-ink">
+            {brand.wordmark}
           </span>
         </Link>
 
-        <nav aria-label={dict.common.menu} className="hidden items-center gap-0.5 lg:flex">
-          {PRIMARY_NAV.map((item) => {
-            const active = current === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={localePath(locale, item.href)}
-                aria-current={active ? 'page' : undefined}
-                className={`relative rounded-lg px-3.5 py-2 text-[0.9rem] transition-colors duration-200 ${
-                  active ? 'text-ink' : 'text-ink-soft hover:text-ink'
-                }`}
-              >
-                {active ? (
-                  <m.span
-                    layoutId={reduced ? undefined : 'ph-nav-active'}
-                    className="absolute inset-0 -z-10 rounded-lg border border-glass-border bg-glass"
-                    transition={{ type: 'spring', stiffness: 380, damping: 32 }}
-                  />
-                ) : null}
-                {dict.nav[item.key]}
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="flex items-center gap-1.5">
+        {/* --- Right: language and the lead path --------------------------- */}
+        <div className="flex items-center justify-end gap-1.5">
           <Link
             href={localePath(otherLocale, current)}
             hrefLang={otherLocale}
-            className="tap flex items-center rounded-lg px-2.5 text-[0.8rem] text-ink-soft transition-colors hover:text-accent-gold"
+            className="tap flex items-center rounded-lg px-2.5 text-[0.8rem] text-ink-soft transition-colors hover:text-paint"
             aria-label={`${dict.common.language}: ${LOCALE_LABEL[otherLocale]}`}
           >
             {LOCALE_LABEL[otherLocale]}
           </Link>
 
-          <Button asChild variant="primary" size="md" className="hidden sm:inline-flex">
-            <a href={waHref} target="_blank" rel="noopener noreferrer">
-              {dict.common.whatsapp}
-            </a>
-          </Button>
-
-          <button
-            type="button"
-            onClick={() => setMenuOpen((open) => !open)}
-            aria-expanded={menuOpen}
-            aria-controls="ph-mobile-menu"
-            className="tap flex items-center justify-center rounded-lg px-2 text-ink transition-colors hover:text-accent-gold lg:hidden"
-          >
-            <span className="sr-only">{menuOpen ? dict.common.close : dict.common.menu}</span>
-            <MenuGlyph open={menuOpen} />
-          </button>
+          {/*
+            The wrapper is not decoration. `Button`'s base sets `inline-flex`, and without
+            tailwind-merge (see src/lib/utils.ts) a `hidden` passed through `className` no
+            longer reliably beats it — the winner becomes stylesheet order, and on a 380px
+            phone this button was spilling off the right edge. Hiding the WRAPPER cannot
+            conflict with anything the button sets.
+          */}
+          <div className="hidden sm:block">
+            <Button asChild variant="primary" size="md">
+              <a href={waHref} target="_blank" rel="noopener noreferrer">
+                {dict.common.whatsapp}
+              </a>
+            </Button>
+          </div>
         </div>
       </div>
 
       <AnimatePresence initial={false}>
         {menuOpen ? (
           <m.div
-            id="ph-mobile-menu"
-            className="overflow-hidden border-t border-glass-border lg:hidden"
+            id="ph-site-menu"
+            className="overflow-hidden border-t border-glass-border"
             initial={reduced ? false : { height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={reduced ? undefined : { height: 0, opacity: 0 }}
             transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
           >
-            <ul className="mx-auto max-w-page px-4 pt-2 sm:px-6">
-              {[...PRIMARY_NAV, { href: '/contact', key: 'contact' as const }].map((item, index) => (
-                <li key={item.href} className="border-b border-rule-faint last:border-b-0">
-                  <Link
-                    href={localePath(locale, item.href)}
-                    className="tap flex items-baseline gap-4 py-3.5"
-                    aria-current={current === item.href ? 'page' : undefined}
-                  >
-                    <span className="sheet-code w-10 shrink-0 text-accent-gold">
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                    <span className="text-lg">{dict.nav[item.key]}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <nav aria-label={dict.common.menu} className="mx-auto max-w-page px-4 pt-2 sm:px-6">
+              <ul className="lg:grid lg:grid-cols-2 lg:gap-x-12">
+                {[...PRIMARY_NAV, { href: '/contact', key: 'contact' as const }].map((item, index) => (
+                  <li key={item.href} className="border-b border-rule-faint last:border-b-0 lg:last:border-b">
+                    <Link
+                      href={localePath(locale, item.href)}
+                      className="tap group flex items-baseline gap-4 py-3.5"
+                      aria-current={current === item.href ? 'page' : undefined}
+                    >
+                      <span className="sheet-code sheet-code-accent w-10 shrink-0">
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                      <span className="text-lg transition-colors group-hover:text-paint">{dict.nav[item.key]}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
             <div className="mx-auto max-w-page px-4 py-5 sm:px-6">
-              <Button asChild variant="primary" size="lg" className="w-full">
+              <Button asChild variant="primary" size="lg" className="w-full sm:w-auto">
                 <a href={waHref} target="_blank" rel="noopener noreferrer">
                   {dict.common.whatsapp}
                 </a>
@@ -188,7 +201,7 @@ export function Header() {
  */
 function PhoenixMark() {
   return (
-    <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true" focusable="false" className="shrink-0">
+    <svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true" focusable="false" className="shrink-0">
       <path
         d="M14 2.5 C 9 7, 5.5 11, 4.5 17.5 C 8 14, 11 12.5, 14 12 C 17 12.5, 20 14, 23.5 17.5 C 22.5 11, 19 7, 14 2.5 Z"
         fill="var(--ph-signal)"
@@ -204,7 +217,7 @@ function PhoenixMark() {
 /** Two rules that become an X. Drawn, not imported — this is the only icon in the header. */
 function MenuGlyph({ open }: { open: boolean }) {
   return (
-    <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false">
+    <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false" className="shrink-0">
       <line
         x1="2"
         y1={open ? '11' : '7'}

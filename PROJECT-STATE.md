@@ -137,6 +137,39 @@ Business context: `PHOENIX-90-DAY-PLAYBOOK.md` (why, not what).
     zoom — there the canvas is a panel the user chose to interact with.
 17. **Motion is `m`, never `motion`.** `LazyMotion strict` makes the full component a runtime
     error, which is what keeps the lean bundle from silently regressing.
+18. **`cn()` no longer runs tailwind-merge, so never layer two utilities from the same CSS
+    property group and expect the later one to win.** Dropping tailwind-merge was the
+    documented lever for getting Revision 2 back inside the first-load budget (~8 kB on `/`).
+    Without it the winner is stylesheet order, not authorial intent, and the failure is
+    silent: a `hidden` passed to `<Button>` — whose base sets `inline-flex` — left the
+    WhatsApp CTA spilling off the right edge of a 380px phone. **Branch instead of override**
+    (a ternary that emits one or the other), or put the responsive class on a WRAPPER.
+    `node scripts/dev/audit-class-conflicts.mjs` renders every public route and fails on any
+    element carrying two utilities from one group; run it after touching shared components.
+19. **An unlayered custom class (`.seal`, `.monolith`, `.plate`, `.field`, `.display-lit`)
+    beats every Tailwind utility on the same property.** Tailwind v4 puts its utilities in
+    `@layer`, and unlayered rules outrank layered ones regardless of source order. `size-20`
+    on a `.seal` silently loses to the class's own sizing. Use inline `style` when a
+    component needs to override one of these.
+20. **Never `whitespace-nowrap` on anything that carries a translated label.** Bangla CTA
+    copy is a whole sentence; a nowrap button containing one has a ~500px min-content width,
+    and inside a grid item (`min-width: auto`) that propagates all the way out. The homepage
+    scrolled sideways by 212px on a 380px phone and the English build never showed it.
+    Related: **every grid/flex item that can contain a wide subtree needs `min-w-0`** —
+    `Section`'s content column carries it for exactly this reason.
+21. **Every accented piece of TEXT is on `--ph-paint`, not on `--ph-accent`.** Revision 2
+    splits the palette into three layers with one job each: `--ph-signal` (ember) is the
+    ACTION layer — buttons, price total, active pip, nothing else; `--ph-accent` (champagne)
+    is the STRUCTURE layer — hairlines, ceiling strips, seals, focus rings, never a text
+    colour and never a button ground; `--ph-paint` is the EDITORIAL layer, derived live from
+    the vehicle's selected paint by `useApplyPaintTint`. Use `text-paint`, not
+    `text-accent-gold`, for type. See rule 22 for why the swatch is not used raw.
+22. **A paint swatch is a HUE SOURCE, never a text colour.** Swatches are authored to look
+    right on sheet metal: `#16181A` "Attitude Black Mica" is invisible on `--ph-paper` and a
+    saturated navy sits at ~1.6:1. `readableInk()` in `src/lib/paint.ts` keeps the hue and
+    bisects lightness until the result clears 5.6:1 against the page ground. Every swatch
+    currently shipped resolves to ≥5.13:1 on both `--ph-paper` and `--ph-plate`. A truly
+    achromatic swatch stays achromatic — lifting a grey's "hue" would invent pink.
 
 ---
 
@@ -361,14 +394,40 @@ no work at all.
   is correct — it is a condition report); popovers are `.surface .lit-edge .glass`; the control
   strip gained a drag affordance before first interaction.
 
+**Revision 2 — "The Bay, framed" (PHOENIX-PRODUCTION-REBUILD-PROMPT.md), verified in-browser
+at 380 / 900 / 1440 px:**
+
+| Surface | What it is now |
+|---|---|
+| `/` hero | Inside `<Frame>`: transparent R3F canvas over a DOM `<Monolith>` (the model code, in the car's own colour, occluded by the roofline), `<StageFloor>`, letterbox, plume, stat pair, model plate, explore card, 6.75rem paint chips, left `<PipRail>`. |
+| Header | Menu index left · centred wordmark · language + WhatsApp right. The seven nav links moved into the sheet, at every viewport. |
+| §2 problem | Pull-quote anchor with the site's only horizontal reveal; ruled rows with a champagne bar that widens on hover. |
+| §3 demos | Tab SHELF (silhouette + label + short code); panel is a real `<Frame>`. |
+| §4 products | Split panels, monumental `A` (ember) / `B` (champagne), gradient vertical rule, plate pills. |
+| §5 ROI | `<Card tone="plate">` ledger, ember output at `clamp(3rem,5vw,4.5rem)` under a champagne rule, `SEC-05 OUT` seal, champagne slider fill. |
+| §6 case study | Sealed dashed plate — reserved space, not a broken card. Same treatment on `/work`. |
+| §7 pricing | Ladder in WIDTH (40/32/28) and figure size (3 / 2.5 / 2.25rem). Still no "most popular" badge. |
+| §8 FAQ | Ledger rows, 1.25rem champagne index, inline chevron. |
+| Footer | 2xl wordmark, `STK-ISSUE-<year>-<week>` serial, 2px glowing ceiling strip, plate-pill credits. |
+| `/demo/*` | Wrapped in `<DemoStage>`; monolith at 0.6 scale, live total as a bay stat, WhatsApp pill in the bay, option panel is a plate, action bar in three plates. |
+| `/demo/360` | Framed; 80px auction-grade seal, monumental frame fraction, plate data sheet. |
+| `/contact` | The envelope — one plate, hairline centre rule, ruled paper-forward fields, `FORM A` seal, `DirectCard`. |
+| Loading | `<BootScreen>` — real streamed GLB byte progress behind closing letterbox curtains. |
+
 **Still hand-rolled and visibly flat — back-office only, no client ever sees these:**
 
 - `configurator/{SplitDivider,SplitCompare,RiderHeightCheck,ArButton}.tsx`
 - `prospect/ProspectChrome.tsx` · `pitch/PitchDeck.tsx` · `src/app/admin/*`
 - `not-found` / `error` route files.
 
-**Cosmetic, low priority:** a long two-line gutter label crowds the heading on `/demo/360`
-(`Section`'s gutter column is sized for short codes).
+`/pitch` and `/admin` are deliberately untouched by Revision 2 — they are back-office and
+restyling them is a separate ticket.
+
+**Measured after Revision 2** (first-load JS, `next build`, baseline = commit 5e7cd50):
+`/` 189 kB (was 189) · `/for/[slug]` 189 (190) · `/demo/*` 140 (138) · `/demo/360` 165 (162)
+· `/contact` 180 (182) · `/pricing` 172 (180) · `/work` 149 (147). lucide-react is no longer
+imported anywhere — every icon is inline SVG — which is most of what paid for the new
+components.
 
 **Token hygiene:** `text-signal` (17 uses) is only AA-safe at display sizes, which is how it
 is currently used. If any of those become body-sized text, switch them to `text-signal-lit`.

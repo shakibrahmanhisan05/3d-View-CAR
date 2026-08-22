@@ -1,17 +1,20 @@
 /**
- * Published pricing (§4.7).
+ * Published pricing.
  *
  * "Dealers distrust 'contact for pricing' more than a high number." So the numbers are on the
  * page, in ৳, as ONE-TIME PROJECT PRICES. No USD, no monthly software fee (§16).
  *
- * The tiers are now cards rather than a flat table, but two rules from the original design
- * survive deliberately, because they are commercial rather than visual: no tier is visually
- * promoted over the others, and there is no "most popular" badge. A highlighted middle tier
- * is the SaaS pricing-page tell, and SaaS is exactly what this market will not buy — the
- * numbers here are project quotes, and they are presented as equals.
+ * TWO COMMERCIAL RULES SURVIVE THE RESTYLE UNTOUCHED: no tier is colour-promoted over the
+ * others, and there is no "most popular" badge. A highlighted middle tier is the SaaS
+ * pricing-page tell, and SaaS is exactly what this market will not buy.
  *
- * The figures themselves stay monospaced and tabular, so three prices of different lengths
- * still line up down the column.
+ * REVISION 2 signals the product LADDER through SIZE instead — 40% / 32% / 28% of the row,
+ * with the price figure stepping 3rem → 2.5rem → 2.25rem. The ladder is now legible from
+ * across a room without a single word of promotion, and the badge rule is still intact.
+ *
+ * Each tier code also carries a 6px champagne square on the same baseline as its letters, so
+ * `P1` `P2` `P3` read as CHIPS ON A CARD — tying the price list back to the paint-chip strip
+ * that is the site's signature object.
  */
 
 import { Reveal, RevealGroup, RevealItem } from '@/components/motion/Reveal';
@@ -35,6 +38,8 @@ export function PricingTable({ locale }: { locale: Locale }) {
       price: formatBDT(PRICING.showroomSite.from),
       range: `${formatBDT(PRICING.showroomSite.from, false)} – ${formatBDT(PRICING.showroomSite.to, false)}`,
       unit: dict.common.oneTime,
+      /* The ladder, in width and in type size. Nothing here is a colour decision. */
+      figure: 'text-[3rem]',
     },
     {
       code: 'P2',
@@ -45,6 +50,7 @@ export function PricingTable({ locale }: { locale: Locale }) {
       price: formatBDT(PRICING.configurator.from),
       range: `${formatBDT(PRICING.configurator.from, false)} – ${formatBDT(PRICING.configurator.to, false)}`,
       unit: p.perModel,
+      figure: 'text-[2.5rem]',
     },
     {
       code: 'P3',
@@ -55,17 +61,27 @@ export function PricingTable({ locale }: { locale: Locale }) {
       price: formatBDT(PRICING.capture360.from),
       range: `${formatBDT(PRICING.capture360.from, false)} – ${formatBDT(PRICING.capture360.to, false)}`,
       unit: p.perVehicle,
+      figure: 'text-[2.25rem]',
     },
   ];
 
   return (
     <div>
-      <RevealGroup className="grid gap-4 lg:grid-cols-3">
+      {/* On mobile they stack full-width in the same order; the ladder is a desktop reading. */}
+      <RevealGroup className="grid gap-4 lg:grid-cols-[40fr_32fr_28fr]">
         {tiers.map((tier) => (
           <RevealItem key={tier.code}>
             <Card interactive className="flex h-full flex-col p-7">
               <div className="flex items-baseline justify-between gap-3">
-                <span className="sheet-code sheet-code-accent">{tier.code}</span>
+                <span className="sheet-code sheet-code-accent flex items-baseline gap-2">
+                  {/* The chip. A real 6px champagne square, on the letters' own baseline. */}
+                  <span
+                    aria-hidden="true"
+                    className="inline-block size-1.5 shrink-0 bg-accent-gold"
+                    style={{ transform: 'translateY(-1px)' }}
+                  />
+                  {tier.code}
+                </span>
                 <span className="sheet-code">{tier.unit}</span>
               </div>
 
@@ -74,7 +90,7 @@ export function PricingTable({ locale }: { locale: Locale }) {
 
               <div className="mt-6">
                 <p className="text-xs text-ink-soft">{p.from}</p>
-                <p className="num mt-1 text-3xl font-700 leading-none text-ink">{tier.price}</p>
+                <p className={`num mt-1 font-700 leading-none text-ink ${tier.figure}`}>{tier.price}</p>
                 <p className="num mt-2 text-xs text-alu">{tier.range}</p>
               </div>
 
@@ -100,11 +116,21 @@ export function PricingTable({ locale }: { locale: Locale }) {
         The care plan is quoted ANNUALLY and marked optional. §16 forbids monthly SaaS
         pricing, and a "৳1,500/month" line beside project prices reads as exactly that even
         though it is maintenance. Same money, correct framing.
+
+        It is a PLATE with a 2px top rule rather than a glass card, which ties it visually to
+        the ROI ledger — same document, different row.
       */}
       <Reveal>
-        <Card className="mt-4 flex flex-col gap-6 p-7 sm:flex-row sm:items-center sm:justify-between">
+        <Card
+          tone="plate"
+          className="mt-4 flex flex-col gap-6 p-7 sm:flex-row sm:items-center sm:justify-between"
+          style={{ borderTopWidth: 2, borderTopColor: 'color-mix(in oklab, var(--ph-accent) 45%, transparent)' }}
+        >
           <div className="max-w-2xl">
-            <span className="sheet-code sheet-code-accent">P4</span>
+            <span className="sheet-code sheet-code-accent flex items-baseline gap-2">
+              <span aria-hidden="true" className="inline-block size-1.5 shrink-0 bg-accent-gold" />
+              P4
+            </span>
             <h3 className="display mt-3 text-xl font-700">{p.careName}</h3>
             <p className="mt-3 text-sm leading-relaxed text-ink-soft">{p.careBody}</p>
           </div>

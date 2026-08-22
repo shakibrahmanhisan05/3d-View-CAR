@@ -31,14 +31,19 @@ export function Faq() {
       {dict.faq.items.map((item, index) => (
         <AccordionItem key={item.q} value={`faq-${index}`}>
           <AccordionTrigger>
-            <span className="flex items-baseline gap-4">
-              <span className="sheet-code sheet-code-accent shrink-0 pt-1">
+            <span className="flex items-baseline gap-5">
+              {/*
+                The row index at 1.25rem in champagne. It is the artefact of this section:
+                large enough to be counted from three feet, which is what turns eight
+                collapsed answers into a document with numbered rows.
+              */}
+              <span className="num shrink-0 text-xl font-700 leading-none text-accent-gold">
                 {String(index + 1).padStart(2, '0')}
               </span>
               <span className="flex-1 text-base font-600 sm:text-lg">{item.q}</span>
             </span>
           </AccordionTrigger>
-          <AccordionContent className="pl-[calc(2.5rem+1rem)]">{item.a}</AccordionContent>
+          <AccordionContent className="pl-[calc(1.25rem+2.5rem)]">{item.a}</AccordionContent>
         </AccordionItem>
       ))}
     </Accordion>

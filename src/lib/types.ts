@@ -191,6 +191,13 @@ export type VehicleRecord = {
   id: string;
   slug: string;
   name: Localized;
+  /**
+   * The chassis / model code, e.g. `SDG-1500`. Painted enormous behind the vehicle by
+   * <Monolith> and printed under it by <ModelPlate>. Optional and backward compatible:
+   * `getModelCode()` derives one from the slug when it is absent. Never localised — this is
+   * the string on the BRTA papers, and it is Latin in both languages (§16).
+   */
+  modelCode?: string;
   segment: Segment;
   asset: VehicleAsset;
   environmentIds: EnvironmentId[];

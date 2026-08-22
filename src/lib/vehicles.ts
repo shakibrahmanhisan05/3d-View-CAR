@@ -28,6 +28,13 @@ import type {
 } from '@/lib/types';
 import { groupsForSegment } from '@/lib/configurator/selection';
 
+/**
+ * Re-exported so server callers have one import for the data layer. The implementation lives
+ * in a client-safe module because the hero re-resolves the code on the client every time the
+ * segment toggle flips, and this file is `server-only`.
+ */
+export { getModelCode } from '@/lib/model-code';
+
 const DATA_DIR = join(process.cwd(), 'data');
 
 function readJson<T>(...segments: string[]): T {

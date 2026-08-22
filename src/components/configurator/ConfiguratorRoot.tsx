@@ -18,7 +18,13 @@ import { PriceSummary } from './PriceSummary';
 import { RiderHeightCheck } from './RiderHeightCheck';
 import { SplitDivider } from './SplitDivider';
 import { useBrand } from '@/components/brand/BrandProvider';
+import { useApplyPaintTint } from '@/components/brand/usePaintTint';
+import { BootScreen } from '@/components/boot/BootScreen';
+import { Monolith, StageFloor } from '@/components/frame/Monolith';
+import { Stat, StatPair } from '@/components/frame/StageChrome';
 import { useDict, useLocale, useLocalized } from '@/components/i18n/DictionaryProvider';
+import { formatBDT } from '@/lib/i18n/config';
+import { getModelCode } from '@/lib/model-code';
 import type { EngineAudio } from '@/lib/configurator/engine-audio';
 import { synthProfileId } from '@/lib/configurator/engine-audio';
 import {
@@ -78,6 +84,7 @@ export function ConfiguratorRoot({
   initialSelection,
   fullHeight = false,
   showRiderCheck = true,
+  stage = true,
   children,
 }: {
   vehicle: Vehicle;
@@ -85,6 +92,16 @@ export function ConfiguratorRoot({
   initialSelection?: string;
   fullHeight?: boolean;
   showRiderCheck?: boolean;
+  /**
+   * The framed-stage treatment (§9): a transparent canvas over the vehicle's own model code,
+   * a ground streak under the wheels, the live total set as a monumental stat in the bay, and
+   * the WhatsApp pill inside the bay rather than only in the sidebar.
+   *
+   * On by default — every surface the configurator appears on is inside a <Frame>. It exists
+   * as a prop so `/build/[id]`, which is a shared configuration being reviewed rather than a
+   * product being sold, can opt out of the theatre.
+   */
+  stage?: boolean;
   /** Extra panels — the before/after slider on the modification demo, for instance. */
   children?: React.ReactNode;
 }) {
@@ -307,6 +324,11 @@ export function ConfiguratorRoot({
     return paintGroup?.options.find((option) => option.id === selectedId)?.swatchHex ?? '#3A3F42';
   }, [groups, selection]);
 
+  /* The whole page's accented text follows the paint being configured. See src/lib/paint.ts. */
+  useApplyPaintTint(paintHex);
+
+  const modelCode = getModelCode(vehicle);
+
   const configSummary = useMemo(
     () =>
       groups
@@ -332,16 +354,43 @@ export function ConfiguratorRoot({
    * 528px canvas — a screen and a half of dead space beside the options, and the sticky price
    * summary never sticking because there was no scroll container for it to stick inside.
    */
-  const frameHeight = fullHeight ? 'lg:h-[calc(100dvh-3.75rem)]' : 'lg:h-[68vh] lg:min-h-[560px]';
+  /*
+   * Inside <DemoStage> the surface now loses the header AND both frame insets, so the height
+   * contract has to name them rather than the old hard-coded 3.75rem — otherwise the frame's
+   * bottom rim falls below the fold and the "we are watching a screen" reading breaks on
+   * exactly the page it matters most on.
+   */
+  const frameHeight = fullHeight
+    ? 'lg:h-[calc(100dvh-var(--ph-header-h)-2*var(--ph-frame-inset)-2rem)] lg:min-h-[560px]'
+    : 'lg:h-[68vh] lg:min-h-[560px]';
 
   return (
-    <div className={`grid lg:grid-cols-[minmax(0,1fr)_380px] ${frameHeight}`}>
+    <div className={`grid min-w-0 lg:grid-cols-[minmax(0,1fr)_380px] ${frameHeight}`}>
+      {/*
+        The boot screen belongs to the full-height demo routes only. On the homepage the hero
+        has already played it, and a second curtain on the same visit is theatre for its own
+        sake — which is the thing the rebuild is trying to remove, not add.
+      */}
+      {fullHeight ? (
+        <BootScreen
+          modelUrl={vehicle.asset.glbUrl}
+          segment={vehicle.segment}
+          paintHex={paintHex}
+          code={modelCode}
+          wordmark={brand.wordmark}
+          sceneReady={ready || webgl === false}
+        />
+      ) : null}
+
       {/* --- The bay ------------------------------------------------------ */}
       <div className={`bay canvas-host relative ${bayHeight}`}>
+        {/* Sized down from the hero: the option panel takes the width, so the code bleeds less. */}
+        {stage ? <Monolith code={modelCode} scale={0.6} /> : null}
+
         {webgl === false ? (
           <NoWebGL alt={dict.errors.canvasBody} />
         ) : (
-          <>
+          <div className="absolute inset-0 z-[1]">
             {webgl ? (
               <Scene
                 vehicle={vehicle}
@@ -352,6 +401,7 @@ export function ConfiguratorRoot({
                 resetSignal={resetSignal}
                 reducedMotion={reducedMotion}
                 showHotspots={ready}
+                transparentBg={stage}
                 compare={compareEnabled ? { before: beforeSelection, splitRef } : undefined}
                 onReady={() => setReady(true)}
                 onDowngrade={() => setQuality('low')}
@@ -363,11 +413,14 @@ export function ConfiguratorRoot({
               paintHex={paintHex}
               backgroundHex={environment?.background ?? '#0E1011'}
               visible={!ready}
+              transparent={stage}
               alt={`${t(vehicle.name)} — ${dict.hero.canvasAlt}`}
               posterUrl={vehicle.asset.posterUrl}
             />
-          </>
+          </div>
         )}
+
+        {stage ? <StageFloor /> : null}
 
         {/*
           §16: the canvas needs an accessible text alternative describing the vehicle and its
@@ -385,7 +438,44 @@ export function ConfiguratorRoot({
 
         {compareEnabled && ready ? <SplitDivider splitRef={splitRef} /> : null}
 
-        <div className="absolute inset-x-0 bottom-0">
+        {/*
+          THE TOTAL AS A STAGE ELEMENT (§9).
+
+          Mirrors the hero's stat pair, and it is the reason it exists: the number the whole
+          configurator produces should live in the bay, at monumental size, next to the thing
+          it prices — not only as a sidebar figure the owner has to point at. Desktop only,
+          because below `lg` the bay is 46vh and the sidebar total is already on screen.
+        */}
+        {stage ? (
+          <div className="pointer-events-none absolute bottom-[4.75rem] left-6 z-20 hidden lg:block">
+            <StatPair>
+              <Stat
+                figure={formatBDT(breakdown.total, false)}
+                unit="৳"
+                label={dict.configurator.total}
+                tinted
+              />
+            </StatPair>
+          </div>
+        ) : null}
+
+        {/*
+          The lead path, inside the bay. The itemised breakdown stays in the sidebar; this is
+          the one action that must never require scrolling to reach.
+        */}
+        {stage ? (
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="tap absolute bottom-[4.75rem] right-6 z-20 hidden items-center gap-2 rounded-full border border-glass-border bg-[color-mix(in_oklab,var(--ph-bay)_78%,transparent)] px-5 text-sm font-600 text-bay-ink backdrop-blur-md transition-colors duration-200 hover:border-[var(--ph-glass-border-lit)] lg:inline-flex"
+          >
+            <span aria-hidden="true" className="size-1.5 rounded-full bg-signal" />
+            {dict.configurator.sendToWhatsappShort}
+          </a>
+        ) : null}
+
+        <div className="absolute inset-x-0 bottom-0 z-20">
           <ActionBar
             vehicle={vehicle}
             vehicleTitle={t(vehicle.name)}
@@ -409,13 +499,22 @@ export function ConfiguratorRoot({
         </div>
       </div>
 
-      {/* --- The panel ---------------------------------------------------- */}
-      <aside className="flex min-h-0 flex-col border-t border-glass-border bg-paper lg:border-l lg:border-t-0 lg:overflow-y-auto">
-        <div className="border-b border-glass-border px-4 py-4 sm:px-5">
-          <p className="sheet-code sheet-code-accent">
-            {dict.configurator.code}-{vehicle.segment.slice(0, 3).toUpperCase()}
+      {/*
+        --- The panel: an INSPECTION CARD, not a widget (§9) ----------------
+        Plate ground instead of glass, a champagne ceiling strip along its top edge, and hard
+        hairlines between groups. It should read as the document that came with the vehicle.
+      */}
+      <aside className="lit-edge flex min-h-0 flex-col border-t border-plate-border bg-plate lg:border-l lg:border-t-0 lg:overflow-y-auto">
+        <div className="flex items-start justify-between gap-3 border-b border-plate-border px-4 py-4 sm:px-5">
+          <div className="min-w-0">
+            <p className="sheet-code sheet-code-accent">
+              {dict.configurator.code}-{vehicle.segment.slice(0, 3).toUpperCase()}
+            </p>
+            <h2 className="display mt-1.5 text-xl font-700">{t(vehicle.name)}</h2>
+          </div>
+          <p className="sheet-code shrink-0 pt-1" lang="en">
+            {modelCode}
           </p>
-          <h2 className="display mt-1.5 text-xl font-700">{t(vehicle.name)}</h2>
         </div>
 
         <div className="flex-1">
@@ -427,7 +526,7 @@ export function ConfiguratorRoot({
           <SpecSheet vehicle={vehicle} />
         </div>
 
-        <div className="sticky bottom-0 mt-auto border-t border-glass-border">
+        <div className="sticky bottom-0 mt-auto border-t border-glass-border-lit">
           <PriceSummary breakdown={breakdown} whatsappHref={whatsappHref} />
         </div>
       </aside>

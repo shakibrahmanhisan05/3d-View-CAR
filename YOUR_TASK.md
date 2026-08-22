@@ -2,7 +2,59 @@
 
 > Claude keeps this file up to date. Whenever you come back, **read this file first.**
 > It only ever contains things *you* have to do — Claude handles the code.
-> Last updated: **2026-08-20** (round 2 — full-quality models, nothing decimated)
+> Last updated: **2026-08-22** (the visual rebuild — "The Bay, framed")
+
+---
+
+## Look at these, in this order
+
+The site works exactly as it did. What changed is that it now *sells*. Open it on your phone
+first, then on a laptop, and walk down this list.
+
+1. **The first two seconds.** The screen closes like a pair of cinema curtains while the car
+   is actually being downloaded — the bar underneath is real progress, not a decoration — and
+   then the curtains part onto the car. If your connection is bad, a "go straight in" link
+   appears after 2½ seconds, and the site opens by itself after 7 no matter what.
+2. **The hero.** The car now sits *inside a screen* — a rounded frame with a warm glow behind
+   it and its own model code, `SDG-1500`, painted enormous behind the bodywork. The roof of
+   the car passes in front of the letters. That is the whole difference between "a 3D car on a
+   website" and "a car in a showroom".
+3. **Tap a paint chip and watch the words.** This is the one to show a client. The chips are
+   half again bigger than before, and when you pick a colour **the site's text changes with
+   it** — the giant code behind the car, the section labels, the headline shading, the paint
+   name. Pick Racing Blue and the whole page goes blue. Pick Attitude Black and it goes cool
+   grey. Every one of them was checked to stay readable; none of them can turn the text
+   invisible.
+4. **The bottom of the hero.** Two facts at a size you can read from the third row of a
+   showroom — the base price, and the paint's real manufacturer name. The model code in the
+   middle. A small card bottom-right with the car from another angle and an orange button into
+   the full configurator.
+5. **The five dots on the left** (laptop only). One per section. Click one to jump; the lit one
+   always tells you where you are.
+6. **Scroll.** Each section now shows you *one* thing and shows it big: a sentence arriving
+   from the side, a shelf of demos with pictures on the tabs, a giant **A** and **B**, the ROI
+   number at nearly twice its old size and stamped like a form, an empty case study that reads
+   as *reserved* rather than broken, and prices where the ladder is in the **width** of the
+   cards, not a "most popular" sticker.
+7. **`/demo/car`, `/demo/bike`, `/demo/360`.** Same frame as the hero. The running total is
+   now a big number in the bay next to the car, and there is a WhatsApp button down there too
+   so it is never more than a thumb away. On the 360°, the auction grade is a stamp you can
+   read across a desk.
+8. **`/contact`.** One sheet of paper with a rule down the middle, a form on the left with
+   ruled lines instead of boxes, your number on the right at headline size, and a `FORM A`
+   stamp at the foot.
+
+**Nothing about your commercial decisions moved.** Prices are the same, in ৳, one-time. Bangla
+is still the default. Every button still ends at WhatsApp. There is still no "most popular"
+badge and no invented case study.
+
+**Two things to tell me:**
+
+- The sentence under the model code in the hero ("আপনার শোরুমের গাড়িটাই, ক্রেতার ফোনে…") is my
+  wording. Read it aloud and change it if it does not sound like you.
+- The header now hides the menu behind an index button at every screen size, so the masthead
+  stays quiet over the car. If you would rather have the links always visible on a laptop, say
+  so — it is a ten-minute change.
 
 ---
 

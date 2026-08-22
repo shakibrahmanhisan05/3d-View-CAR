@@ -36,6 +36,11 @@ export const en = {
     share: 'Share',
     tryAgain: 'Try again',
     required: 'Required',
+    stampGrade: 'Auction grade',
+    stampSection: 'Section',
+    stampOut: 'Output',
+    stampForm: 'Lead intake',
+    stampPending: 'Pending',
   },
 
   nav: {
@@ -62,6 +67,37 @@ export const en = {
     segmentBike: 'Motorcycle',
     dragHint: 'Drag to rotate',
     canvasAlt: 'An interactive 3D vehicle — drag to rotate it, tap a swatch to change its colour.',
+
+    statMrp: 'Base price',
+    statPaint: 'Paint',
+    statCc: 'Engine',
+    statSeat: 'Seat height',
+    modelPlateSub: 'The vehicle off your floor, in his hand — turned, repainted, priced.',
+    exploreCta: 'Open full configurator',
+    exploreAngle: 'Second angle',
+    ctaSecondaryShort: 'Book a demo',
+  },
+
+  scroll: {
+    label: 'Page sections',
+    hero: 'Home',
+    problem: 'Problem',
+    demos: 'Live demo',
+    products: 'Two products',
+    maths: 'The maths',
+    case: 'Case study',
+    pricing: 'Pricing',
+    faq: 'Questions',
+  },
+
+  boot: {
+    label: 'Loading the site',
+    title: 'Preparing the bay',
+    stageLights: 'Bringing the lights up',
+    stageModel: 'Rolling the vehicle in',
+    stagePaint: 'Mixing the paint',
+    stageReady: 'Ready',
+    skip: 'Go straight in',
   },
 
   problems: {

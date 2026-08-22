@@ -40,6 +40,12 @@ export const bn = {
     share: 'শেয়ার',
     tryAgain: 'আবার চেষ্টা করুন',
     required: 'আবশ্যক',
+    /* Rev 2 editorial artefacts — the stamps struck into section corners. */
+    stampGrade: 'অকশন গ্রেড',
+    stampSection: 'সেকশন',
+    stampOut: 'ফলাফল',
+    stampForm: 'লিড ফর্ম',
+    stampPending: 'অপেক্ষমাণ',
   },
 
   nav: {
@@ -66,6 +72,41 @@ export const bn = {
     segmentBike: 'মোটরসাইকেল',
     dragHint: 'ঘোরাতে টেনে দেখুন',
     canvasAlt: 'একটি ইন্টার‌্যাক্টিভ ৩ডি গাড়ি — টেনে ঘোরানো যায়, রং বদলানো যায়।',
+
+    /* --- Rev 2: the framed stage --------------------------------------- */
+    statMrp: 'বেস প্রাইস',
+    statPaint: 'পেইন্ট',
+    statCc: 'ইঞ্জিন',
+    statSeat: 'সিট হাইট',
+    /* One plain sentence under the model plate. Never the marketing tagline (§7.1). */
+    modelPlateSub: 'আপনার শোরুমের গাড়িটাই, ক্রেতার ফোনে — ঘুরিয়ে, রং বদলে, দামসহ।',
+    exploreCta: 'সম্পূর্ণ কনফিগারেটর',
+    exploreAngle: 'অন্য অ্যাঙ্গেল',
+    ctaSecondaryShort: 'ডেমো বুক করুন',
+  },
+
+  /* The left pip rail. One label per homepage section, read out to screen readers. */
+  scroll: {
+    label: 'পেজের অংশ',
+    hero: 'হোম',
+    problem: 'সমস্যা',
+    demos: 'লাইভ ডেমো',
+    products: 'দুই পণ্য',
+    maths: 'গণিত',
+    case: 'কেস স্টাডি',
+    pricing: 'দাম',
+    faq: 'প্রশ্ন',
+  },
+
+  /* The loading screen. Shown once per session while the vehicle is pulled down. */
+  boot: {
+    label: 'সাইট লোড হচ্ছে',
+    title: 'বে প্রস্তুত হচ্ছে',
+    stageLights: 'আলো জ্বালানো হচ্ছে',
+    stageModel: 'গাড়ি নামানো হচ্ছে',
+    stagePaint: 'রং মেশানো হচ্ছে',
+    stageReady: 'প্রস্তুত',
+    skip: 'সরাসরি ঢুকুন',
   },
 
   problems: {

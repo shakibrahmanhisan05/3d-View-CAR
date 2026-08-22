@@ -28,18 +28,31 @@ export function Footer({ credits }: { credits: Credits }) {
 
   return (
     <footer className="relative mt-28 border-t border-glass-border bg-paper-sunk">
-      {/* A warm hairline of light along the top edge — the room's ceiling strip. */}
+      {/*
+        The room's ceiling strip, thickened to 2px and given a soft bloom above it. The footer
+        is the closing plate of the document and it should read as the far wall of the bay —
+        the last piece of light on the page, not a rule where the content stopped.
+      */}
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color-mix(in_oklab,var(--ph-accent)_55%,transparent)] to-transparent"
+        className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-[color-mix(in_oklab,var(--ph-accent)_55%,transparent)] to-transparent"
+        style={{ boxShadow: '0 -12px 32px -8px color-mix(in oklab, var(--ph-accent) 22%, transparent)' }}
       />
 
       <div className="mx-auto max-w-page px-4 py-14 sm:px-6">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr]">
           <div>
-            <p className="display-wide text-lg font-700 uppercase tracking-[0.24em]">{brand.wordmark}</p>
+            <p className="display-wide text-2xl font-700 uppercase tracking-[0.24em]">{brand.wordmark}</p>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-ink-soft">{dict.common.tagline}</p>
-            <p className="sheet-code mt-6">{dict.footer.builtIn}</p>
+            {/*
+              Editorial jewellery, and it costs nothing: dealers live inside paperwork, and a
+              stock-number serial makes the footer read as the bottom of a real document
+              rather than as the place the links ran out.
+            */}
+            <p className="sheet-code mt-6" lang="en">
+              {stockSerial()}
+            </p>
+            <p className="sheet-code mt-2">{dict.footer.builtIn}</p>
           </div>
 
           <nav aria-label={dict.footer.navLabel}>
@@ -66,13 +79,13 @@ export function Footer({ credits }: { credits: Credits }) {
                   href={waHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-ink transition-colors hover:text-accent-gold"
+                  className="text-ink transition-colors hover:text-paint"
                 >
                   {dict.common.whatsapp}
                 </a>
               </li>
               <li>
-                <a href={telUrl(brand.phone)} className="num text-ink transition-colors hover:text-accent-gold">
+                <a href={telUrl(brand.phone)} className="num text-ink transition-colors hover:text-paint">
                   {brand.phone}
                 </a>
               </li>
@@ -95,13 +108,10 @@ export function Footer({ credits }: { credits: Credits }) {
           <p className="sheet-code">
             {dict.footer.rights} · <span className="num">{new Date().getFullYear()}</span>
           </p>
-          <button
-            type="button"
-            onClick={() => setCreditsOpen(true)}
-            className="sheet-code underline decoration-rule-strong underline-offset-4 transition-colors hover:text-accent-gold"
-          >
+          {/* The plate pill — the same shape as every other "open this" affordance (§12). */}
+          <Button type="button" variant="plate" size="sm" onClick={() => setCreditsOpen(true)}>
             {dict.footer.creditsLink}
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -110,6 +120,17 @@ export function Footer({ credits }: { credits: Credits }) {
       </AnimatePresence>
     </footer>
   );
+}
+
+/**
+ * `STK-ISSUE-2026-34`. A mock stock number, derived from the ISO week so it moves on its own
+ * and never needs maintaining. It is a code, so it stays Latin in both locales (§16).
+ */
+function stockSerial(): string {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 1);
+  const week = Math.ceil(((now.getTime() - start.getTime()) / 86_400_000 + start.getDay() + 1) / 7);
+  return `STK-ISSUE-${now.getFullYear()}-${String(week).padStart(2, '0')}`;
 }
 
 function CreditsModal({ credits, onClose }: { credits: Credits; onClose: () => void }) {
@@ -194,7 +215,7 @@ function CreditsModal({ credits, onClose }: { credits: Credits; onClose: () => v
                   href={entry.sourceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="num mt-1.5 inline-block text-xs text-accent-gold underline underline-offset-2"
+                  className="num mt-1.5 inline-block text-xs text-paint underline underline-offset-2"
                 >
                   {dict.footer.creditsSource} ↗
                 </a>

@@ -5,6 +5,7 @@
     "bn": "সেডান — মডিফিকেশন",
     "en": "Sedan — Modification"
   },
+  "modelCode": "MOD-1500",
   "segment": "modification",
   "asset": {
     "placeholder": "car",

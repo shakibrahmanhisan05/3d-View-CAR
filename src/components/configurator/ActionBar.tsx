@@ -49,9 +49,18 @@ export function ActionBar({
   const t = useLocalized();
 
   return (
-    <div className="on-bay pointer-events-auto flex flex-wrap items-stretch gap-1 border-t border-glass-border bg-[color-mix(in_oklab,var(--ph-bay)_82%,transparent)] p-1.5 text-bay-ink backdrop-blur-md">
+    /*
+      THREE PLATES, NOT ONE STRIP (§9).
+
+      The bar used to be one continuous band of eleven controls, so the environment switch —
+      the strongest single control in a live pitch — had exactly the same visual weight as
+      "reset view". Grouping it into `[env] · [view + sound + AR + reset] · [share]` with 8px
+      of bay showing between the plates gives the switch its own object to live in, and costs
+      nothing but a gap.
+    */
+    <div className="on-bay pointer-events-auto flex flex-wrap items-stretch gap-2 p-2 text-bay-ink">
       {/* Environment switch (§7.2) — the strongest single control in the pitch. */}
-      <div className="flex flex-1 basis-full items-stretch gap-1 sm:basis-auto">
+      <div className="flex flex-1 basis-full items-stretch gap-1 rounded-lg border border-glass-border bg-[color-mix(in_oklab,var(--ph-bay)_82%,transparent)] p-1 backdrop-blur-md sm:basis-auto">
         <span className="sheet-code sheet-code-accent flex items-center px-2.5">{dict.configurator.environment}</span>
         {environments.map((preset) => (
           <button
@@ -70,7 +79,7 @@ export function ActionBar({
         ))}
       </div>
 
-      <div className="flex flex-1 items-stretch gap-1">
+      <div className="flex flex-1 items-stretch gap-1 rounded-lg border border-glass-border bg-[color-mix(in_oklab,var(--ph-bay)_82%,transparent)] p-1 backdrop-blur-md">
         {/* Interior view (§7.1). Disabled with an explicit state rather than faked. */}
         <button
           type="button"
@@ -120,11 +129,14 @@ export function ActionBar({
         >
           {dict.configurator.resetView}
         </button>
+      </div>
 
+      {/* The third plate: share stands alone, because it is the one control that leaves. */}
+      <div className="flex items-stretch rounded-lg border border-glass-border bg-[color-mix(in_oklab,var(--ph-bay)_82%,transparent)] p-1 backdrop-blur-md">
         <button
           type="button"
           onClick={onShare}
-          className="tap flex items-center justify-center rounded-lg px-3 text-xs font-600 text-bay-ink/75 transition-colors duration-200 hover:bg-glass hover:text-bay-ink"
+          className="tap flex items-center justify-center rounded-lg px-4 text-xs font-600 text-bay-ink/75 transition-colors duration-200 hover:bg-glass hover:text-bay-ink"
         >
           {shareLabel}
         </button>

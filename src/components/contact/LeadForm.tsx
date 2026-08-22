@@ -32,7 +32,19 @@ import { cn } from '@/lib/utils';
  */
 const BD_MOBILE = /^(?:\+?880|0)1[3-9]\d{8}$/;
 
-export function LeadForm({ source }: { source?: string }) {
+export function LeadForm({
+  source,
+  tone = 'card',
+}: {
+  source?: string;
+  /**
+   * `bare` drops the glass card. The contact envelope (§11) is already a plate with a rule
+   * down the middle, and a floating card inside a document reads as a widget someone pasted
+   * onto the paperwork. Everywhere else — the prospect page, where the form sits alone on the
+   * page ground — the card is what gives it an edge to stand on.
+   */
+  tone?: 'card' | 'bare';
+}) {
   const dict = useDict();
   const locale = useLocale();
   const brand = useBrand();
@@ -89,7 +101,7 @@ export function LeadForm({ source }: { source?: string }) {
 
   if (status === 'sent') {
     return (
-      <div className="surface lit-edge max-w-xl overflow-hidden p-6 shadow-elev sm:p-8">
+      <div className={tone === 'bare' ? 'max-w-xl' : 'surface lit-edge max-w-xl overflow-hidden p-6 shadow-elev sm:p-8'}>
         <span className="sheet-code sheet-code-accent">OK</span>
         <p className="display mt-3 text-2xl font-700">{dict.contact.successTitle}</p>
         <p className="mt-3 text-sm leading-relaxed text-ink-soft">{dict.contact.successBody}</p>
@@ -97,7 +109,7 @@ export function LeadForm({ source }: { source?: string }) {
           href={whatsappUrl(brand.whatsapp, locale === 'bn' ? 'আসসালামু আলাইকুম।' : 'Hello —')}
           target="_blank"
           rel="noopener noreferrer"
-          className="num mt-5 inline-flex items-center gap-2 rounded-lg border border-glass-border bg-glass px-4 py-2.5 text-sm text-ink transition-colors hover:border-[var(--ph-glass-border-lit)] hover:text-accent-gold"
+          className="num mt-5 inline-flex items-center gap-2 rounded-lg border border-glass-border bg-glass px-4 py-2.5 text-sm text-ink transition-colors hover:border-[var(--ph-glass-border-lit)] hover:text-paint"
         >
           {brand.phone}
         </a>
@@ -106,7 +118,11 @@ export function LeadForm({ source }: { source?: string }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="surface lit-edge max-w-xl p-5 shadow-elev sm:p-7" noValidate>
+    <form
+      onSubmit={onSubmit}
+      className={tone === 'bare' ? 'max-w-xl' : 'surface lit-edge max-w-xl p-5 shadow-elev sm:p-7'}
+      noValidate
+    >
       <input type="hidden" {...register('locale')} value={locale} />
       <input type="hidden" {...register('source')} value={source ?? ''} />
 
