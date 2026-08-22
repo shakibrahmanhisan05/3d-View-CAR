@@ -157,18 +157,20 @@ export function Hero({
         sceneReady={ready}
       />
 
-      <div className="-mt-header px-2 pt-header sm:px-4">
+      <div className="-mt-header px-4 pt-header sm:px-0">
         <Frame
-          letterbox={false}
+          letterbox
           pips={pips}
-          shellClassName="bay canvas-host border border-glass-border-lit rounded-3xl shadow-elev-lg overflow-hidden"
+          shellClassName="bay canvas-host"
           shellStyle={{
-            height: 'min(max(680px, calc(100dvh - var(--ph-header-h))), 920px)',
+            height:
+              'min(max(560px, calc(100dvh - var(--ph-header-h) - 2 * var(--ph-frame-inset))), calc(100dvh - var(--ph-header-h)))',
           }}
         >
+          {/* z-0: Model code painted ONLY in the back behind the vehicle */}
           <Monolith code={modelCode} />
 
-          {/* z-1: 3D canvas stage */}
+          {/* z-1: Transparent 3D canvas stage */}
           <div className="absolute inset-0 z-[1]">
             <Scene
               vehicle={vehicle}
@@ -198,117 +200,55 @@ export function Hero({
 
           <StageFloor />
 
-          {/* ================= HERO OVERLAY CHROME ================= */}
+          {/* --- Chrome, all at z-20, all inside the frame inset ----------- */}
 
-          {/* 1. TOP HEADER OVERLAY: Headline, Sub, and CTA */}
-          <div className="absolute inset-x-4 top-[calc(var(--ph-header-h)+0.75rem)] sm:top-[calc(var(--ph-header-h)+1.25rem)] z-20 mx-auto max-w-4xl">
-            <m.div
-              className="glass-hud rounded-2xl p-4 sm:p-6 text-center shadow-2xl relative overflow-hidden group"
-              initial={reduced ? false : { opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: EASE }}
-            >
-              {/* Subtle accent sheen */}
-              <div
-                className="absolute inset-x-0 top-0 h-0.5 opacity-80"
-                style={{
-                  background:
-                    'linear-gradient(90deg, transparent, var(--ph-accent) 30%, var(--ph-signal) 70%, transparent)',
-                }}
-              />
-
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <span className="sheet-code-accent sheet-code uppercase text-[0.65rem] sm:text-xs tracking-[0.25em]">
-                  {dict.hero.code} • 3D DIGITAL SHOWROOM
-                </span>
-              </div>
-
-              <h1 className="display font-extrabold text-xl sm:text-3xl lg:text-4xl text-ink leading-tight tracking-tight max-w-3xl mx-auto">
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-100 to-slate-300">
-                  {dict.hero.title}
-                </span>
-              </h1>
-
-              <p className="mt-2 text-xs sm:text-sm text-ink-soft max-w-xl mx-auto line-clamp-2 leading-relaxed">
-                {dict.hero.sub}
-              </p>
-
-              <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-                <Button asChild variant="primary" size="md" className="shadow-glow">
-                  <Link href={localePath(locale, '/contact')}>{dict.hero.ctaPrimary}</Link>
-                </Button>
-                <Link
-                  href={localePath(locale, '/contact')}
-                  className="tap inline-flex items-center text-xs font-600 text-ink-soft hover:text-paint transition-colors px-3 py-1.5 rounded-lg border border-glass-border bg-glass"
-                >
-                  {dict.hero.ctaSecondary}
-                </Link>
-              </div>
-            </m.div>
+          {/* Top-left: Vehicle segment controls */}
+          <div
+            role="radiogroup"
+            aria-label={dict.roi.segment}
+            className="absolute left-[var(--ph-frame-inset)] top-[calc(var(--ph-frame-inset)+0.5rem)] z-20 flex gap-1 rounded-xl border border-glass-border bg-[color-mix(in_oklab,var(--ph-bay)_70%,transparent)] p-1 backdrop-blur-md"
+          >
+            {(
+              [
+                ['car', dict.hero.segmentCar],
+                ['bike', dict.hero.segmentBike],
+              ] as const
+            ).map(([value, label]) => (
+              <button
+                key={value}
+                type="button"
+                role="radio"
+                aria-checked={segment === value}
+                onClick={() => setSegment(value)}
+                className={cn(
+                  'tap relative rounded-lg px-4 text-sm font-600 transition-colors duration-200',
+                  segment === value ? 'text-paper' : 'text-bay-ink/70 hover:text-bay-ink',
+                )}
+              >
+                {segment === value ? (
+                  <m.span
+                    layoutId={reduced ? undefined : 'ph-hero-segment'}
+                    className="absolute inset-0 -z-10 rounded-lg bg-ink shadow-elev"
+                    transition={{ type: 'spring', stiffness: 400, damping: 34 }}
+                  />
+                ) : null}
+                {label}
+              </button>
+            ))}
           </div>
 
-          {/* 2. TOP CORNER CONTROLS */}
-          {/* Top-Left: Segment Switcher & Telemetry Badge */}
-          <div className="absolute left-4 top-3 sm:left-6 sm:top-4 z-20 flex items-center gap-2">
-            <div
-              role="radiogroup"
-              aria-label={dict.roi.segment}
-              className="flex gap-1 rounded-xl border border-glass-border-lit bg-[color-mix(in_oklab,var(--ph-bay)_80%,transparent)] p-1 backdrop-blur-md shadow-elev"
-            >
-              {(
-                [
-                  ['car', dict.hero.segmentCar],
-                  ['bike', dict.hero.segmentBike],
-                ] as const
-              ).map(([value, label]) => (
-                <button
-                  key={value}
-                  type="button"
-                  role="radio"
-                  aria-checked={segment === value}
-                  onClick={() => setSegment(value)}
-                  className={cn(
-                    'tap relative rounded-lg px-3 py-1 text-xs font-700 transition-colors duration-200 uppercase tracking-wider',
-                    segment === value ? 'text-paper font-800' : 'text-bay-ink/70 hover:text-bay-ink',
-                  )}
-                >
-                  {segment === value ? (
-                    <m.span
-                      layoutId={reduced ? undefined : 'ph-hero-segment'}
-                      className="absolute inset-0 -z-10 rounded-lg bg-ink shadow-elev"
-                      transition={{ type: 'spring', stiffness: 400, damping: 34 }}
-                    />
-                  ) : null}
-                  {label}
-                </button>
-              ))}
-            </div>
-
-            <div className="hidden xl:flex items-center gap-2 rounded-xl border border-glass-border bg-[color-mix(in_oklab,var(--ph-bay)_70%,transparent)] px-3 py-1.5 backdrop-blur-md text-[0.65rem] font-mono tracking-wider">
-              <span className="relative flex size-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
-              </span>
-              <span className="text-ink font-700">60 FPS</span>
-              <span className="text-bay-alu/30">•</span>
-              <span className="text-accent-gold font-700 tracking-widest uppercase">{ready ? '3D STUDIO LIVE' : 'LOADING'}</span>
-            </div>
-          </div>
-
-          {/* Top-Right: Drag hint badge */}
-          <div className="absolute right-4 top-3 sm:right-6 sm:top-4 z-20 flex items-center gap-2">
-            <span className="sheet-code rounded-xl border border-glass-border bg-[color-mix(in_oklab,var(--ph-bay)_80%,transparent)] px-3 py-1.5 text-[0.65rem] uppercase tracking-widest text-bay-alu backdrop-blur-md">
-              {ready ? dict.hero.dragHint : dict.common.loading}
-            </span>
-          </div>
+          {/* Top-right: Drag hint */}
+          <p className="sheet-code absolute right-[var(--ph-frame-inset)] top-[calc(var(--ph-frame-inset)+1rem)] z-20 text-bay-alu">
+            {ready ? dict.hero.dragHint : dict.common.loading}
+          </p>
 
           <p className="sr-only" aria-live="polite">
             {t(vehicle.name)}. {dict.hero.canvasAlt}
           </p>
 
-          {/* 3. BOTTOM FLOATING TELEMETRY CARDS */}
-          <div className="pointer-events-none absolute inset-x-4 bottom-[9.5rem] sm:bottom-[10.5rem] sm:inset-x-6 z-20 flex items-end justify-between gap-4">
-            <StatPair className="pointer-events-auto shadow-2xl">
+          {/* Bottom stats, model plate, explore card */}
+          <div className="pointer-events-none absolute inset-x-[var(--ph-frame-inset)] bottom-[10.75rem] z-20 flex items-end justify-between gap-6">
+            <StatPair className="pointer-events-auto">
               <Stat
                 figure={formatBDT(vehicle.basePriceBDT, false)}
                 unit="৳"
@@ -323,7 +263,7 @@ export function Hero({
               />
             </StatPair>
 
-            <div className="pointer-events-auto hidden md:block">
+            <div className="pointer-events-auto hidden flex-1 lg:block">
               <ModelPlate code={modelCode} sub={dict.hero.modelPlateSub} />
             </div>
 
@@ -339,10 +279,10 @@ export function Hero({
             </div>
           </div>
 
-          {/* 4. SIGNATURE FLOATING PAINT CHIPS STRIP */}
+          {/* Signature Paint Chip Strip */}
           {paintGroup ? (
-            <div className="absolute inset-x-0 bottom-0 z-20 px-3 pb-4 sm:px-6">
-              <ul className="no-scrollbar edge-fade mx-auto flex max-w-page snap-x gap-2.5 overflow-x-auto px-1 py-1">
+            <div className="absolute inset-x-0 bottom-0 z-20 px-3 pb-5 sm:px-6">
+              <ul className="no-scrollbar edge-fade mx-auto flex max-w-page snap-x gap-2.5 overflow-x-auto px-1 py-2">
                 {paintGroup.options.map((option) => {
                   const active = selection[paintGroup.id]?.includes(option.id) ?? false;
                   return (
@@ -353,10 +293,10 @@ export function Hero({
                         aria-pressed={active}
                         className={cn(
                           'tap group relative flex w-[6.75rem] flex-col items-start gap-1.5 rounded-xl border p-1.5 text-left',
-                          'bg-[color-mix(in_oklab,var(--ph-bay)_80%,transparent)] backdrop-blur-md',
+                          'bg-[color-mix(in_oklab,var(--ph-bay)_60%,transparent)] backdrop-blur-md',
                           'transition-[transform,border-color,box-shadow,filter] duration-[320ms] ease-[cubic-bezier(0.16,1,0.3,1)]',
                           active
-                            ? '-translate-y-1.5 border-[color-mix(in_oklab,var(--ph-accent)_70%,transparent)] shadow-glow'
+                            ? '-translate-y-1.5 border-[color-mix(in_oklab,var(--ph-accent)_60%,transparent)]'
                             : 'border-glass-border hover:-translate-y-0.5 hover:border-[var(--ph-glass-border-lit)]',
                         )}
                         style={
@@ -409,6 +349,57 @@ export function Hero({
             </div>
           ) : null}
         </Frame>
+      </div>
+
+      {/* --- Headline Copy BELOW the cinema frame on every viewport (§7.2) --- */}
+      <div className="mx-auto max-w-page px-4 pb-16 pt-12 sm:px-6 sm:pb-20">
+        <div className="grid gap-8 lg:grid-cols-[var(--ph-gutter)_minmax(0,1fr)] lg:gap-x-10">
+          <m.span
+            className="sheet-code sheet-code-accent"
+            initial={reduced ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            {dict.hero.code}
+          </m.span>
+
+          <div>
+            <m.h1
+              className="display display-lit max-w-4xl text-[2.25rem] font-700 leading-[1.05] sm:text-6xl"
+              initial={reduced ? false : { opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.72, ease: EASE, delay: 0.05 }}
+            >
+              {dict.hero.title}
+            </m.h1>
+
+            <m.p
+              className="mt-6 max-w-2xl text-base leading-relaxed text-ink-soft sm:text-lg"
+              initial={reduced ? false : { opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.72, ease: EASE, delay: 0.13 }}
+            >
+              {dict.hero.sub}
+            </m.p>
+
+            <m.div
+              className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4"
+              initial={reduced ? false : { opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.72, ease: EASE, delay: 0.21 }}
+            >
+              <Button asChild variant="primary" size="lg">
+                <Link href={localePath(locale, '/contact')}>{dict.hero.ctaPrimary}</Link>
+              </Button>
+              <Link
+                href={localePath(locale, '/contact')}
+                className="tap inline-flex items-center text-sm font-600 text-ink-soft underline decoration-rule-strong underline-offset-[6px] transition-colors hover:text-paint hover:decoration-[var(--ph-paint-lit)]"
+              >
+                {dict.hero.ctaSecondary}
+              </Link>
+            </m.div>
+          </div>
+        </div>
       </div>
     </section>
   );

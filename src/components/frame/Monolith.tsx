@@ -29,11 +29,11 @@ import { monolithIsNarrow } from '@/lib/model-code';
 import { cn } from '@/lib/utils';
 
 export function Monolith({
-  code = 'PHOENIX 3D',
+  code,
   scale = 1,
   className,
 }: {
-  code?: string;
+  code: string;
   scale?: number;
   className?: string;
 }) {
@@ -41,22 +41,17 @@ export function Monolith({
     <div
       aria-hidden="true"
       className={cn(
-        'pointer-events-none absolute inset-0 z-0 flex flex-col items-center justify-center overflow-hidden opacity-30 select-none',
+        'pointer-events-none absolute inset-0 z-0 flex items-center justify-center overflow-hidden select-none',
         className,
       )}
     >
       <span
         key={code}
         lang="en"
-        className="stroke-text font-display font-900 uppercase tracking-[0.22em] whitespace-nowrap text-[clamp(4rem,14vw,14rem)] leading-none text-center"
+        className={cn('monolith monolith-in font-display font-900 select-none text-center', monolithIsNarrow(code) && 'monolith-narrow')}
+        style={{ fontSize: scale === 1 ? undefined : `calc(clamp(9rem, 22vw, 22rem) * ${scale})` }}
       >
-        PHOENIX 3D
-      </span>
-      <span
-        lang="en"
-        className="sheet-code text-[clamp(0.65rem,1.2vw,1.1rem)] tracking-[0.4em] uppercase text-accent-gold/40 mt-2 font-mono"
-      >
-        SHOWROOM • HYPER-REAL 3D STUDIO • {code}
+        {code}
       </span>
     </div>
   );
