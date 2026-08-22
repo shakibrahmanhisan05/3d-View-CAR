@@ -99,7 +99,7 @@ export function Stat({
 }
 
 export function StatPair({ children, className }: { children: ReactNode; className?: string }) {
-  return <div className={cn('flex flex-col gap-5 sm:gap-7', className)}>{children}</div>;
+  return <div className={cn('flex flex-col gap-3 rounded-2xl border border-glass-border bg-[color-mix(in_oklab,var(--ph-bay)_75%,transparent)] p-4 backdrop-blur-md shadow-elev', className)}>{children}</div>;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -114,15 +114,11 @@ export function ModelPlate({
   className?: string;
 }) {
   return (
-    <div className={cn('flex flex-col items-center text-center', className)}>
-      {/*
-        lang="en" on its own node: the code is Latin in both locales and must never be read
-        out with Bangla phonetics, nor pasted into the middle of translated body copy (§19).
-      */}
-      <p className="model-plate" lang="en">
-        {code}
+    <div className={cn('flex flex-col items-center text-center rounded-2xl border border-glass-border bg-[color-mix(in_oklab,var(--ph-bay)_70%,transparent)] px-6 py-3 backdrop-blur-md shadow-elev', className)}>
+      <p className="model-plate font-mono text-sm tracking-widest text-accent-gold uppercase" lang="en">
+        SPEC CODE • {code}
       </p>
-      <p className="mt-3 max-w-[26ch] text-xs leading-relaxed text-ink-soft sm:text-sm">{sub}</p>
+      <p className="mt-1 max-w-[28ch] text-xs leading-relaxed text-ink-soft sm:text-sm">{sub}</p>
     </div>
   );
 }

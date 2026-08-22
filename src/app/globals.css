@@ -1184,3 +1184,24 @@ body::before {
     transform: none !important;
   }
 }
+
+/* Metallic outline stroke text for high-end luxury background watermarks */
+.stroke-text {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.12);
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.03);
+}
+
+.stroke-text-paint {
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in oklab, var(--ph-signal) 40%, transparent);
+  text-shadow: 0 0 30px color-mix(in oklab, var(--ph-signal) 20%, transparent);
+}
+
+.glass-hud {
+  background: color-mix(in oklab, var(--ph-bay) 70%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--ph-glass-border-lit);
+  box-shadow: var(--ph-shadow-lg);
+}

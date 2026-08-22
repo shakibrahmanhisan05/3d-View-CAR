@@ -157,33 +157,18 @@ export function Hero({
         sceneReady={ready}
       />
 
-      {/*
-        -mt-header pulls the frame up under the sticky header, which is transparent until the
-        page scrolls — so the composition starts at the very top of the viewport and the
-        header floats inside it, exactly as the reference does.
-
-        The height is a contract, not a guess: full viewport minus the header minus both frame
-        insets, floored so the vehicle always has room. It is set on the shell rather than on
-        an inner element so the box is reserved before the canvas mounts and CLS stays at 0.
-      */}
-      <div className="-mt-header px-4 pt-header sm:px-0">
+      <div className="-mt-header px-2 pt-header sm:px-4">
         <Frame
-          letterbox
+          letterbox={false}
           pips={pips}
-          shellClassName="bay canvas-host"
+          shellClassName="bay canvas-host border border-glass-border-lit rounded-3xl shadow-elev-lg overflow-hidden"
           shellStyle={{
-            /*
-              Floored at 560px so a short phone still gives the vehicle room, and ceilinged at
-              the viewport minus the header so the frame's bottom rim is never pushed below the
-              fold — a cinema frame you cannot see the bottom of is just a dark rectangle again.
-            */
-            height:
-              'min(max(560px, calc(100dvh - var(--ph-header-h) - 2 * var(--ph-frame-inset))), calc(100dvh - var(--ph-header-h)))',
+            height: 'min(max(680px, calc(100dvh - var(--ph-header-h))), 920px)',
           }}
         >
           <Monolith code={modelCode} />
 
-          {/* z-1: the canvas. Transparent, so the vehicle occludes the monolith behind it. */}
+          {/* z-1: 3D canvas stage */}
           <div className="absolute inset-0 z-[1]">
             <Scene
               vehicle={vehicle}
@@ -213,14 +198,62 @@ export function Hero({
 
           <StageFloor />
 
-          {/* --- Chrome, all at z-20, all inside the frame inset ----------- */}
+          {/* ================= HERO OVERLAY CHROME ================= */}
 
-          {/* Top-left: Vehicle segment controls and live telemetry HUD */}
-          <div className="absolute left-[var(--ph-frame-inset)] top-[calc(var(--ph-frame-inset)+0.5rem)] z-20 flex items-center gap-3">
+          {/* 1. TOP HEADER OVERLAY: Headline, Sub, and CTA */}
+          <div className="absolute inset-x-4 top-[calc(var(--ph-header-h)+0.75rem)] sm:top-[calc(var(--ph-header-h)+1.25rem)] z-20 mx-auto max-w-4xl">
+            <m.div
+              className="glass-hud rounded-2xl p-4 sm:p-6 text-center shadow-2xl relative overflow-hidden group"
+              initial={reduced ? false : { opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: EASE }}
+            >
+              {/* Subtle accent sheen */}
+              <div
+                className="absolute inset-x-0 top-0 h-0.5 opacity-80"
+                style={{
+                  background:
+                    'linear-gradient(90deg, transparent, var(--ph-accent) 30%, var(--ph-signal) 70%, transparent)',
+                }}
+              />
+
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <span className="sheet-code-accent sheet-code uppercase text-[0.65rem] sm:text-xs tracking-[0.25em]">
+                  {dict.hero.code} • 3D DIGITAL SHOWROOM
+                </span>
+              </div>
+
+              <h1 className="display font-extrabold text-xl sm:text-3xl lg:text-4xl text-ink leading-tight tracking-tight max-w-3xl mx-auto">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-100 to-slate-300">
+                  {dict.hero.title}
+                </span>
+              </h1>
+
+              <p className="mt-2 text-xs sm:text-sm text-ink-soft max-w-xl mx-auto line-clamp-2 leading-relaxed">
+                {dict.hero.sub}
+              </p>
+
+              <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
+                <Button asChild variant="primary" size="md" className="shadow-glow">
+                  <Link href={localePath(locale, '/contact')}>{dict.hero.ctaPrimary}</Link>
+                </Button>
+                <Link
+                  href={localePath(locale, '/contact')}
+                  className="tap inline-flex items-center text-xs font-600 text-ink-soft hover:text-paint transition-colors px-3 py-1.5 rounded-lg border border-glass-border bg-glass"
+                >
+                  {dict.hero.ctaSecondary}
+                </Link>
+              </div>
+            </m.div>
+          </div>
+
+          {/* 2. TOP CORNER CONTROLS */}
+          {/* Top-Left: Segment Switcher & Telemetry Badge */}
+          <div className="absolute left-4 top-3 sm:left-6 sm:top-4 z-20 flex items-center gap-2">
             <div
               role="radiogroup"
               aria-label={dict.roi.segment}
-              className="flex gap-1 rounded-xl border border-glass-border-lit bg-[color-mix(in_oklab,var(--ph-bay)_75%,transparent)] p-1 backdrop-blur-md shadow-elev"
+              className="flex gap-1 rounded-xl border border-glass-border-lit bg-[color-mix(in_oklab,var(--ph-bay)_80%,transparent)] p-1 backdrop-blur-md shadow-elev"
             >
               {(
                 [
@@ -235,8 +268,8 @@ export function Hero({
                   aria-checked={segment === value}
                   onClick={() => setSegment(value)}
                   className={cn(
-                    'tap relative rounded-lg px-4 py-1 text-sm font-600 transition-colors duration-200',
-                    segment === value ? 'text-paper font-700' : 'text-bay-ink/70 hover:text-bay-ink',
+                    'tap relative rounded-lg px-3 py-1 text-xs font-700 transition-colors duration-200 uppercase tracking-wider',
+                    segment === value ? 'text-paper font-800' : 'text-bay-ink/70 hover:text-bay-ink',
                   )}
                 >
                   {segment === value ? (
@@ -251,37 +284,31 @@ export function Hero({
               ))}
             </div>
 
-            {/* Telemetry Status HUD */}
-            <div className="hidden sm:flex items-center gap-2 rounded-xl border border-glass-border bg-[color-mix(in_oklab,var(--ph-bay)_60%,transparent)] px-3 py-1.5 backdrop-blur-md text-[0.7rem] font-mono tracking-wider">
+            <div className="hidden xl:flex items-center gap-2 rounded-xl border border-glass-border bg-[color-mix(in_oklab,var(--ph-bay)_70%,transparent)] px-3 py-1.5 backdrop-blur-md text-[0.65rem] font-mono tracking-wider">
               <span className="relative flex size-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
               </span>
-              <span className="text-ink font-600">60 FPS</span>
+              <span className="text-ink font-700">60 FPS</span>
               <span className="text-bay-alu/30">•</span>
-              <span className="text-accent-gold font-600 tracking-widest uppercase">{ready ? 'STUDIO 3D LIVE' : 'INITIALIZING'}</span>
+              <span className="text-accent-gold font-700 tracking-widest uppercase">{ready ? '3D STUDIO LIVE' : 'LOADING'}</span>
             </div>
           </div>
 
-          {/* Top-right: the drag affordance with interactive badge. */}
-          <div className="absolute right-[var(--ph-frame-inset)] top-[calc(var(--ph-frame-inset)+0.75rem)] z-20 flex items-center gap-2">
-            <span className="sheet-code rounded-full border border-glass-border bg-[color-mix(in_oklab,var(--ph-bay)_60%,transparent)] px-2.5 py-1 text-[0.65rem] uppercase tracking-widest text-bay-alu backdrop-blur-md">
+          {/* Top-Right: Drag hint badge */}
+          <div className="absolute right-4 top-3 sm:right-6 sm:top-4 z-20 flex items-center gap-2">
+            <span className="sheet-code rounded-xl border border-glass-border bg-[color-mix(in_oklab,var(--ph-bay)_80%,transparent)] px-3 py-1.5 text-[0.65rem] uppercase tracking-widest text-bay-alu backdrop-blur-md">
               {ready ? dict.hero.dragHint : dict.common.loading}
             </span>
           </div>
 
-          {/* §16: an accessible text alternative describing the vehicle and its configuration. */}
           <p className="sr-only" aria-live="polite">
             {t(vehicle.name)}. {dict.hero.canvasAlt}
           </p>
 
-          {/*
-            The three bottom objects share one row so they can never collide, and the row sits
-            above the chip strip. On mobile the stat pair alone survives — a 380px screen has
-            room for two facts or for none, and two facts is the correct answer.
-          */}
-          <div className="pointer-events-none absolute inset-x-[var(--ph-frame-inset)] bottom-[10.75rem] z-20 flex items-end justify-between gap-6">
-            <StatPair className="pointer-events-auto">
+          {/* 3. BOTTOM FLOATING TELEMETRY CARDS */}
+          <div className="pointer-events-none absolute inset-x-4 bottom-[9.5rem] sm:bottom-[10.5rem] sm:inset-x-6 z-20 flex items-end justify-between gap-4">
+            <StatPair className="pointer-events-auto shadow-2xl">
               <Stat
                 figure={formatBDT(vehicle.basePriceBDT, false)}
                 unit="৳"
@@ -296,13 +323,7 @@ export function Hero({
               />
             </StatPair>
 
-            {/*
-              Responsive visibility lives on WRAPPERS, never on the components themselves.
-              Both set `display` in their own base class list, and without tailwind-merge a
-              `hidden` arriving through `className` is resolved by stylesheet order rather
-              than by intent (see src/lib/utils.ts). Hiding a wrapper cannot conflict.
-            */}
-            <div className="pointer-events-auto hidden flex-1 lg:block">
+            <div className="pointer-events-auto hidden md:block">
               <ModelPlate code={modelCode} sub={dict.hero.modelPlateSub} />
             </div>
 
@@ -318,10 +339,10 @@ export function Hero({
             </div>
           </div>
 
-          {/* The signature object: the paint-chip strip, floating on the frame's bottom bleed. */}
+          {/* 4. SIGNATURE FLOATING PAINT CHIPS STRIP */}
           {paintGroup ? (
-            <div className="absolute inset-x-0 bottom-0 z-20 px-3 pb-5 sm:px-6">
-              <ul className="no-scrollbar edge-fade mx-auto flex max-w-page snap-x gap-2.5 overflow-x-auto px-1 py-2">
+            <div className="absolute inset-x-0 bottom-0 z-20 px-3 pb-4 sm:px-6">
+              <ul className="no-scrollbar edge-fade mx-auto flex max-w-page snap-x gap-2.5 overflow-x-auto px-1 py-1">
                 {paintGroup.options.map((option) => {
                   const active = selection[paintGroup.id]?.includes(option.id) ?? false;
                   return (
@@ -332,18 +353,10 @@ export function Hero({
                         aria-pressed={active}
                         className={cn(
                           'tap group relative flex w-[6.75rem] flex-col items-start gap-1.5 rounded-xl border p-1.5 text-left',
-                          /*
-                            60% bay rather than glass: the chips must read as sitting ON THE
-                            FLOOR of the bay, not as another sheet of chrome laid over it.
-                          */
-                          'bg-[color-mix(in_oklab,var(--ph-bay)_60%,transparent)] backdrop-blur-md',
-                          /*
-                            320ms, heavier than the 260ms nav/tab pill. The strip is the site's
-                            memorable object and it must not move like a menu item (§13).
-                          */
+                          'bg-[color-mix(in_oklab,var(--ph-bay)_80%,transparent)] backdrop-blur-md',
                           'transition-[transform,border-color,box-shadow,filter] duration-[320ms] ease-[cubic-bezier(0.16,1,0.3,1)]',
                           active
-                            ? '-translate-y-1.5 border-[color-mix(in_oklab,var(--ph-accent)_60%,transparent)]'
+                            ? '-translate-y-1.5 border-[color-mix(in_oklab,var(--ph-accent)_70%,transparent)] shadow-glow'
                             : 'border-glass-border hover:-translate-y-0.5 hover:border-[var(--ph-glass-border-lit)]',
                         )}
                         style={
@@ -355,7 +368,6 @@ export function Hero({
                             : undefined
                         }
                       >
-                        {/* The champagne rule along the top edge of the selected chip. */}
                         {active ? (
                           <span
                             aria-hidden="true"
@@ -373,11 +385,6 @@ export function Hero({
                           aria-hidden="true"
                         />
 
-                        {/*
-                          The inkan stamp: an ember disc on a champagne outer ring. The old
-                          bare tick read as a checkbox; this reads as a seal pressed into the
-                          corner of the chip, which is the auction-sheet language of the site.
-                        */}
                         {active ? (
                           <span
                             aria-hidden="true"
@@ -402,62 +409,6 @@ export function Hero({
             </div>
           ) : null}
         </Frame>
-      </div>
-
-      {/* --- Copy, below the frame, on every viewport (§7.2) ---------------- */}
-      <div className="mx-auto max-w-page px-4 pb-16 pt-12 sm:px-6 sm:pb-20">
-        <div className="grid gap-8 lg:grid-cols-[var(--ph-gutter)_minmax(0,1fr)] lg:gap-x-10">
-          <m.span
-            className="sheet-code sheet-code-accent"
-            initial={reduced ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            {dict.hero.code}
-          </m.span>
-
-          <div>
-            {/* 720ms / 24px, staggered 80ms — slower than a section reveal. The hero earns it. */}
-            <m.h1
-              className="display display-lit max-w-4xl text-[2.25rem] font-700 leading-[1.05] sm:text-6xl"
-              initial={reduced ? false : { opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.72, ease: EASE, delay: 0.05 }}
-            >
-              {dict.hero.title}
-            </m.h1>
-
-            <m.p
-              className="mt-6 max-w-2xl text-base leading-relaxed text-ink-soft sm:text-lg"
-              initial={reduced ? false : { opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.72, ease: EASE, delay: 0.13 }}
-            >
-              {dict.hero.sub}
-            </m.p>
-
-            {/*
-              ONE button, not two. Two visually equal buttons steal from the WhatsApp CTA in
-              the header, and the secondary action is a booking link, not a second offer (§7.2).
-            */}
-            <m.div
-              className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4"
-              initial={reduced ? false : { opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.72, ease: EASE, delay: 0.21 }}
-            >
-              <Button asChild variant="primary" size="lg">
-                <Link href={localePath(locale, '/contact')}>{dict.hero.ctaPrimary}</Link>
-              </Button>
-              <Link
-                href={localePath(locale, '/contact')}
-                className="tap inline-flex items-center text-sm font-600 text-ink-soft underline decoration-rule-strong underline-offset-[6px] transition-colors hover:text-paint hover:decoration-[var(--ph-paint-lit)]"
-              >
-                {dict.hero.ctaSecondary}
-              </Link>
-            </m.div>
-          </div>
-        </div>
       </div>
     </section>
   );
