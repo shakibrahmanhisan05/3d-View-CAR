@@ -265,14 +265,13 @@ export function Viewer360({ capture }: { capture: Capture360 }) {
                   aria-expanded={open}
                   /*
                     A defect keeps the signal colour — this is a condition report and a
-                    dealer needs the damage to read as damage. A plain note takes champagne
-                    instead of the old `bg-ink` white disc, which after the palette flip was
-                    the lightest thing on screen and shouted louder than the defects.
+                    dealer needs the damage to read as damage. A plain note is a white
+                    diagram marker, same grammar as the configurator's pins.
                   */
                   className={`num flex size-7 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border text-[0.7rem] backdrop-blur-sm transition-all duration-200 ease-out hover:scale-110 ${
                     hotspot.severity === 'defect'
                       ? 'border-signal bg-signal text-signal-ink shadow-elev'
-                      : 'border-[color-mix(in_oklab,var(--ph-accent)_55%,transparent)] bg-[color-mix(in_oklab,var(--ph-paper)_78%,transparent)] text-accent-gold hover:shadow-glow-gold'
+                      : 'border-white/40 bg-black/45 text-white hover:border-white'
                   }`}
                 >
                   <span aria-hidden="true">{hotspot.severity === 'defect' ? '!' : 'i'}</span>
@@ -280,8 +279,8 @@ export function Viewer360({ capture }: { capture: Capture360 }) {
                 </button>
 
                 {open ? (
-                  <div className="surface lit-edge glass absolute left-4 top-4 z-10 w-56 p-3.5 text-ink shadow-elev">
-                    <p className={hotspot.severity === 'defect' ? 'sheet-code text-signal-lit' : 'sheet-code sheet-code-accent'}>
+                  <div className="surface glass absolute left-4 top-4 z-10 w-56 p-3.5 text-ink shadow-elev">
+                    <p className={hotspot.severity === 'defect' ? 'sheet-code text-signal-lit' : 'sheet-code'}>
                       {hotspot.severity === 'defect' ? dict.viewer360.severityDefect : dict.viewer360.severityNote}
                     </p>
                     <p className="mt-1 text-sm font-600 leading-snug">{t(hotspot.label)}</p>
@@ -313,7 +312,7 @@ export function Viewer360({ capture }: { capture: Capture360 }) {
         <div className="on-bay relative z-20 flex items-center justify-between gap-4 border-t border-bay-rule px-4 py-2.5 text-bay-alu">
           <span className="sheet-code flex items-center gap-2">
             {/* A drag affordance the visitor can see before they touch anything. */}
-            <span aria-hidden="true" className={hasDragged ? 'opacity-0' : 'text-accent-gold'}>
+            <span aria-hidden="true" className={hasDragged ? 'opacity-0' : 'text-signal-lit'}>
               &#8596;
             </span>
             {hasDragged ? `${dict.viewer360.frame} ${frame + 1}/${capture.frameCount}` : dict.viewer360.dragHint}

@@ -91,15 +91,15 @@ function ChipStrip({
               onClick={() => onToggle(group, option.id)}
               aria-pressed={active}
               className={cn(
-                'tap block w-[5.25rem] rounded-xl border bg-glass p-1.5 text-left transition-all duration-300 ease-out',
+                'tap block w-[5.25rem] rounded-xl border bg-paper p-1.5 text-left transition-all duration-300 ease-out',
                 active
-                  ? '-translate-y-1 border-[color-mix(in_oklab,var(--ph-accent)_60%,transparent)] shadow-glow-gold'
-                  : 'border-glass-border hover:-translate-y-0.5 hover:border-[var(--ph-glass-border-lit)]',
+                  ? '-translate-y-1 border-signal shadow-elev'
+                  : 'border-glass-border hover:-translate-y-0.5 hover:border-glass-border-lit',
               )}
             >
               <span className="relative block">
                 <span
-                  className="block h-12 w-full rounded-lg ring-1 ring-inset ring-black/40"
+                  className="block h-12 w-full rounded-lg ring-1 ring-inset ring-black/25"
                   style={{ background: option.swatchHex ?? '#888' }}
                   aria-hidden="true"
                 />
@@ -107,9 +107,11 @@ function ChipStrip({
                   // The stamp. Printed into the corner of the chip, as a grade mark is.
                   <span
                     aria-hidden="true"
-                    className="absolute -right-1.5 -top-1.5 flex size-4 items-center justify-center rounded-full bg-accent-gold text-[0.55rem] font-700 leading-none text-paper shadow-elev"
+                    className="absolute -right-1.5 -top-1.5 flex size-4 items-center justify-center rounded-full bg-signal text-signal-ink shadow-elev-sm"
                   >
-                    ✓
+                    <svg width="8" height="8" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                      <path d="M1.5 5.5 4 8l4.5-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
                   </span>
                 ) : null}
               </span>
@@ -157,12 +159,12 @@ function ThumbnailGrid({
               className={cn(
                 'tap flex w-full flex-col items-start gap-1.5 rounded-xl border p-2 text-left transition-all duration-300 ease-out',
                 active
-                  ? 'border-[color-mix(in_oklab,var(--ph-accent)_60%,transparent)] bg-accent-sunk shadow-glow-gold'
-                  : 'border-glass-border bg-glass hover:border-[var(--ph-glass-border-lit)]',
+                  ? 'border-signal bg-signal-sunk'
+                  : 'border-glass-border bg-paper hover:border-glass-border-lit',
               )}
             >
               <span
-                className="block h-9 w-full rounded-lg ring-1 ring-inset ring-black/40"
+                className="block h-9 w-full rounded-lg ring-1 ring-inset ring-black/25"
                 style={{ background: thumbnailFill(option) }}
                 aria-hidden="true"
               />
@@ -241,14 +243,14 @@ function ToggleList({
                   'flex size-[18px] shrink-0 items-center justify-center border transition-colors duration-200',
                   group.multiSelect ? 'rounded-[5px]' : 'rounded-full',
                   active
-                    ? 'border-accent-gold bg-accent-gold'
+                    ? 'border-signal bg-signal'
                     : 'border-rule-strong group-hover:border-alu',
                 )}
               >
                 {active ? (
                   <span
                     className={cn(
-                      'block bg-paper',
+                      'block bg-white',
                       group.multiSelect ? 'h-[7px] w-[7px] rounded-[1px]' : 'size-[6px] rounded-full',
                     )}
                   />

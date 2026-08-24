@@ -25,7 +25,7 @@ export default function RouteError({ error, reset }: { error: Error & { digest?:
       <button
         type="button"
         onClick={reset}
-        className="tap mt-8 inline-flex w-fit items-center bg-ink px-5 py-3 text-sm font-600 text-paper"
+        className="tap mt-8 inline-flex w-fit items-center rounded-full bg-ink px-6 py-3 text-sm font-600 text-paper transition-opacity hover:opacity-90"
       >
         {dict.common.tryAgain}
       </button>

@@ -1,26 +1,19 @@
 'use client';
 
 /**
- * Site header — frosted chrome floating inside the cinema frame.
+ * Site header.
  *
- * It starts transparent so the hero composition runs edge to edge under it, and fuses into
- * glass once the page has moved. That transition is the only piece of scroll-linked styling
- * on the site: it is a boolean at an 8px threshold, not a scrubbed value, so it costs one
- * class swap rather than a paint per frame.
+ * Calm by design: wordmark left, real links visible from `xl` up (a nav hidden behind an
+ * index button on desktop reads as unfinished, and every extra tap costs a skeptical
+ * visitor), language and WhatsApp right.
  *
- * REVISION 2 — THE SILENCE (§2.10)
- * --------------------------------
- * The header was a left wordmark, seven centre links and three right controls: eleven things
- * competing across the top of a composition whose whole job is to have one subject. It is now
- * three cells — index left, wordmark centred, language and WhatsApp right — and the seven
- * links live in a sheet one tap away, at every viewport rather than only on mobile.
+ * It is frosted PAPER at every scroll position — not transparent-at-top — because the hero
+ * beneath it is the dark stage, and dark text over that stage only becomes legible after the
+ * page scrolls. A quiet paper bar above a spotlight reads as intentional; invisible nav does
+ * not. Scrolling adds a hairline shadow, nothing else.
  *
- * This is a deliberate trade: one tap of depth on the nav, in exchange for a masthead that
- * frames the vehicle instead of crowding it. The sheet is the same component that already
- * carried the mobile nav, so nothing became less reachable — the links moved, they did not go.
- *
- * The scrolled hairline is a warm champagne gradient rather than a flat rule, matching the
- * footer's ceiling strip: the page is a lit room, and both of its edges catch the same light.
+ * Below `xl` the links collapse into one menu sheet. The sheet is the same pattern at every
+ * width, so nothing about mobile changed.
  */
 
 import { AnimatePresence, m, useReducedMotion } from 'motion/react';
@@ -71,69 +64,62 @@ export function Header() {
       : `Hello — I'd like to talk about a website for ${brand.businessName.en}.`,
   );
 
-  const lit = scrolled || menuOpen;
+  const navItems = [...PRIMARY_NAV];
 
   return (
     <header
-      className={`sticky top-0 z-40 transition-[background-color,backdrop-filter] duration-300 ${
-        lit ? 'glass' : 'bg-transparent'
+      className={`glass sticky top-0 z-40 border-b transition-shadow duration-300 ${
+        scrolled ? 'shadow-elev-sm' : ''
       }`}
     >
-      {/* The warm hairline. Only present once the header has fused. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-px transition-opacity duration-300"
-        style={{
-          opacity: lit ? 1 : 0,
-          background:
-            'linear-gradient(90deg, transparent, color-mix(in oklab, var(--ph-accent) 55%, transparent) 20%, color-mix(in oklab, var(--ph-accent) 55%, transparent) 80%, transparent)',
-        }}
-      />
-
-      <div className="mx-auto grid h-header max-w-page grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 sm:px-6">
-        {/* --- Left: the index --------------------------------------------- */}
-        <div className="flex items-center justify-start">
-          <button
-            type="button"
-            onClick={() => setMenuOpen((open) => !open)}
-            aria-expanded={menuOpen}
-            aria-controls="ph-site-menu"
-            className="tap -ml-2 flex items-center gap-2.5 rounded-lg px-2 text-ink transition-colors hover:text-paint"
-          >
-            <MenuGlyph open={menuOpen} />
-            <span className="sheet-code hidden sm:block">{menuOpen ? dict.common.close : dict.common.menu}</span>
-            <span className="sr-only sm:hidden">{menuOpen ? dict.common.close : dict.common.menu}</span>
-          </button>
-        </div>
-
-        {/* --- Centre: the masthead ---------------------------------------- */}
+      <div className="mx-auto flex h-header max-w-page items-center justify-between gap-4 px-4 sm:px-6">
+        {/* --- Wordmark ------------------------------------------------------ */}
         <Link
           href={localePath(locale, '/')}
-          className="tap flex items-center justify-center gap-2.5 px-2 group"
+          className="tap flex items-center gap-2.5"
           aria-label={brand.businessName[locale]}
         >
           {brand.logoUrl ? (
-            <img src={brand.logoUrl} alt="" width={28} height={28} className="h-7 w-7 object-contain transition-transform duration-300 group-hover:scale-105" />
+            <img src={brand.logoUrl} alt="" width={28} height={28} className="size-7 object-contain" />
           ) : (
             <PhoenixMark />
           )}
-          <div className="flex items-center gap-2">
-            <span className="display-wide whitespace-nowrap text-[0.95rem] font-700 uppercase tracking-[0.28em] text-ink group-hover:text-paint transition-colors duration-200">
-              {brand.wordmark}
-            </span>
-            <span className="hidden xl:inline-flex items-center gap-1 rounded-full border border-glass-border bg-glass px-2 py-0.5 text-[0.6rem] font-mono text-accent-gold uppercase tracking-wider">
-              <span className="size-1.5 rounded-full bg-signal animate-pulse" />
-              3D SHOWROOM
-            </span>
-          </div>
+          <span className="display-wide whitespace-nowrap text-[1.05rem] font-700 uppercase tracking-[0.12em]">
+            {brand.wordmark}
+          </span>
         </Link>
 
-        {/* --- Right: language and the lead path --------------------------- */}
-        <div className="flex items-center justify-end gap-1.5">
+        {/* --- Links, visible from lg --------------------------------------- */}
+        <nav aria-label={dict.common.menu} className="hidden items-center gap-1 xl:flex">
+          {navItems.map((item) => {
+            const active = current === item.href || current.startsWith(`${item.href}/`);
+            return (
+              <Link
+                key={item.href}
+                href={localePath(locale, item.href)}
+                aria-current={active ? 'page' : undefined}
+                className={`relative rounded-full px-3.5 py-2 text-[0.86rem] transition-colors duration-200 ${
+                  active ? 'font-600 text-ink' : 'text-ink-soft hover:text-ink'
+                }`}
+              >
+                {dict.nav[item.key]}
+                {active ? (
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-x-3.5 -bottom-0.5 h-0.5 rounded-full bg-signal"
+                  />
+                ) : null}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* --- Right: language · WhatsApp · menu ----------------------------- */}
+        <div className="flex items-center gap-2">
           <Link
             href={localePath(otherLocale, current)}
             hrefLang={otherLocale}
-            className="tap flex items-center rounded-lg px-2.5 text-[0.8rem] text-ink-soft transition-colors hover:text-paint"
+            className="tap flex items-center rounded-lg px-2 text-[0.82rem] font-500 text-ink-soft transition-colors hover:text-ink"
             aria-label={`${dict.common.language}: ${LOCALE_LABEL[otherLocale]}`}
           >
             {LOCALE_LABEL[otherLocale]}
@@ -142,9 +128,8 @@ export function Header() {
           {/*
             The wrapper is not decoration. `Button`'s base sets `inline-flex`, and without
             tailwind-merge (see src/lib/utils.ts) a `hidden` passed through `className` no
-            longer reliably beats it — the winner becomes stylesheet order, and on a 380px
-            phone this button was spilling off the right edge. Hiding the WRAPPER cannot
-            conflict with anything the button sets.
+            longer reliably beats it — the winner becomes stylesheet order. Hiding the
+            WRAPPER cannot conflict with anything the button sets.
           */}
           <div className="hidden sm:block">
             <Button asChild variant="primary" size="md">
@@ -153,6 +138,17 @@ export function Header() {
               </a>
             </Button>
           </div>
+
+          <button
+            type="button"
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-expanded={menuOpen}
+            aria-controls="ph-site-menu"
+            className="tap -mr-2 flex items-center rounded-lg px-2 text-ink lg:hidden"
+          >
+            <MenuGlyph open={menuOpen} />
+            <span className="sr-only">{menuOpen ? dict.common.close : dict.common.menu}</span>
+          </button>
         </div>
       </div>
 
@@ -160,32 +156,31 @@ export function Header() {
         {menuOpen ? (
           <m.div
             id="ph-site-menu"
-            className="overflow-hidden border-t border-glass-border"
+            className="overflow-hidden border-t border-glass-border xl:hidden"
             initial={reduced ? false : { height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={reduced ? undefined : { height: 0, opacity: 0 }}
-            transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
           >
             <nav aria-label={dict.common.menu} className="mx-auto max-w-page px-4 pt-2 sm:px-6">
-              <ul className="lg:grid lg:grid-cols-2 lg:gap-x-12">
-                {[...PRIMARY_NAV, { href: '/contact', key: 'contact' as const }].map((item, index) => (
-                  <li key={item.href} className="border-b border-rule-faint last:border-b-0 lg:last:border-b">
+              <ul>
+                {[...PRIMARY_NAV, { href: '/contact', key: 'contact' as const }].map((item) => (
+                  <li key={item.href} className="border-b border-rule-faint last:border-b-0">
                     <Link
                       href={localePath(locale, item.href)}
-                      className="tap group flex items-baseline gap-4 py-3.5"
+                      className="tap flex items-center py-3.5 text-[1.05rem]"
                       aria-current={current === item.href ? 'page' : undefined}
                     >
-                      <span className="sheet-code sheet-code-accent w-10 shrink-0">
-                        {String(index + 1).padStart(2, '0')}
+                      <span className={current === item.href ? 'font-600 text-signal' : ''}>
+                        {dict.nav[item.key]}
                       </span>
-                      <span className="text-lg transition-colors group-hover:text-paint">{dict.nav[item.key]}</span>
                     </Link>
                   </li>
                 ))}
               </ul>
             </nav>
-            <div className="mx-auto max-w-page px-4 py-5 sm:px-6">
-              <Button asChild variant="primary" size="lg" className="w-full sm:w-auto">
+            <div className="mx-auto max-w-page px-4 py-5 sm:px-6 sm:hidden">
+              <Button asChild variant="primary" size="md" className="w-full">
                 <a href={waHref} target="_blank" rel="noopener noreferrer">
                   {dict.common.whatsapp}
                 </a>
@@ -199,8 +194,10 @@ export function Header() {
 }
 
 /**
- * The default wordmark glyph — a stylised phoenix wing cut from two arcs. Drawn inline so it
- * inherits the accent and costs no request; a prospect's own `logoUrl` replaces it entirely.
+ * The default wordmark glyph — a stylised phoenix wing cut from two arcs. One colour now:
+ * a mark in the accent colour reads as a logo, a two-colour mark reads as decoration.
+ * Drawn inline so it inherits the prospect's accent and costs no request; a prospect's own
+ * `logoUrl` replaces it entirely.
  */
 function PhoenixMark() {
   return (
@@ -211,13 +208,14 @@ function PhoenixMark() {
       />
       <path
         d="M14 14.5 C 11.5 16.5, 9.5 19.5, 9 25.5 C 11.5 22, 12.8 20.5, 14 19.8 C 15.2 20.5, 16.5 22, 19 25.5 C 18.5 19.5, 16.5 16.5, 14 14.5 Z"
-        fill="var(--ph-accent)"
+        fill="var(--ph-signal)"
+        opacity="0.55"
       />
     </svg>
   );
 }
 
-/** Two rules that become an X. Drawn, not imported — this is the only icon in the header. */
+/** Two rules that become an X. Drawn, not imported — the only icon in the header. */
 function MenuGlyph({ open }: { open: boolean }) {
   return (
     <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false" className="shrink-0">

@@ -27,7 +27,7 @@ export function generateStaticParams() {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#0A0B0D',
+  themeColor: '#f7f5f0',
   // The configurator is a drag surface; a double-tap zoom in the middle of a colour change
   // is the difference between "impressive" and "broken" in a live pitch.
   width: 'device-width',

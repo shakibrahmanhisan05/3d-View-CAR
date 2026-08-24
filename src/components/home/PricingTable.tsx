@@ -71,13 +71,13 @@ export function PricingTable({ locale }: { locale: Locale }) {
       <RevealGroup className="grid gap-4 lg:grid-cols-[40fr_32fr_28fr]">
         {tiers.map((tier) => (
           <RevealItem key={tier.code}>
-            <Card interactive className="group relative flex h-full flex-col p-7 border-glass-border hover:border-accent-gold/40 transition-all duration-300">
+            <Card interactive className="group relative flex h-full flex-col p-7 transition-all duration-300">
               <div className="flex items-baseline justify-between gap-3">
                 <span className="sheet-code sheet-code-accent flex items-baseline gap-2">
-                  {/* The chip. A real 6px champagne square, on the letters' own baseline. */}
+                  {/* The chip. A real 6px square in the action colour, on the letters' baseline. */}
                   <span
                     aria-hidden="true"
-                    className="inline-block size-1.5 shrink-0 bg-accent-gold"
+                    className="inline-block size-1.5 shrink-0 bg-signal"
                     style={{ transform: 'translateY(-1px)' }}
                   />
                   {tier.code}
@@ -101,7 +101,7 @@ export function PricingTable({ locale }: { locale: Locale }) {
                 <ul className="space-y-2">
                   {tier.items.map((item) => (
                     <li key={item} className="flex gap-2.5 text-sm leading-snug">
-                      <span aria-hidden="true" className="mt-[0.45rem] size-1.5 shrink-0 rounded-full bg-accent-gold" />
+                      <span aria-hidden="true" className="mt-[0.45rem] size-1.5 shrink-0 rounded-full bg-rule-strong" />
                       <span>{item}</span>
                     </li>
                   ))}
@@ -111,7 +111,7 @@ export function PricingTable({ locale }: { locale: Locale }) {
               <div className="mt-6 pt-4 border-t border-rule-faint">
                 <a
                   href={`/${locale}/contact`}
-                  className="tap flex w-full items-center justify-center gap-2 rounded-xl border border-glass-border-lit bg-glass-strong py-3 text-xs font-700 uppercase tracking-widest text-ink transition-colors duration-200 group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary"
+                  className="tap flex w-full items-center justify-center gap-2 rounded-full border border-glass-border-lit bg-paper py-3 text-xs font-700 uppercase tracking-widest text-ink transition-colors duration-200 group-hover:bg-signal group-hover:text-signal-ink group-hover:border-signal"
                 >
                   <span>{dict.hero.ctaPrimary}</span>
                 </a>
@@ -133,11 +133,11 @@ export function PricingTable({ locale }: { locale: Locale }) {
         <Card
           tone="plate"
           className="mt-4 flex flex-col gap-6 p-7 sm:flex-row sm:items-center sm:justify-between"
-          style={{ borderTopWidth: 2, borderTopColor: 'color-mix(in oklab, var(--ph-accent) 45%, transparent)' }}
+          style={{ borderTopWidth: 2, borderTopColor: 'var(--ph-signal)' }}
         >
           <div className="max-w-2xl">
             <span className="sheet-code sheet-code-accent flex items-baseline gap-2">
-              <span aria-hidden="true" className="inline-block size-1.5 shrink-0 bg-accent-gold" />
+              <span aria-hidden="true" className="inline-block size-1.5 shrink-0 bg-signal" />
               P4
             </span>
             <h3 className="display mt-3 text-xl font-700">{p.careName}</h3>

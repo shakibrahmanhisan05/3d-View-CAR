@@ -18,7 +18,7 @@ import { Frame } from './Frame';
 
 export function DemoStage({ children }: { children: ReactNode }) {
   return (
-    <div className="-mt-header px-3 pb-8 pt-header sm:px-0">
+    <div className="px-3 pb-10 pt-4 sm:px-5">
       <Frame letterbox={false} shellClassName="shadow-elev-lg">
         {children}
       </Frame>

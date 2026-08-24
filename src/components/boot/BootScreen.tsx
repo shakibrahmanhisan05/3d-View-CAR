@@ -236,7 +236,10 @@ export function BootScreen({
       role="status"
       aria-live="polite"
       aria-label={dict.boot.label}
-      className="fixed inset-0 z-[80] overflow-hidden"
+      /* `.stage` re-maps the token family onto the dark ground — this overlay is fixed to the
+         viewport and sits outside any .bay ancestor, so without it its text inherits the
+         light page theme and vanishes against the curtains. */
+      className="stage fixed inset-0 z-[80] overflow-hidden"
       style={{ pointerEvents: exiting ? 'none' : 'auto' }}
     >
       {/* If JS never arrives, neither does the code that would dismiss this. Remove it. */}
@@ -269,15 +272,8 @@ export function BootScreen({
         }}
       />
 
-      {/* The seam where the two halves meet — a champagne hairline, lit from the middle. */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 top-1/2 h-px"
-        style={{
-          background:
-            'linear-gradient(90deg, transparent, color-mix(in oklab, var(--ph-accent) 70%, transparent), transparent)',
-        }}
-      />
+      {/* The seam where the two halves meet — a single lit hairline. */}
+      <div aria-hidden="true" className="absolute inset-x-0 top-1/2 h-px bg-white/15" />
 
       <div
         className="absolute inset-0 flex flex-col items-center justify-center px-6"
@@ -291,54 +287,33 @@ export function BootScreen({
         <span
           aria-hidden="true"
           lang="en"
-          className="monolith absolute select-none opacity-[0.14]"
-          style={{ fontSize: 'clamp(7rem, 20vw, 18rem)' }}
+          className="monolith absolute select-none"
+          style={{ fontSize: 'clamp(7rem, 20vw, 18rem)', opacity: 0.45 }}
         >
           {code}
         </span>
 
         <div className="relative flex w-full max-w-[26rem] flex-col items-center">
-          {/* The vehicle's own outline, traced in its own paint. */}
-          <div className="boot-trace mb-8 w-[16rem] sm:w-[20rem]">
+          {/* The vehicle's own outline, in its own paint. */}
+          <div className="mb-8 w-[16rem] sm:w-[20rem]">
             <VehicleSilhouette segment={segment} paintHex={paintHex} outline className="h-20 w-full sm:h-24" />
           </div>
 
-          <div className="boot-mark mb-5">
-            <PhoenixBootMark />
-          </div>
-
-          <p className="display-wide text-center text-sm font-700 uppercase tracking-[0.42em] text-ink">
+          <p className="display-wide text-center text-sm font-700 uppercase tracking-[0.42em] text-white">
             {wordmark}
           </p>
 
-          {/* The rail. One champagne hairline, one ember fill, one travelling highlight. */}
+          {/* The rail. One hairline, one signal fill, real bytes behind it. */}
           <div className="mt-8 w-full">
             <div className="mb-2.5 flex items-baseline justify-between gap-4">
-              <span className="sheet-code">{stage}</span>
+              <span className="sheet-code text-white/50">{stage}</span>
               <span className="num text-xs font-700 tabular-nums text-paint">{percent}%</span>
             </div>
 
-            <div
-              className="relative h-px w-full overflow-hidden"
-              style={{ background: 'color-mix(in oklab, var(--ph-accent) 22%, transparent)' }}
-            >
+            <div aria-hidden="true" className="relative h-px w-full bg-white/15">
               <div
-                className="absolute inset-y-0 left-0"
-                style={{
-                  width: `${percent}%`,
-                  background: 'linear-gradient(90deg, transparent, var(--ph-signal))',
-                  boxShadow: '0 0 12px 1px color-mix(in oklab, var(--ph-signal) 70%, transparent)',
-                  transition: 'width 90ms linear',
-                }}
-              />
-              {/* A slow sweep across the unfilled rail, so the rail is alive even at 4% */}
-              <div
-                aria-hidden="true"
-                className="boot-sweep absolute inset-y-0 left-0 w-1/4"
-                style={{
-                  background:
-                    'linear-gradient(90deg, transparent, color-mix(in oklab, var(--ph-accent) 60%, transparent), transparent)',
-                }}
+                className="absolute inset-y-0 left-0 bg-signal"
+                style={{ width: `${percent}%`, transition: 'width 90ms linear' }}
               />
             </div>
           </div>
@@ -352,7 +327,7 @@ export function BootScreen({
               <button
                 type="button"
                 onClick={close}
-                className="tap sheet-code px-4 underline decoration-rule-strong underline-offset-4 transition-colors hover:text-paint"
+                className="tap sheet-code px-4 underline decoration-white/30 underline-offset-4 transition-colors hover:text-paint"
               >
                 {dict.boot.skip}
               </button>
@@ -361,24 +336,5 @@ export function BootScreen({
         </div>
       </div>
     </div>
-  );
-}
-
-/**
- * The phoenix wing, at boot size. Same two arcs as the header mark — one ember, one champagne
- * — so the first thing on screen is already the brand rather than a generic spinner.
- */
-function PhoenixBootMark() {
-  return (
-    <svg width="52" height="52" viewBox="0 0 28 28" aria-hidden="true" focusable="false">
-      <path
-        d="M14 2.5 C 9 7, 5.5 11, 4.5 17.5 C 8 14, 11 12.5, 14 12 C 17 12.5, 20 14, 23.5 17.5 C 22.5 11, 19 7, 14 2.5 Z"
-        fill="var(--ph-signal)"
-      />
-      <path
-        d="M14 14.5 C 11.5 16.5, 9.5 19.5, 9 25.5 C 11.5 22, 12.8 20.5, 14 19.8 C 15.2 20.5, 16.5 22, 19 25.5 C 18.5 19.5, 16.5 16.5, 14 14.5 Z"
-        fill="var(--ph-accent)"
-      />
-    </svg>
   );
 }

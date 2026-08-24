@@ -83,6 +83,12 @@ export const bn = {
     exploreCta: 'সম্পূর্ণ কনফিগারেটর',
     exploreAngle: 'অন্য অ্যাঙ্গেল',
     ctaSecondaryShort: 'ডেমো বুক করুন',
+
+    /* The two quiet facts beside the headline. */
+    factOneLabel: 'যা এটা',
+    factOneBody: 'লাইভ ৩ডি — ক্রেতা ফোনেই গাড়ি ঘুরিয়ে দেখে, রং বদলে, অ্যাক্সেসরিজ বসিয়ে দেখে।',
+    factTwoLabel: 'যা এটা না',
+    factTwoBody: 'কোনো অ্যাপ না, কোনো মাসিক বিলও না। একবারের খরচ, আপনার নিজের ওয়েবসাইট।',
   },
 
   /* The left pip rail. One label per homepage section, read out to screen readers. */
@@ -119,6 +125,7 @@ export const bn = {
       'শোরুমে আসার আগেই ক্রেতা সন্দেহ করে, ছবিতে দাগ লুকানো আছে কি না।',
     ],
     footnote: 'তিনটাই একই সমস্যা: ক্রেতা যথেষ্ট দেখতে পায় না, তাই সে আসে না — বা এসে দর কষে।',
+    quoteSource: '— শেখ মুজিব রোডের এক ডিলার, আমাদের সাথে প্রথম কথায়',
   },
 
   demos: {

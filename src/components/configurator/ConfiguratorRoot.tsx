@@ -411,7 +411,7 @@ export function ConfiguratorRoot({
             <PosterFallback
               segment={vehicle.segment}
               paintHex={paintHex}
-              backgroundHex={environment?.background ?? '#0E1011'}
+              backgroundHex={environment?.background ?? '#101114'}
               visible={!ready}
               transparent={stage}
               alt={`${t(vehicle.name)} — ${dict.hero.canvasAlt}`}

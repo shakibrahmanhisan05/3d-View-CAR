@@ -30,12 +30,9 @@ export default async function WorkPage({ params }: { params: Promise<{ locale: s
         outline on sunk paper with a real pending code. It must read as RESERVED SPACE, not
         as a card that failed to load — the last flat pre-Obsidian surface on a public route.
       */}
-      <div
-        className="relative max-w-3xl overflow-hidden rounded-xl bg-paper-sunk p-6 sm:p-10"
-        style={{ border: '2px dashed color-mix(in oklab, var(--ph-accent) 36%, transparent)' }}
-      >
+      <div className="relative max-w-3xl overflow-hidden rounded-2xl border-2 border-dashed border-rule-strong bg-paper p-6 sm:p-10">
         <div className="flex items-start justify-between gap-4">
-          <span className="sheet-code sheet-code-accent">CS-00 · {dict.common.stampPending.toUpperCase()}</span>
+          <span className="sheet-code">CS-00 · {dict.common.stampPending.toUpperCase()}</span>
           <Seal size={52} tone="accent" title={dict.common.stampPending}>
             CS
             <br />

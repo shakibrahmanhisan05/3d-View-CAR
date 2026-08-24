@@ -170,10 +170,9 @@ export function LeadForm({
       </Field>
 
       {/*
-        The segmented control speaks the same language as the paint chips and the demo tab
-        rail: the chosen card lifts, takes a champagne edge and carries a gold tick. It used
-        to be four square buttons whose active state was a flat white fill, which on the
-        Obsidian ground read as a disabled control rather than a chosen one.
+        The segmented control speaks the same language as the paint chips: the chosen card
+        lifts, takes a signal edge and carries a tick. A flat fill read as a disabled
+        control rather than a chosen one.
       */}
       <fieldset className="py-4">
         <legend className="text-sm text-ink-soft">{dict.contact.segment}</legend>
@@ -183,20 +182,22 @@ export function LeadForm({
               key={value}
               className={cn(
                 'tap group relative flex cursor-pointer items-center justify-center rounded-xl border px-3 py-3 text-center text-sm',
-                'border-glass-border bg-glass text-ink-soft transition-all duration-200 ease-out',
-                'hover:-translate-y-0.5 hover:border-[var(--ph-glass-border-lit)] hover:text-ink',
-                'has-[:checked]:-translate-y-1 has-[:checked]:border-[color-mix(in_oklab,var(--ph-accent)_60%,transparent)]',
-                'has-[:checked]:bg-accent-sunk has-[:checked]:text-accent-gold has-[:checked]:shadow-glow-gold',
-                'has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[var(--ph-accent)]',
+                'border-glass-border bg-paper text-ink-soft transition-all duration-200 ease-out',
+                'hover:-translate-y-0.5 hover:border-glass-border-lit hover:text-ink',
+                'has-[:checked]:-translate-y-1 has-[:checked]:border-signal',
+                'has-[:checked]:bg-signal-sunk has-[:checked]:font-600 has-[:checked]:text-signal',
+                'has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-signal',
               )}
             >
               <input type="radio" value={value} className="sr-only" {...register('segment')} />
               {label}
               <span
                 aria-hidden="true"
-                className="absolute -right-1.5 -top-1.5 hidden size-4 items-center justify-center rounded-full bg-accent-gold text-[0.55rem] font-700 leading-none text-paper shadow-elev group-has-[:checked]:flex"
+                className="absolute -right-1.5 -top-1.5 hidden size-4 items-center justify-center rounded-full bg-signal text-signal-ink shadow-elev-sm group-has-[:checked]:flex"
               >
-                ✓
+                <svg width="8" height="8" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                  <path d="M1.5 5.5 4 8l4.5-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               </span>
             </label>
           ))}

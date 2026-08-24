@@ -56,24 +56,22 @@ const buttonVariants = cva(
           any hue, and white is the only foreground that survives all of them (§10).
         */
         primary:
-          'rounded-lg bg-signal text-signal-ink shadow-elev hover:brightness-110 hover:shadow-glow',
+          'rounded-full bg-signal text-signal-ink shadow-elev-sm hover:brightness-110 hover:shadow-elev',
         /* Inverted metal. The neutral confirm. */
-        solid: 'rounded-lg bg-ink text-paper hover:bg-ink/90 shadow-elev',
-        /* The default surface button — glass on the dark floor. */
+        solid: 'rounded-full bg-ink text-paper hover:bg-ink/90 shadow-elev-sm',
+        /* The default surface button — hairline pill, adapts to its ground via tokens. */
         outline:
-          'rounded-lg border border-glass-border bg-glass text-ink hover:border-[var(--ph-glass-border-lit)] hover:bg-glass-strong',
-        /* Champagne: used for the elegance layer, e.g. "see the spec" affordances. */
-        gold: 'rounded-lg border border-[color-mix(in_oklab,var(--ph-accent)_45%,transparent)] bg-accent-sunk text-accent-gold hover:bg-[color-mix(in_oklab,var(--ph-accent)_22%,var(--ph-paper))]',
+          'rounded-full border border-glass-border-lit bg-glass text-ink hover:border-alu hover:bg-glass-strong',
+        /* Bronze: used sparingly, e.g. "see the spec" affordances. */
+        gold: 'rounded-full border border-[color-mix(in_oklab,var(--ph-accent)_45%,transparent)] bg-accent-sunk text-accent-bronze hover:bg-[color-mix(in_oklab,var(--ph-accent)_18%,var(--ph-paper))]',
         /*
-          The plate pill (§12). One shape for every "explore / open / read more" affordance on
-          the site — the two-product links, the case-study CTA, the credits link, the contact
-          card. Before this they were four different underlined links, which is how a site
-          ends up looking assembled rather than designed.
+          The quiet pill for every "explore / open / read more" affordance — one shape across
+          the site, so the page reads designed rather than assembled.
         */
         plate:
-          'rounded-full border border-glass-border bg-glass text-ink hover:border-[var(--ph-glass-border-lit)] hover:bg-glass-strong',
+          'rounded-full border border-glass-border bg-glass text-ink hover:border-glass-border-lit hover:bg-glass-strong',
         ghost: 'rounded-lg text-ink-soft hover:bg-glass hover:text-ink',
-        link: 'rounded-lg text-ink underline decoration-rule-strong underline-offset-4 hover:decoration-[var(--ph-accent)] hover:text-paint',
+        link: 'rounded-lg text-ink underline decoration-rule-strong underline-offset-4 hover:text-signal hover:decoration-signal',
       },
       size: {
         sm: 'min-h-9 px-3 py-2 text-xs',

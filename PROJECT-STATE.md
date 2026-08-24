@@ -6,15 +6,16 @@
 > Do NOT re-read `CLAUDE-CODE-BUILD-PROMPT.md` end-to-end unless a decision below is genuinely
 > unclear — §-references throughout this file point at the exact section.
 >
-> Last updated: **2026-08-20** · **Phases 0–10 done, including Phase 6.**
+> Last updated: **2026-08-25** · **Phases 0–10 done, including Phase 6.**
 > The site builds, prerenders and runs end to end **on real vehicle models**.
 >
-> ⚠️ **The visual design was replaced on 2026-08-18 (session 3).** The flat "Sheet" design was
-> rejected by Hisan on sight and is superseded by **"Obsidian"** — premium dark, Tailwind +
-> shadcn/ui + Framer Motion. `docs/DESIGN-PLAN.md` carries both: the old reasoning is kept
-> because parts of it are commercial and still bind. Read its **Revision 1** section.
-> **Foundation, homepage and the client-facing components are redesigned.** What is still flat
-> is listed in §11 and is now only back-office surfaces.
+> ⚠️ **The visual design was replaced twice.** The flat "Sheet" design was rejected by Hisan
+> on sight (session 3) and superseded by "Obsidian"; on **2026-08-25 Hisan rejected the
+> Obsidian/Rev-2 look in turn** ("the texts, the fonts, the design — literally everything")
+> and it is superseded by **Revision 3 "Atelier"** — a light editorial system with dark
+> cinema stages, documented at the bottom of `docs/DESIGN-PLAN.md` and swept in PROJECT-STATE
+> §11. All commercial decisions, the licence gate, i18n, the configurator engine and the
+> prospect-retinting contract are untouched and still bind.
 
 ---
 
@@ -167,9 +168,24 @@ Business context: `PHOENIX-90-DAY-PLAYBOOK.md` (why, not what).
 22. **A paint swatch is a HUE SOURCE, never a text colour.** Swatches are authored to look
     right on sheet metal: `#16181A` "Attitude Black Mica" is invisible on `--ph-paper` and a
     saturated navy sits at ~1.6:1. `readableInk()` in `src/lib/paint.ts` keeps the hue and
-    bisects lightness until the result clears 5.6:1 against the page ground. Every swatch
-    currently shipped resolves to ≥5.13:1 on both `--ph-paper` and `--ph-plate`. A truly
-    achromatic swatch stays achromatic — lifting a grey's "hue" would invent pink.
+    bisects lightness until the result clears 5.6:1 against the page ground — and since Rev 3
+    it does this in BOTH directions: `--ph-paint-lit` is the ink readable on the LIGHT page,
+    `--ph-paint-dark` the ink readable on the DARK stage (the stage scope re-maps
+    `--ph-paint-lit` to it, so `text-paint` is correct on either ground with one class).
+    A truly achromatic swatch stays achromatic — lifting a grey's "hue" would invent pink.
+23. **The light page and the dark stage share ONE token set; the stage re-declares it.**
+    `.bay`, `.frame-shell`, `.on-bay` and `.stage` re-map the whole `--ph-*` family onto
+    stage-black inside their subtree, so components written for the old dark theme render
+    correctly on stages without knowing. Consequences: (a) any NEW derived token must be
+    added to `:root`, `.signal-scope` AND the stage block, or it silently keeps its root
+    value there (same substitution trap as §5.13); (b) anything dark-surfaced that renders
+    OUTSIDE those wrappers must carry `.stage` explicitly — the BootScreen overlay does;
+    (c) the header is opaque frosted paper at every scroll position now, because dark-on-dark
+    nav only becomes legible after scrolling.
+24. **Fixed overlays are not inside any scope.** Modals, boot curtains, the pip rail and any
+    future `position: fixed` element inherit `:root` tokens wherever they appear in the tree.
+    Decide deliberately which ground they sit on and scope them (`stage`) or style them
+    against both grounds before shipping.
 
 ---
 
@@ -397,6 +413,10 @@ no work at all.
 **Revision 2 — "The Bay, framed" (PHOENIX-PRODUCTION-REBUILD-PROMPT.md), verified in-browser
 at 380 / 900 / 1440 px:**
 
+> **SUPERSEDED 2026-08-25 by Revision 3 "Atelier"** — Hisan rejected the whole dark look.
+> The Rev-2 table below is kept for archaeology; what ships now is described in the Rev-3
+> table underneath it.
+
 | Surface | What it is now |
 |---|---|
 | `/` hero | Inside `<Frame>`: transparent R3F canvas over a DOM `<Monolith>` (the model code, in the car's own colour, occluded by the roofline), `<StageFloor>`, letterbox, plume, stat pair, model plate, explore card, 6.75rem paint chips, left `<PipRail>`. |
@@ -431,6 +451,30 @@ components.
 
 **Token hygiene:** `text-signal` (17 uses) is only AA-safe at display sizes, which is how it
 is currently used. If any of those become body-sized text, switch them to `text-signal-lit`.
+
+**Revision 3 — "Atelier" (2026-08-25), full frontend rebuild.** Hisan's verdict on Rev 2:
+"the website looks horrible — the texts, the fonts, the design, literally everything," with
+full freedom granted. Rebuilt from the token layer up:
+
+| What | Now |
+|---|---|
+| Ground | Warm porcelain `#F7F5F0`, near-black ink `#17181A`. Dark stages (`--ph-bay #0D0E10`) reserved for hero frame, demo bays, viewer, footer, boot screen — daylight for words, spotlight for the car. |
+| Accents | ONE action colour: ember `#B8331B` (prospect-overridable as before). Bronze `#8A6C34` for hairline details/seals/focus, never body text, never a button. Champagne-as-decoration is gone. |
+| Type | Bangla display is now **Noto Serif Bengali** (500/600/700) via `[lang='bn-BD'] .display`; Latin display Archivo; Hind Siliguri trimmed to 400–700; JetBrains Mono for data only. Outfit dropped entirely. `.display-lit` gradient text removed → solid ink headlines. |
+| Effects removed | Body plume, monolith glow fills (now quiet paint-tinted OUTLINE watermark), stroke-text utilities, glass HUD, pulse badges, STK-ISSUE serials, ceiling glow strips, boot breathe/trace theatre. Seals/stamps are outline chips. |
+| Header | Opaque frosted paper at every scroll position (§5.23c); wordmark left; real nav links from `xl` (Bangla labels overflowed at `lg`); menu sheet below `xl`. |
+| Hero | Same stage composition (monolith watermark · transparent canvas · floor streak · toggle · price/paint stats · chips) minus the model-plate card and the explore thumbnail card; one ghost pill into the configurator. Copy block below the frame gained a two-fact "what it is / what it is not" list (`hero.factOne*/factTwo*`). |
+| Section | Gutter-code grid REMOVED (the `code` prop is accepted and ignored). Eyebrow = signal dash + tracked label (`.overline`); h2 at `clamp(1.95rem, …, 2.75rem)` serif Bangla. |
+| Buttons | Pills. `primary` signal, `outline` hairline, both adapt per scope. |
+| Paint tint | `readableInk()` bisects in both directions; JS sets `--ph-paint / -lit / -dark`; the stage scope re-maps `-lit→-dark` (§5.22). |
+| Boot screen | Curtains kept (real byte progress untouched); carried `.stage` scope (§5.24); silhouette + wordmark + honest rail, no glow. |
+
+Verified after the rebuild: `pnpm build` clean; first-load JS home **189 kB**, `/demo/*` 136,
+`/contact` 176, everything else ≤172 — budgets unchanged or better than Rev 2.
+`audit-class-conflicts` clean across all 12 routes; prospect retint re-checked
+(`signal-scope` + `--ph-signal:#0B3D91` present on `/for/twenty-eight-motors`);
+stage-scope rule order confirmed in compiled CSS. **NOT yet verified visually in a browser**
+(no browser automation available in this session) — see Known gaps.
 
 ## 12. Phase 6 — the real models
 
@@ -566,6 +610,22 @@ visibly separate parts would look far worse than 60 kB.
 ---
 
 ## 13. Session log
+
+- **2026-08-25 (session 6)** — Hisan rejected the Rev-2 dark design outright and granted full
+  freedom. Rebuilt the frontend as **Revision 3 "Atelier"**: light porcelain page, dark
+  cinema stages, one ember accent + bronze details, serif Bangla display (Noto Serif
+  Bengali), Archivo Latin, mono for data only. Removed the effect stack (plumes, glows,
+  gradient headlines, glass noise, serials). Rewrote `globals.css` around one trick: the
+  stage scopes re-declare the whole token family against stage-black, so every existing dark
+  component re-themes without knowing (§5.23). Fixed the two light-flip landmines found by
+  reasoning: the header is now opaque paper (dark nav on the dark stage was unreadable), and
+  the BootScreen overlay carries `.stage` explicitly (fixed elements sit outside any scope,
+  §5.24). Paint tint now computes readable ink in both directions (`paint.ts`). Header nav
+  moved to `xl:` because Bangla labels overflowed `lg`. Hero/panel copy keys added to both
+  dictionaries (`hero.factOne*/factTwo*`, `problems.quoteSource`); Section's gutter codes
+  retired (prop accepted, ignored). Build clean; JS budgets ≤ Rev 2; class-conflict audit
+  clean; prospect retint re-verified. **Next: visual pass in a real browser at three widths,
+  then Hisan's §10 answers.**
 
 - **2026-08-20 (session 5)** — Hisan rejected the round-1 models on sight: *"the car and bike
   looked literally crushed"*, and supplied replacements that arrive **part-separated** (56 and

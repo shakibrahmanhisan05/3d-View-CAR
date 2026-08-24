@@ -76,6 +76,12 @@ export const en = {
     exploreCta: 'Open full configurator',
     exploreAngle: 'Second angle',
     ctaSecondaryShort: 'Book a demo',
+
+    /* The two quiet facts beside the headline. */
+    factOneLabel: 'What it is',
+    factOneBody: 'Live 3D — a buyer turns the vehicle, changes its colour and fits accessories, all on his phone.',
+    factTwoLabel: 'What it is not',
+    factTwoBody: 'No app, no monthly bill. One project price, on your own website.',
   },
 
   scroll: {
@@ -111,6 +117,7 @@ export const en = {
     ],
     footnote:
       'All three are one problem: the buyer cannot see enough, so he does not come — or he comes to haggle.',
+    quoteSource: '— a dealer on Sheikh Mujib Road, in our first conversation',
   },
 
   demos: {

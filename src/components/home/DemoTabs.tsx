@@ -48,7 +48,7 @@ import type { Capture360, Vehicle } from '@/lib/types';
 function PanelSkeleton() {
   return (
     <div className="bay flex h-[46vh] min-h-[300px] items-center justify-center lg:h-[68vh]">
-      <span className="size-6 animate-spin rounded-full border-2 border-glass-border border-t-accent-gold" />
+      <span className="size-6 animate-spin rounded-full border-2 border-white/15 border-t-white/60" />
     </div>
   );
 }
@@ -116,23 +116,19 @@ export function DemoTabs({
               id={`demo-tab-${entry.id}`}
               onClick={() => setTab(entry.id)}
               className={cn(
-                'relative flex w-24 shrink-0 flex-col items-stretch gap-1.5 rounded-lg border p-3 text-left',
-                'transition-[transform,border-color,background-color] duration-[260ms] ease-out',
+                'relative flex w-24 shrink-0 flex-col items-stretch gap-1.5 rounded-xl border p-3 text-left',
+                'transition-[transform,border-color,background-color,box-shadow] duration-[260ms] ease-out',
                 selected
-                  ? '-translate-y-[3px] border-[var(--ph-glass-border-lit)] bg-glass-strong'
-                  : 'border-glass-border bg-glass hover:border-[var(--ph-glass-border-lit)]',
+                  ? '-translate-y-[3px] border-ink/25 bg-paper-raised shadow-elev'
+                  : 'border-glass-border bg-glass hover:border-glass-border-lit',
               )}
             >
-              {/* The champagne ceiling strip on the selected tile. */}
+              {/* The signal bar on the selected tile. */}
               {selected ? (
                 <m.span
                   aria-hidden="true"
                   layoutId={reduced ? undefined : 'ph-demo-tab-edge'}
-                  className="absolute inset-x-0 top-0 h-px"
-                  style={{
-                    background:
-                      'linear-gradient(90deg, transparent, var(--ph-accent) 22%, var(--ph-accent) 78%, transparent)',
-                  }}
+                  className="absolute inset-x-4 top-0 h-0.5 rounded-full bg-signal"
                   transition={{ type: 'spring', stiffness: 400, damping: 34 }}
                 />
               ) : null}

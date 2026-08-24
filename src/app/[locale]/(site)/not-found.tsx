@@ -19,7 +19,7 @@ export default function NotFound() {
       <p className="mt-3 max-w-md text-ink-soft">{dict.errors.notFoundBody}</p>
       <Link
         href={localePath(DEFAULT_LOCALE, '/')}
-        className="tap mt-8 inline-flex w-fit items-center bg-ink px-5 py-3 text-sm font-600 text-paper"
+        className="tap mt-8 inline-flex w-fit items-center rounded-full bg-ink px-6 py-3 text-sm font-600 text-paper transition-opacity hover:opacity-90"
       >
         {dict.errors.notFoundCta}
       </Link>

@@ -71,7 +71,7 @@ export function ProspectChrome({
               href={waHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="tap my-2 flex items-center bg-signal px-4 text-[0.85rem] font-600 text-signal-ink hover:brightness-110"
+              className="tap my-2 flex items-center rounded-full bg-signal px-5 text-[0.85rem] font-600 text-signal-ink transition-[filter] hover:brightness-110"
             >
               {dict.common.whatsapp}
             </a>

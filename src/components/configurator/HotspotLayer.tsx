@@ -64,16 +64,15 @@ export function HotspotLayer({
                 onClick={() => setOpenId(open ? null : hotspot.id)}
                 aria-expanded={open}
                 /*
-                  The pin is the elegance layer, so it wears champagne rather than the
-                  action colour — the action colour on this site is the WhatsApp path and
-                  nothing else. It used to be `bg-ink`, which after the palette flip is the
-                  LIGHT token: every pin rendered as an opaque white disc sitting on top of
-                  the bodywork instead of annotating it.
+                  The pin is an annotation, not an action: white on the stage, ink number,
+                  like a printed diagram marker. It used to be `bg-ink`, which after the
+                  palette flip is the LIGHT token — every pin rendered as an opaque white
+                  disc sitting on top of the bodywork instead of annotating it.
                 */
                 className={`num flex size-7 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border text-[0.7rem] leading-none backdrop-blur-sm transition-all duration-200 ease-out ${
                   open
-                    ? 'border-accent-gold bg-accent-gold text-paper shadow-glow-gold'
-                    : 'border-[color-mix(in_oklab,var(--ph-accent)_55%,transparent)] bg-[color-mix(in_oklab,var(--ph-paper)_78%,transparent)] text-accent-gold hover:scale-110 hover:border-accent-gold hover:shadow-glow-gold'
+                    ? 'border-white bg-white text-ink shadow-elev'
+                    : 'border-white/40 bg-black/45 text-white hover:scale-110 hover:border-white'
                 }`}
               >
                 {hotspot.index}
@@ -81,8 +80,8 @@ export function HotspotLayer({
               </button>
 
               {open ? (
-                <div className="surface lit-edge glass absolute left-4 top-4 w-60 p-3.5 text-ink shadow-elev">
-                  <p className="sheet-code sheet-code-accent">PIN-{String(hotspot.index).padStart(2, '0')}</p>
+                <div className="surface glass absolute left-4 top-4 w-60 p-3.5 text-ink shadow-elev">
+                  <p className="sheet-code">PIN-{String(hotspot.index).padStart(2, '0')}</p>
                   <p className="mt-1.5 text-sm font-600 leading-snug">{t(hotspot.label)}</p>
                   {hotspot.detail ? (
                     <p className="mt-2 text-xs leading-relaxed text-ink-soft">{t(hotspot.detail)}</p>

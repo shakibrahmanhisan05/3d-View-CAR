@@ -25,22 +25,24 @@
  * on the main thread, between a tap and the next frame.
  */
 
-/** The page ground the editorial layer is measured against — `--ph-paper`. */
-const GROUND = '#0a0b0d';
+/** The page grounds the editorial layer is measured against. */
+const GROUND_LIGHT = '#f7f5f0'; // --ph-paper on :root
+const GROUND_DARK = '#101114'; // --ph-paper inside the stage scope
 
 /**
  * Target contrast for the editorial layer. WCAG AA body text is 4.5:1; we aim past it
- * because these values also land on `--ph-plate`, which is a shade lighter than the ground
- * and therefore a slightly harder background (§14 of the brief asks for this to be
- * re-measured on the plate — the headroom is the measurement).
+ * because these values also land on card surfaces, which are a shade away from their
+ * grounds — the headroom is the measurement.
  */
 const TARGET_CONTRAST = 5.6;
 
 export type PaintTint = {
   /** The swatch as authored. Used for grounds, rims and glows — never for text. */
   base: string;
-  /** The readable editorial ink. Guaranteed ≥ TARGET_CONTRAST against `--ph-paper`. */
+  /** The readable editorial ink on the LIGHT page ground. Guaranteed ≥ TARGET_CONTRAST. */
   lit: string;
+  /** The readable editorial ink on the DARK stage ground. Guaranteed ≥ TARGET_CONTRAST. */
+  dark: string;
   /** Black or white — whichever is legible ON the raw swatch. For text over a chip. */
   on: string;
 };
@@ -123,65 +125,78 @@ function fromHsl([h, s, l]: [number, number, number]): [number, number, number] 
 // ---------------------------------------------------------------------------
 
 /**
- * Lift a swatch until it is readable on the obsidian ground, keeping its hue.
+ * Lift or sink a swatch until it is readable against `groundHex`, keeping its hue.
  *
- * Lightness is monotonic in luminance for a fixed hue and saturation, so a 22-step bisection
- * lands within a fraction of a percent — deterministic, and cheap enough to run inline.
+ * The bisection moves lightness AWAY from the ground: on the porcelain page a pale pearl
+ * resolves downward to a deep grey; on the stage a near-black paint resolves upward to a
+ * cool near-white. Lightness is monotonic in luminance for fixed hue and saturation, so a
+ * 22-step bisection lands within a fraction of a percent — deterministic, cheap, inline.
  *
- * A TRULY ACHROMATIC swatch stays achromatic. HSL gives a pure grey a hue of 0, so lifting
- * its saturation to keep "a hint of the paint" would turn `#888888` into pink — inventing a
- * colour the vehicle does not have. Below 0.08 saturation the swatch has no hue to preserve,
- * so the ink resolves to a clean neutral. Between 0.08 and 0.12 the hue is real but faint,
- * and it is nudged up so a near-black like `#0B0C0E` still reads as the cool grey it is.
+ * A TRULY ACHROMATIC swatch stays achromatic. HSL gives a pure grey a hue of 0, so keeping
+ * "a hint of the paint" would turn `#888888` pink — inventing a colour the vehicle does not
+ * have. Below 0.08 saturation the swatch has no hue to preserve and the ink resolves to a
+ * clean neutral; between 0.08 and 0.12 the hue is real but faint, and is held at 0.16 so a
+ * near-black still reads as the cool grey it is.
  */
-export function readableInk(hex: string): string {
+export function readableInk(hex: string, groundHex: string = GROUND_LIGHT): string {
   const rgb = parseHex(hex);
-  const ground = parseHex(GROUND);
-  if (!rgb || !ground) return '#f4f5f7';
+  const ground = parseHex(groundHex);
+  if (!rgb || !ground) return '#17181a';
 
   if (contrast(rgb, ground) >= TARGET_CONTRAST) return toHex(rgb);
 
   const [h, s] = toHsl(rgb);
   const saturation = s < 0.08 ? 0 : s < 0.12 ? 0.16 : Math.min(0.92, s);
 
-  let low = toHsl(rgb)[2];
-  let high = 1;
-  let best: [number, number, number] = [1, 1, 1];
+  /* Move away from whichever end the ground sits at. */
+  const startL = toHsl(rgb)[2];
+  const targetEnd = luminance(ground) > 0.35 ? 0 : 1;
+  let low = Math.min(startL, targetEnd);
+  let high = Math.max(startL, targetEnd);
+  let best: [number, number, number] | null = null;
 
   for (let step = 0; step < 22; step += 1) {
     const mid = (low + high) / 2;
     const candidate = fromHsl([h, saturation, mid]);
     if (contrast(candidate, ground) >= TARGET_CONTRAST) {
       best = candidate;
-      high = mid;
+      /* Step back toward the original lightness so we keep as much of the swatch as we can. */
+      if (targetEnd === 1) low = mid;
+      else high = mid;
     } else {
-      low = mid;
+      if (targetEnd === 1) high = mid;
+      else low = mid;
     }
   }
 
-  return toHex(best);
+  return toHex(best ?? (targetEnd === 1 ? [0.95, 0.94, 0.9] : [0.09, 0.098, 0.1]));
 }
 
 /** Black or white, whichever is legible on the raw swatch. For labels printed on a chip. */
 export function inkOn(hex: string): string {
   const rgb = parseHex(hex);
   if (!rgb) return '#ffffff';
-  return luminance(rgb) > 0.32 ? '#0a0b0d' : '#ffffff';
+  return luminance(rgb) > 0.32 ? '#17181a' : '#ffffff';
 }
 
 export function paintTint(hex: string | undefined): PaintTint {
-  const base = hex && parseHex(hex) ? hex : '#d4a857';
-  return { base, lit: readableInk(base), on: inkOn(base) };
+  const base = hex && parseHex(hex) ? hex : '#b8331b';
+  return {
+    base,
+    lit: readableInk(base, GROUND_LIGHT),
+    dark: readableInk(base, GROUND_DARK),
+    on: inkOn(base),
+  };
 }
 
 /**
  * Write the tint onto <html>.
  *
- * Two properties only. Everything else in the `--ph-paint-*` family is declared in
- * globals.css as a `color-mix()` over these two, and custom properties substitute at the
- * element where they are DECLARED — which is `:root`, i.e. this very element. So setting two
- * values here re-derives the soft, rim, sunk, glow and monolith tokens for free, and costs
- * one style recalculation rather than a React re-render of anything.
+ * Three properties only. Everything else in the `--ph-paint-*` family is declared in
+ * globals.css as a `color-mix()` over these, and custom properties substitute at the
+ * element where they are DECLARED — which is `:root`, i.e. this very element. So setting
+ * them here re-derives soft/rim/sunk tokens for free, and the stage scope re-maps
+ * `--ph-paint-lit` to the dark-ground ink without any component knowing.
  */
 export function applyPaintTint(hex: string | undefined): void {
   if (typeof document === 'undefined') return;
@@ -189,4 +204,5 @@ export function applyPaintTint(hex: string | undefined): void {
   const root = document.documentElement.style;
   root.setProperty('--ph-paint', tint.base);
   root.setProperty('--ph-paint-lit', tint.lit);
+  root.setProperty('--ph-paint-dark', tint.dark);
 }

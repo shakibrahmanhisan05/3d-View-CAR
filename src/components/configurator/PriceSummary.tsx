@@ -76,7 +76,7 @@ export function PriceSummary({
           href={whatsappHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="tap flex items-center justify-center rounded-lg bg-signal px-4 py-3 text-center text-sm font-600 leading-tight text-signal-ink shadow-elev transition-[filter,box-shadow] duration-200 hover:shadow-glow hover:brightness-110"
+          className="tap flex items-center justify-center rounded-full bg-signal px-4 py-3 text-center text-sm font-600 leading-tight text-signal-ink transition-[filter] duration-200 hover:brightness-110"
         >
           {dict.configurator.sendToWhatsapp}
         </a>

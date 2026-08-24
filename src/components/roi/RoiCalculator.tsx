@@ -152,29 +152,20 @@ export function RoiCalculator({ projectCostBDT = PRICING.roiReferenceProject }: 
           <Row label={dict.roi.projectedRevenue} value={formatBDT(result.projected)} />
         </dl>
 
-        <div className="mx-5 mt-5 border-t border-glass-border-lit pt-5">
+        <div className="mx-5 mt-5 border-t pt-5">
           <span className="overline">{dict.roi.additional}</span>
           {/*
-            The one number the whole section exists to produce — so it gets the whole section's
-            weight: ember (the action layer, because this figure IS the argument), roughly
-            twice its old size, and a champagne hairline ruled directly under it the way a
-            total is underscored on a real invoice.
+            The one number the whole section exists to produce, in the action colour, at the
+            section's full weight, underscored like a total on a real invoice.
           */}
           <p
-            className="num mt-3 font-700 leading-none text-signal-lit"
-            style={{ fontSize: 'clamp(3rem, 5vw, 4.5rem)' }}
+            className="num mt-3 font-700 leading-none text-signal"
+            style={{ fontSize: 'clamp(2.6rem, 4.4vw, 3.75rem)' }}
             aria-live="polite"
           >
             {formatBDT(result.additional)}
           </p>
-          <div
-            aria-hidden="true"
-            className="mt-3 h-px w-full"
-            style={{
-              background:
-                'linear-gradient(90deg, var(--ph-accent), color-mix(in oklab, var(--ph-accent) 20%, transparent) 60%, transparent)',
-            }}
-          />
+          <div aria-hidden="true" className="mt-4 h-px w-24 bg-signal" />
 
           <dl className="mt-5">
             <Row label={dict.roi.amortised} value={formatBDT(result.monthlyCost)} small />
@@ -188,14 +179,14 @@ export function RoiCalculator({ projectCostBDT = PRICING.roiReferenceProject }: 
           </dl>
 
           {result.boostPercent !== null ? (
-            <p className="mt-5 border-l-2 border-accent-gold pl-4 text-sm leading-relaxed text-ink-soft">
+            <p className="mt-5 border-l-2 border-rule-strong pl-4 text-sm leading-relaxed text-ink-soft">
               {fill(dict.roi.boostCompare, { percent: result.boostPercent })}
             </p>
           ) : null}
         </div>
 
         {/* §9: state the assumption openly beneath the result. */}
-        <div className="mt-6 border-t border-glass-border bg-glass px-5 py-4">
+        <div className="mt-6 border-t bg-paper-sunk px-5 py-4">
           <p className="sheet-code mb-2">{dict.roi.assumptionTitle}</p>
           <p className="text-xs leading-relaxed text-ink-soft">{dict.roi.assumption}</p>
           <p className="mt-2 text-xs text-alu">{dict.roi.disclaimer}</p>

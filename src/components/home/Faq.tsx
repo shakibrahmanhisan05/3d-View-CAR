@@ -27,17 +27,13 @@ export function Faq() {
   const dict = useDict();
 
   return (
-    <Accordion type="single" collapsible className="max-w-3xl border-t border-glass-border-lit">
+    <Accordion type="single" collapsible className="max-w-3xl border-t border-rule">
       {dict.faq.items.map((item, index) => (
         <AccordionItem key={item.q} value={`faq-${index}`}>
           <AccordionTrigger>
             <span className="flex items-baseline gap-5">
-              {/*
-                The row index at 1.25rem in champagne. It is the artefact of this section:
-                large enough to be counted from three feet, which is what turns eight
-                collapsed answers into a document with numbered rows.
-              */}
-              <span className="num shrink-0 text-xl font-700 leading-none text-accent-gold">
+              {/* The row number: large enough to be counted from across a room. */}
+              <span className="num shrink-0 text-xl font-700 leading-none text-alu">
                 {String(index + 1).padStart(2, '0')}
               </span>
               <span className="flex-1 text-base font-600 sm:text-lg">{item.q}</span>

@@ -1,29 +1,19 @@
 'use client';
 
 /**
- * Hero — the demo IS the hero, and the hero is now a COMPOSITION rather than a canvas.
+ * Hero — the vehicle on a lit stage, and nothing else competing with it.
  *
- * WHAT CHANGED AND WHY
- * --------------------
- * The old hero was a 3D model floating in a flat dark rectangle with a chip strip laid over
- * it. It worked and it did not sell: there was no set around the vehicle, so nothing on
- * screen said "this is a showroom", and every element on it was the same visual weight.
+ * The composition is deliberately spare now:
  *
- * The rebuild puts the vehicle inside a cinema <Frame> and hangs four objects in its corners,
- * exactly as the reference composition does:
+ *   stage (dark, rounded)  →  monolith watermark · transparent 3D canvas · floor streak
+ *                          →  segment toggle (top-left) · price stat (bottom-left)
+ *                          →  paint chips (the signature, along the bottom edge)
+ *   page (light paper)     →  headline · subline · the one CTA that matters
  *
- *   backdrop  →  the plume, painted by body::before
- *   z-0       →  <Monolith>     the model code, giant, in the CAR'S OWN COLOUR
- *   z-1       →  <Scene>        TRANSPARENT canvas, so the roofline occludes the letterforms
- *   z-2       →  <StageFloor>   the ground streak and horizon the tyres sit on
- *   z-4       →  the letterbox
- *   z-20      →  segment toggle · drag hint · stat pair · model plate · explore card · chips
- *
- * Three genuine depth planes is the whole difference between 3D on a page and 3D inside a
- * scene, and it costs one CSS layer and one `alpha: true`.
- *
- * The title, the sub and the single primary CTA live BELOW the frame on every viewport. The
- * vehicle is the headline; the words come after (§7.2).
+ * The move from dark stage to bright page IS the design: daylight for words, spotlight
+ * for the car. Three depth planes survive — watermark behind, canvas above it, chrome
+ * over both — but every panel that used to sit between the visitor and the vehicle is
+ * gone. The title lives below the frame on every viewport: the car is the headline.
  */
 
 import { m, useReducedMotion } from 'motion/react';
@@ -34,7 +24,7 @@ import { BootScreen } from '@/components/boot/BootScreen';
 import { useApplyPaintTint } from '@/components/brand/usePaintTint';
 import { Frame, type PipItem } from '@/components/frame/Frame';
 import { Monolith, StageFloor } from '@/components/frame/Monolith';
-import { ExploreCard, ModelPlate, Stat, StatPair } from '@/components/frame/StageChrome';
+import { Arrow, Stat } from '@/components/frame/StageChrome';
 import { useDict, useLocale, useLocalized } from '@/components/i18n/DictionaryProvider';
 import { PosterFallback } from '@/components/configurator/PosterFallback';
 import { Button } from '@/components/ui/button';
@@ -102,11 +92,9 @@ export function Hero({
   /*
    * THE EDITORIAL TINT.
    *
-   * Every accented piece of text on the site — the monolith, the overlines, the section
-   * codes, the stat figures, the fall-off in every display headline — is re-derived from the
-   * paint the visitor just tapped. One layout effect, two custom properties on <html>, and
-   * the whole page moves with the car. See src/lib/paint.ts for why the swatch is treated as
-   * a hue source rather than as a colour.
+   * The watermark, the overlines and the section accents re-derive from the paint the
+   * visitor just tapped. Two custom properties on <html> per change — light-ground ink
+   * and stage-ground ink — so text stays readable whichever surface it sits on.
    */
   useApplyPaintTint(paintHex);
 
@@ -136,11 +124,7 @@ export function Hero({
     [dict.scroll],
   );
 
-  /**
-   * The second fact. A bike has a seat height — a real number, and the one spec a rider
-   * checks first — so it gets the monumental treatment. A car's second fact is the paint's
-   * manufacturer name, which is a NAME and is set as one.
-   */
+  /** A bike's second fact is its seat height; a car's is the paint's real name. */
   const secondStat =
     vehicle.segment === 'motorcycle' && vehicle.seatHeightMm
       ? { figure: String(vehicle.seatHeightMm), unit: 'mm', label: dict.hero.statSeat, kind: 'figure' as const }
@@ -157,17 +141,18 @@ export function Hero({
         sceneReady={ready}
       />
 
-      <div className="-mt-header px-4 pt-header sm:px-0">
+      {/* The header is opaque paper now, so the stage starts below it — no pull-under. */}
+      <div className="px-3 pt-3 sm:px-5">
         <Frame
           letterbox
           pips={pips}
-          shellClassName="bay canvas-host"
+          shellClassName="bay bay-lit canvas-host"
           shellStyle={{
             height:
               'min(max(560px, calc(100dvh - var(--ph-header-h) - 2 * var(--ph-frame-inset))), calc(100dvh - var(--ph-header-h)))',
           }}
         >
-          {/* z-0: Model code painted ONLY in the back behind the vehicle */}
+          {/* z-0: quiet outline watermark in the car's own colour */}
           <Monolith code={modelCode} />
 
           {/* z-1: Transparent 3D canvas stage */}
@@ -190,7 +175,7 @@ export function Hero({
             <PosterFallback
               segment={vehicle.segment}
               paintHex={paintHex}
-              backgroundHex={environment?.background ?? '#070809'}
+              backgroundHex={environment?.background ?? '#101114'}
               visible={!ready}
               transparent
               alt={`${t(vehicle.name)} — ${dict.hero.canvasAlt}`}
@@ -200,13 +185,13 @@ export function Hero({
 
           <StageFloor />
 
-          {/* --- Chrome, all at z-20, all inside the frame inset ----------- */}
+          {/* --- Chrome ------------------------------------------------------ */}
 
-          {/* Top-left: Vehicle segment controls */}
+          {/* Top-left: segment toggle — the most important control on the page. */}
           <div
             role="radiogroup"
             aria-label={dict.roi.segment}
-            className="absolute left-[var(--ph-frame-inset)] top-[calc(var(--ph-frame-inset)+0.5rem)] z-20 flex gap-1 rounded-xl border border-glass-border bg-[color-mix(in_oklab,var(--ph-bay)_70%,transparent)] p-1 backdrop-blur-md"
+            className="absolute left-[var(--ph-frame-inset)] top-[calc(var(--ph-frame-inset)+0.25rem)] z-20 flex gap-1 rounded-full border border-white/10 bg-black/35 p-1 backdrop-blur-md"
           >
             {(
               [
@@ -221,14 +206,14 @@ export function Hero({
                 aria-checked={segment === value}
                 onClick={() => setSegment(value)}
                 className={cn(
-                  'tap relative rounded-lg px-4 text-sm font-600 transition-colors duration-200',
-                  segment === value ? 'text-paper' : 'text-bay-ink/70 hover:text-bay-ink',
+                  'tap relative rounded-full px-4 text-sm font-600 transition-colors duration-200',
+                  segment === value ? 'text-bay' : 'text-bay-ink/70 hover:text-bay-ink',
                 )}
               >
                 {segment === value ? (
                   <m.span
                     layoutId={reduced ? undefined : 'ph-hero-segment'}
-                    className="absolute inset-0 -z-10 rounded-lg bg-ink shadow-elev"
+                    className="absolute inset-0 -z-10 rounded-full bg-white shadow-elev"
                     transition={{ type: 'spring', stiffness: 400, damping: 34 }}
                   />
                 ) : null}
@@ -237,7 +222,7 @@ export function Hero({
             ))}
           </div>
 
-          {/* Top-right: Drag hint */}
+          {/* Top-right: state, quiet. */}
           <p className="sheet-code absolute right-[var(--ph-frame-inset)] top-[calc(var(--ph-frame-inset)+1rem)] z-20 text-bay-alu">
             {ready ? dict.hero.dragHint : dict.common.loading}
           </p>
@@ -246,14 +231,14 @@ export function Hero({
             {t(vehicle.name)}. {dict.hero.canvasAlt}
           </p>
 
-          {/* Bottom stats, model plate, explore card */}
-          <div className="pointer-events-none absolute inset-x-[var(--ph-frame-inset)] bottom-[10.75rem] z-20 flex items-end justify-between gap-6">
-            <StatPair className="pointer-events-auto">
-              <Stat
-                figure={formatBDT(vehicle.basePriceBDT, false)}
-                unit="৳"
-                label={dict.hero.statMrp}
-              />
+          {/* Bottom-left: two naked facts on the stage floor. */}
+          <div className="pointer-events-none absolute bottom-[9.5rem] left-[var(--ph-frame-inset)] z-20 sm:bottom-[10rem]">
+            <Stat
+              figure={formatBDT(vehicle.basePriceBDT, false)}
+              unit="৳"
+              label={dict.hero.statMrp}
+            />
+            <div className="mt-5">
               <Stat
                 figure={secondStat.figure}
                 unit={secondStat.unit}
@@ -261,28 +246,22 @@ export function Hero({
                 kind={secondStat.kind}
                 tinted
               />
-            </StatPair>
-
-            <div className="pointer-events-auto hidden flex-1 lg:block">
-              <ModelPlate code={modelCode} sub={dict.hero.modelPlateSub} />
-            </div>
-
-            <div className="pointer-events-auto hidden sm:block">
-              <ExploreCard
-                href={localePath(locale, segment === 'car' ? '/demo/car' : '/demo/bike')}
-                label={dict.hero.exploreCta}
-                angleLabel={dict.hero.exploreAngle}
-                segment={vehicle.segment}
-                paintHex={paintHex}
-                posterUrl={vehicle.asset.posterUrl}
-              />
             </div>
           </div>
 
+          {/* Bottom-right: one affordance into the configurator. */}
+          <Link
+            href={localePath(locale, segment === 'car' ? '/demo/car' : '/demo/bike')}
+            className="tap absolute bottom-[9.75rem] right-[var(--ph-frame-inset)] z-20 hidden items-center gap-2 rounded-full border border-white/15 bg-black/35 px-5 py-2 text-sm font-600 text-bay-ink backdrop-blur-md transition-colors duration-200 hover:border-white/40 sm:inline-flex"
+          >
+            {dict.hero.exploreCta}
+            <Arrow />
+          </Link>
+
           {/* Signature Paint Chip Strip */}
           {paintGroup ? (
-            <div className="absolute inset-x-0 bottom-0 z-20 px-3 pb-5 sm:px-6">
-              <ul className="no-scrollbar edge-fade mx-auto flex max-w-page snap-x gap-2.5 overflow-x-auto px-1 py-2">
+            <div className="absolute inset-x-0 bottom-0 z-20 px-3 pb-4 sm:px-6 sm:pb-5">
+              <ul className="no-scrollbar edge-fade mx-auto flex max-w-page snap-x gap-2 overflow-x-auto px-1 py-2">
                 {paintGroup.options.map((option) => {
                   const active = selection[paintGroup.id]?.includes(option.id) ?? false;
                   return (
@@ -292,35 +271,15 @@ export function Hero({
                         onClick={() => setSelection((current) => toggleOption(current, paintGroup, option.id))}
                         aria-pressed={active}
                         className={cn(
-                          'tap group relative flex w-[6.75rem] flex-col items-start gap-1.5 rounded-xl border p-1.5 text-left',
-                          'bg-[color-mix(in_oklab,var(--ph-bay)_60%,transparent)] backdrop-blur-md',
-                          'transition-[transform,border-color,box-shadow,filter] duration-[320ms] ease-[cubic-bezier(0.16,1,0.3,1)]',
+                          'tap group relative flex w-[6.5rem] flex-col items-start gap-1 rounded-xl border p-1.5 text-left backdrop-blur-md',
+                          'transition-[transform,border-color,background-color] duration-[300ms] ease-[cubic-bezier(0.16,1,0.3,1)]',
                           active
-                            ? '-translate-y-1.5 border-[color-mix(in_oklab,var(--ph-accent)_60%,transparent)]'
-                            : 'border-glass-border hover:-translate-y-0.5 hover:border-[var(--ph-glass-border-lit)]',
+                            ? '-translate-y-1 border-white/45 bg-white/[0.07]'
+                            : 'border-white/10 bg-black/30 hover:-translate-y-0.5 hover:border-white/25',
                         )}
-                        style={
-                          active
-                            ? {
-                                filter:
-                                  'drop-shadow(0 10px 20px color-mix(in oklab, var(--ph-signal) 30%, transparent))',
-                              }
-                            : undefined
-                        }
                       >
-                        {active ? (
-                          <span
-                            aria-hidden="true"
-                            className="absolute inset-x-0 top-0 h-px"
-                            style={{
-                              background:
-                                'linear-gradient(90deg, transparent, var(--ph-accent) 24%, var(--ph-accent) 76%, transparent)',
-                            }}
-                          />
-                        ) : null}
-
                         <span
-                          className="block h-[3.25rem] w-full rounded-lg ring-1 ring-inset ring-black/40"
+                          className="block h-11 w-full rounded-lg ring-1 ring-inset ring-black/30"
                           style={{ background: option.swatchHex ?? '#888' }}
                           aria-hidden="true"
                         />
@@ -328,17 +287,18 @@ export function Hero({
                         {active ? (
                           <span
                             aria-hidden="true"
-                            className="absolute right-2.5 top-2.5 flex size-4 items-center justify-center rounded-full border"
-                            style={{ borderColor: 'var(--ph-accent)', background: 'var(--ph-bay)' }}
+                            className="absolute right-2 top-2 flex size-4 items-center justify-center rounded-full bg-white"
                           >
-                            <span className="block size-1.5 rounded-full" style={{ background: 'var(--ph-signal)' }} />
+                            <svg width="8" height="8" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                              <path d="M1.5 5.5 4 8l4.5-6" stroke="#17181a" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
                           </span>
                         ) : null}
 
-                        <span className="block text-[0.7rem] uppercase leading-tight tracking-[0.06em] text-ink-soft">
+                        <span className="block truncate text-[0.68rem] uppercase leading-tight tracking-[0.05em] text-bay-ink/85">
                           {t(option.label)}
                         </span>
-                        <span className={cn('num block text-[0.75rem]', active ? 'text-paint' : 'text-bay-alu')}>
+                        <span className={cn('num block text-[0.72rem]', active ? 'text-paint' : 'text-bay-alu')}>
                           {formatDelta(option.priceDeltaBDT)}
                         </span>
                       </button>
@@ -351,54 +311,52 @@ export function Hero({
         </Frame>
       </div>
 
-      {/* --- Headline Copy BELOW the cinema frame on every viewport (§7.2) --- */}
-      <div className="mx-auto max-w-page px-4 pb-16 pt-12 sm:px-6 sm:pb-20">
-        <div className="grid gap-8 lg:grid-cols-[var(--ph-gutter)_minmax(0,1fr)] lg:gap-x-10">
-          <m.span
-            className="sheet-code sheet-code-accent"
-            initial={reduced ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+      {/* --- Words on daylight --------------------------------------------- */}
+      <div className="mx-auto max-w-page px-4 pb-16 pt-12 sm:px-6 sm:pb-24">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
+          <m.div
+            className="lg:col-span-7"
+            initial={reduced ? false : { opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: EASE, delay: 0.05 }}
           >
-            {dict.hero.code}
-          </m.span>
-
-          <div>
-            <m.h1
-              className="display display-lit max-w-4xl text-[2.25rem] font-700 leading-[1.05] sm:text-6xl"
-              initial={reduced ? false : { opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.72, ease: EASE, delay: 0.05 }}
-            >
+            <h1 className="display display-lit max-w-3xl text-[2.35rem] font-700 leading-[1.06] sm:text-6xl">
               {dict.hero.title}
-            </m.h1>
+            </h1>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-soft">{dict.hero.sub}</p>
 
-            <m.p
-              className="mt-6 max-w-2xl text-base leading-relaxed text-ink-soft sm:text-lg"
-              initial={reduced ? false : { opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.72, ease: EASE, delay: 0.13 }}
-            >
-              {dict.hero.sub}
-            </m.p>
-
-            <m.div
-              className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4"
-              initial={reduced ? false : { opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.72, ease: EASE, delay: 0.21 }}
-            >
+            <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
               <Button asChild variant="primary" size="lg">
                 <Link href={localePath(locale, '/contact')}>{dict.hero.ctaPrimary}</Link>
               </Button>
               <Link
                 href={localePath(locale, '/contact')}
-                className="tap inline-flex items-center text-sm font-600 text-ink-soft underline decoration-rule-strong underline-offset-[6px] transition-colors hover:text-paint hover:decoration-[var(--ph-paint-lit)]"
+                className="tap inline-flex items-center gap-1.5 text-sm font-600 text-ink underline decoration-rule-strong underline-offset-[6px] transition-colors hover:text-signal hover:decoration-signal"
               >
                 {dict.hero.ctaSecondary}
               </Link>
-            </m.div>
-          </div>
+            </div>
+          </m.div>
+
+          {/* The quiet column: what this actually is, in one breath each. */}
+          <m.div
+            className="lg:col-span-5"
+            initial={reduced ? false : { opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: EASE, delay: 0.15 }}
+          >
+            <dl className="divide-y divide-rule-faint border-y border-rule-faint">
+              {[
+                { term: dict.hero.factOneLabel, desc: dict.hero.factOneBody },
+                { term: dict.hero.factTwoLabel, desc: dict.hero.factTwoBody },
+              ].map((fact) => (
+                <div key={fact.term} className="py-5">
+                  <dt className="sheet-code mb-1.5">{fact.term}</dt>
+                  <dd className="text-[0.95rem] leading-relaxed text-ink-soft">{fact.desc}</dd>
+                </div>
+              ))}
+            </dl>
+          </m.div>
         </div>
       </div>
     </section>

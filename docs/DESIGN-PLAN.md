@@ -258,3 +258,69 @@ exceeded and that is a live decision for Hisan, not a settled one.** The levers,
 first: revert the FAQ from the Radix accordion to native `<details>`, drop `tailwind-merge`
 from `cn()`, drop the shared-`layoutId` pills (they are the only thing needing Motion's layout
 features). Reverting all three would land back near 140 kB.
+
+---
+---
+
+# Revision 3 — "Atelier" (2026-08-25)
+
+Requested by Hisan after seeing the Rev-2 build: "the website looks horrible. the texts, the
+fonts, the design. literally everything" — with full freedom granted to rebuild.
+
+## Diagnosis
+
+Rev 1 failed for being flat; Rev 2 over-corrected into an all-dark stage drowning in effects.
+Glass panels, plumes, glows, gradient headlines, monolith wordmarks, seals, stamps and serial
+numbers on EVERY surface read as noise, not luxury — and grey-on-black Bangla at small sizes
+is illegible under showroom strip lighting, which is where this site is actually opened.
+
+## Concept
+
+A bright gallery around one dark cinema. The page is warm porcelain paper with precise
+near-black type; the vehicle lives on a soft-black stage that reads as a lit showroom at
+night. The scroll between content and car is a cut between daylight and spotlight — that
+contrast is where the drama now comes from, instead of from effects.
+
+## Colour
+
+| Token | Value | Role |
+|---|---|---|
+| `--ph-paper` | `#F7F5F0` | Page ground. Warm porcelain, not clinical white. |
+| `--ph-paper-sunk` | derived | Alternate bands. |
+| `--ph-paper-raised` | `#FFFFFF` | Cards, plates, popovers. |
+| `--ph-bay` | `#0D0E10` | The stage. Hero frame, demo bays, viewer, footer, boot. |
+| `--ph-ink` | `#17181A` | Text. ~16:1 on paper. |
+| `--ph-alu` | `#6F6A5E` | Secondary labels. ≥4.5:1 on paper. |
+| `--ph-signal` | `#B8331B` | THE action colour (prospect-overridable). Carries white ~5.6:1; readable as large text on paper. |
+| `--ph-accent` | `#8A6C34` | Bronze: hairline details, seals, focus rings. Never body text, never a button ground. |
+
+Token names unchanged; `/for/[slug]` still overrides exactly `--ph-signal`.
+
+## The one structural idea
+
+The dark stages re-declare the ENTIRE token family inside `.bay / .frame-shell / .on-bay /
+.stage`. Components written for the dark era keep working on stages without knowing; the
+light page needs no dark-mode branches anywhere. Derived tokens must be re-declared in all
+three scopes (`:root`, `.signal-scope`, stage) — the substitution trap of §5.13, now
+three-way.
+
+## Type
+
+- Bangla display: **Noto Serif Bengali** 500/600/700 — a real editorial voice for the default
+  locale, proper OpenType conjunct shaping. Applied via `[lang='bn-BD'] .display`.
+- Bangla body/UI: Hind Siliguri 400–700 (trimmed from five weights).
+- Latin display: Archivo variable (wdth axis). Outfit dropped entirely.
+- Data: JetBrains Mono, tabular. Prices/specs/grades only — no more mono overlines.
+
+## Motion & effects
+
+Fewer, quieter: one reveal pattern, pill hovers, chip lifts. Killed outright: body plume,
+monolith glow (now a quiet paint-tinted outline watermark), gradient headline text, glass
+HUDs, pulse badges, stock serials, ceiling glow strips. Buttons are pills. Seals are outline
+chips carrying real codes or nothing.
+
+## Cost
+
+None commercially: prices, WhatsApp paths, prospect retinting, licence gate, i18n contract,
+one-WebGL-context rule and all engine internals untouched. First-load JS measured ≤ Rev 2 on
+every route (home 189 kB).
