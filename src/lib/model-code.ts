@@ -1,6 +1,5 @@
 /**
- * The model code — the string the Monolith paints behind the vehicle, and the ModelPlate
- * prints under it.
+ * The model code — the vehicle identifier printed on the configurator's panel header.
  *
  * It lives here rather than in `src/lib/vehicles.ts` for one reason: `vehicles.ts` is
  * `server-only`, and the hero resolves the code again on the CLIENT every time the segment
@@ -24,13 +23,4 @@ export function getModelCode(vehicle: CodeSource | Vehicle): string {
   if (vehicle.modelCode) return vehicle.modelCode;
   if (vehicle.slug) return vehicle.slug.toUpperCase();
   return vehicle.name.en.toUpperCase();
-}
-
-/**
- * Long codes get the narrow width axis so a six-plus-character code still bleeds off both
- * frame edges without wrapping — a monolith that wraps is a monolith that has stopped being
- * a backdrop and started being a paragraph.
- */
-export function monolithIsNarrow(code: string): boolean {
-  return code.replace(/[^A-Z0-9]/gi, '').length > 6;
 }

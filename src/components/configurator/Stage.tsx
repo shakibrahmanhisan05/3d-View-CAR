@@ -21,6 +21,7 @@ export function Stage({
   segment,
   quality,
   rimLit = false,
+  hasFloorPlatform = false,
 }: {
   preset: EnvironmentPreset;
   segment: Segment;
@@ -35,6 +36,12 @@ export function Stage({
    * the vehicle, warm it, and cut the front fill. Everywhere else the neutral rig stays.
    */
   rimLit?: boolean;
+  /**
+   * True when <StagePlatform> is in the scene: the platform is the floor, and the flat
+   * ground disc must get out of its way — it spans the whole bay at the same y, and two
+   * coplanar surfaces z-fight.
+   */
+  hasFloorPlatform?: boolean;
 }) {
   const isBike = segment === 'motorcycle';
 
@@ -60,14 +67,12 @@ export function Stage({
         reflection pass, the low-roughness presets get metalness so the environment map
         itself shows up in the floor. Same visual result, no extra render target.
 
-        THE DISC IS OMITTED ON THE FRAMED SURFACES, and that is the whole point of them.
-        It is opaque geometry filling the lower half of the view, so with it in the scene the
-        transparent canvas has nothing to be transparent about — the Monolith behind the
-        canvas was completely hidden and the three-plane depth trick (§6.2) never happened.
-        Without it, the DOM wordmark shows through, the CSS <StageFloor> becomes the ground,
-        and the contact shadow still ties the wheels down.
+        OMITTED on the framed surfaces (rimLit) and whenever the StagePlatform mesh is in
+        the scene — in both cases something better already occupies the floor: the DOM
+        backdrop plus CSS stage floor on the framed hero, the real 3D platform everywhere
+        else. A coplanar disc would only z-fight against the platform's turntable.
       */}
-      {rimLit ? null : (
+      {rimLit || hasFloorPlatform ? null : (
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.002, 0]} material={groundMaterial}>
           <circleGeometry args={[isBike ? 9 : 16, 48]} />
         </mesh>

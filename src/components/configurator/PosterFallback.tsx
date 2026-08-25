@@ -32,9 +32,10 @@ export function PosterFallback({
   alt: string;
   posterUrl?: string;
   /**
-   * Inside <Frame> the poster must not paint a ground of its own: the Monolith is behind it
-   * and covering the model code for the first 1.6s would hide the composition at exactly the
-   * moment it is meant to arrive. The bay is already painted by CSS underneath.
+   * Inside <Frame> the poster must not paint a ground of its own: the 3D stage platform is
+   * behind it, and covering the bay with an opaque rectangle for the first 1.6s would hide
+   * the composition at exactly the moment it is meant to arrive. The bay is already painted
+   * by CSS underneath.
    */
   transparent?: boolean;
 }) {

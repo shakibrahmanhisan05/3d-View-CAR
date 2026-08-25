@@ -650,39 +650,9 @@ body {
 }
 
 /*
-  The monolith watermark — now a quiet OUTLINE drawn in the paint's hue. No glow,
-  no fill: depth without noise. Sits behind the vehicle; the roofline occludes it.
+  The monolith watermark classes were removed with the Monolith component — the 3D stage
+  platform is the backdrop now, and the model code lives only where it can be read.
 */
-.monolith {
-  font-family: var(--font-display);
-  font-variation-settings: 'wdth' 110;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 0.85;
-  white-space: nowrap;
-  color: transparent;
-  -webkit-text-stroke: 1.5px color-mix(in oklab, var(--ph-paint-dark) 34%, transparent);
-  opacity: 0.85;
-  font-size: clamp(8rem, 21vw, 20rem);
-}
-.monolith-narrow {
-  font-variation-settings: 'wdth' 86;
-}
-[lang='bn-BD'] .monolith {
-  font-family: var(--font-display); /* model codes stay Latin in both locales */
-}
-
-@keyframes ph-monolith-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 0.85;
-  }
-}
-.monolith-in {
-  animation: ph-monolith-in 350ms linear both;
-}
 
 /* Stat figures on the stage. */
 .stat-figure {

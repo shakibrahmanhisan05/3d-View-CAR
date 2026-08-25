@@ -121,7 +121,6 @@ export function BootScreen({
   modelUrl,
   segment,
   paintHex,
-  code,
   wordmark,
   /** The hero reports its first rendered frame here; the curtains wait for it. */
   sceneReady = false,
@@ -129,7 +128,6 @@ export function BootScreen({
   modelUrl?: string;
   segment: Segment;
   paintHex: string;
-  code: string;
   wordmark: string;
   sceneReady?: boolean;
 }) {
@@ -282,17 +280,6 @@ export function BootScreen({
           transition: exiting && !reduced ? 'opacity 240ms ease-out' : 'none',
         }}
       >
-        {/* The same model code that is about to appear behind the vehicle. The boot screen
-            does not introduce the hero; it *is* the hero, with the lights still coming up. */}
-        <span
-          aria-hidden="true"
-          lang="en"
-          className="monolith absolute select-none"
-          style={{ fontSize: 'clamp(7rem, 20vw, 18rem)', opacity: 0.45 }}
-        >
-          {code}
-        </span>
-
         <div className="relative flex w-full max-w-[26rem] flex-col items-center">
           {/* The vehicle's own outline, in its own paint. */}
           <div className="mb-8 w-[16rem] sm:w-[20rem]">

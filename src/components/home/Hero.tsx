@@ -23,14 +23,13 @@ import { useEffect, useMemo, useState } from 'react';
 import { BootScreen } from '@/components/boot/BootScreen';
 import { useApplyPaintTint } from '@/components/brand/usePaintTint';
 import { Frame, type PipItem } from '@/components/frame/Frame';
-import { Monolith, StageFloor } from '@/components/frame/Monolith';
+import { StageFloor } from '@/components/frame/StageFloor';
 import { Arrow, Stat } from '@/components/frame/StageChrome';
 import { useDict, useLocale, useLocalized } from '@/components/i18n/DictionaryProvider';
 import { PosterFallback } from '@/components/configurator/PosterFallback';
 import { Button } from '@/components/ui/button';
 import { defaultSelection, toggleOption } from '@/lib/configurator/selection';
 import { formatBDT, formatDelta, localePath } from '@/lib/i18n/config';
-import { getModelCode } from '@/lib/model-code';
 import type { EnvironmentPreset, Selection, Vehicle } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
@@ -98,8 +97,6 @@ export function Hero({
    */
   useApplyPaintTint(paintHex);
 
-  const modelCode = getModelCode(vehicle);
-
   const pips: PipItem[] = useMemo(
     () =>
       SECTION_IDS.map((id) => ({
@@ -136,7 +133,6 @@ export function Hero({
         modelUrl={vehicle.asset.glbUrl}
         segment={vehicle.segment}
         paintHex={paintHex}
-        code={modelCode}
         wordmark={dict.common.brandLatin}
         sceneReady={ready}
       />
@@ -152,10 +148,7 @@ export function Hero({
               'min(max(560px, calc(100dvh - var(--ph-header-h) - 2 * var(--ph-frame-inset))), calc(100dvh - var(--ph-header-h)))',
           }}
         >
-          {/* z-0: quiet outline watermark in the car's own colour */}
-          <Monolith code={modelCode} />
-
-          {/* z-1: Transparent 3D canvas stage */}
+          {/* z-1: Transparent 3D canvas — the StagePlatform mesh is the floor and backdrop */}
           <div className="absolute inset-0 z-[1]">
             <Scene
               vehicle={vehicle}

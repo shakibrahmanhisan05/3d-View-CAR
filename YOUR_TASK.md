@@ -15,13 +15,17 @@ Claude full freedom. So the frontend was rebuilt from zero:
   sits on a black stage — hero, demos, 360° — so the vehicle gets the spotlight and the words
   get daylight. Bright showrooms were killing the old all-dark design; this one is built to
   be read under strip lighting.
+- **Your circular stage is in.** The turntable-with-backdrop model you generated is now the
+  floor of every 3D bay — hero, both configurators, the modification demo, shared builds.
+  It was 6.5 MB; it ships at 0.43 MB with the bronze slats intact. The giant model-code
+  letters that used to float behind the car are gone completely — the stage is the backdrop
+  now.
 - **Bangla headlines are set in a serif now** (Noto Serif Bengali) — the way good Bengali
   publications do it. Body text stays Hind Siliguri. Every price and spec stays monospaced.
 - **One red.** Buttons, prices, selected chips: one deep ember. No more gold-and-red
   everywhere, no glows, no glass panels stacked on glass panels.
-- All the clutter was deleted: the giant glowing model codes are now quiet outlines behind
-  the car, the stamps and serial numbers are gone from the corners, headlines stopped being
-  gradient-filled.
+- All the clutter was deleted: stamps and serial numbers are gone from the corners,
+  headlines stopped being gradient-filled.
 - Prices, Bangla default, WhatsApp paths, your models, the licence gate, `/for/<slug>` —
   nothing commercial moved.
 
@@ -38,10 +42,10 @@ is running. If styling ever disappears: stop dev, delete `.next`, start again.
 
 | Page | What to check |
 |---|---|
-| `/` | The paper page, the black stage, the serif headline. Tap paint chips — the outline behind the car and the accents change colour with the paint. |
+| `/` | The paper page, the black stage, the serif headline. **Your circular stage platform is under the car** — turntable, slatted backdrop, light rig. Tap paint chips — the accents change colour with the paint. |
 | Header | Links visible on a laptop now (menu button only on small screens). |
 | Scroll | Daylight sections between dark stages. Each section: small label, big serif heading, room to breathe. |
-| `/demo/car`, `/demo/bike` | Same black stage inside a rounded frame. White panel on the right reads like an inspection sheet. |
+| `/demo/car`, `/demo/bike` | Same stage platform inside a rounded frame. White panel on the right reads like an inspection sheet. |
 | `/demo/360` | Auction-grade stamp top-right, frame counter bottom-left. |
 | `/pricing` | Ladder by card width, still no "most popular" badge. |
 | `/contact` | One white sheet: form left, phone right. |

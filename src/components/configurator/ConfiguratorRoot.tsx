@@ -20,7 +20,7 @@ import { SplitDivider } from './SplitDivider';
 import { useBrand } from '@/components/brand/BrandProvider';
 import { useApplyPaintTint } from '@/components/brand/usePaintTint';
 import { BootScreen } from '@/components/boot/BootScreen';
-import { Monolith, StageFloor } from '@/components/frame/Monolith';
+import { StageFloor } from '@/components/frame/StageFloor';
 import { Stat, StatPair } from '@/components/frame/StageChrome';
 import { useDict, useLocale, useLocalized } from '@/components/i18n/DictionaryProvider';
 import { formatBDT } from '@/lib/i18n/config';
@@ -376,7 +376,6 @@ export function ConfiguratorRoot({
           modelUrl={vehicle.asset.glbUrl}
           segment={vehicle.segment}
           paintHex={paintHex}
-          code={modelCode}
           wordmark={brand.wordmark}
           sceneReady={ready || webgl === false}
         />
@@ -384,9 +383,6 @@ export function ConfiguratorRoot({
 
       {/* --- The bay ------------------------------------------------------ */}
       <div className={`bay canvas-host relative ${bayHeight}`}>
-        {/* Sized down from the hero: the option panel takes the width, so the code bleeds less. */}
-        {stage ? <Monolith code={modelCode} scale={0.6} /> : null}
-
         {webgl === false ? (
           <NoWebGL alt={dict.errors.canvasBody} />
         ) : (

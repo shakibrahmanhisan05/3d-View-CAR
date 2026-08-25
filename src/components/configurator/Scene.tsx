@@ -16,6 +16,7 @@ import { EnvironmentRig } from './EnvironmentRig';
 import { HotspotLayer } from './HotspotLayer';
 import { RenderGate } from './RenderGate';
 import { Stage } from './Stage';
+import { StagePlatform } from './StagePlatform';
 import { VehicleModel, type CompareProps } from './VehicleModel';
 import type { EnvironmentPreset, Selection, Vehicle } from '@/lib/types';
 
@@ -33,14 +34,14 @@ export type SceneProps = {
   /**
    * Render the canvas OVER whatever is behind it instead of painting the environment colour.
    *
-   * The framed hero needs this. The Monolith is a DOM element sitting at z-0 underneath the
-   * canvas, and the vehicle's roofline is only allowed to occlude those letterforms if the
-   * canvas has no ground of its own — that occlusion is the entire depth trick (§6.2).
+   * The framed hero needs this: the vehicle's roofline must occlude the backdrop the way it
+   * would in a real room, and that only reads if the canvas has no ground of its own. The
+   * bay colour is painted by CSS under the canvas, and the StagePlatform mesh supplies the
+   * physical floor.
    *
    * Fog goes with it: fog is a distance blend towards the background colour, and with no
    * background there is nothing to blend towards — leaving it on washes the far end of the
-   * vehicle to transparent. The bay colour is painted by CSS under the canvas instead, so
-   * the scene still reads as sitting in a lit room.
+   * vehicle to transparent.
    */
   transparentBg?: boolean;
   /** Present only on the §6.3 modification demo. */
@@ -96,7 +97,15 @@ export default function Scene({
 
       <Suspense fallback={null}>
         <EnvironmentRig preset={environment} />
-        <Stage preset={environment} segment={vehicle.segment} quality={quality} rimLit={transparentBg} />
+        <StagePlatform />
+        {/* The platform IS the floor now; the flat ground disc only renders without one. */}
+        <Stage
+          preset={environment}
+          segment={vehicle.segment}
+          quality={quality}
+          rimLit={transparentBg}
+          hasFloorPlatform
+        />
         <VehicleModel vehicle={vehicle} selection={selection} glbUrl={glbUrl} compare={compare} onReady={onReady} />
         <HotspotLayer
           hotspots={vehicle.hotspots}
