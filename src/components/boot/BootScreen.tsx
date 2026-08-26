@@ -37,6 +37,8 @@ import { useDict } from '@/components/i18n/DictionaryProvider';
 import { VehicleSilhouette } from '@/components/configurator/VehicleSilhouette';
 import type { Segment } from '@/lib/types';
 
+import { STAGE_PLATFORM_URL } from '@/lib/stage-platform';
+
 /** Hard ceiling. Past this the site opens whether or not the model has landed. */
 const MAX_WAIT = 7000;
 /** The skip control appears once the wait has stopped feeling instantaneous. */
@@ -53,52 +55,65 @@ let bootedThisSession = false;
 
 // ---------------------------------------------------------------------------
 
-function useModelPreload(url: string | undefined): { progress: number; done: boolean } {
+function useModelsPreload(urls: (string | undefined)[]): { progress: number; done: boolean } {
+  const activeUrls = urls.filter((u): u is string => Boolean(u));
   const [progress, setProgress] = useState(0);
-  const [done, setDone] = useState(!url);
+  const [done, setDone] = useState(activeUrls.length === 0);
 
   useEffect(() => {
-    if (!url) {
+    if (activeUrls.length === 0) {
       setDone(true);
       return;
     }
 
     let cancelled = false;
     const controller = new AbortController();
+    const totals = new Array<number>(activeUrls.length).fill(0);
+    const receiveds = new Array<number>(activeUrls.length).fill(0);
+
+    const calcCombined = () => {
+      const sumTotal = totals.reduce((a, b) => a + b, 0);
+      const sumReceived = receiveds.reduce((a, b) => a + b, 0);
+      if (sumTotal > 0 && !cancelled) {
+        setProgress(Math.min(0.999, sumReceived / sumTotal));
+      }
+    };
 
     void (async () => {
       try {
-        const response = await fetch(url, { signal: controller.signal, cache: 'force-cache' });
-        const total = Number(response.headers.get('content-length') ?? 0);
+        await Promise.all(
+          activeUrls.map(async (url, idx) => {
+            try {
+              const response = await fetch(url, { signal: controller.signal, cache: 'force-cache' });
+              const total = Number(response.headers.get('content-length') ?? 0);
+              totals[idx] = total;
 
-        // No stream or no length (a proxy stripped it, or the response is compressed and the
-        // header describes the wire size): we cannot report bytes honestly, so we do not
-        // pretend to. Wait for the body, then report complete.
-        if (!response.body || !Number.isFinite(total) || total <= 0) {
-          await response.arrayBuffer();
-          if (!cancelled) {
-            setProgress(1);
-            setDone(true);
-          }
-          return;
-        }
+              if (!response.body || !Number.isFinite(total) || total <= 0) {
+                await response.arrayBuffer();
+                receiveds[idx] = totals[idx] || 1;
+                calcCombined();
+                return;
+              }
 
-        const reader = response.body.getReader();
-        let received = 0;
-        for (;;) {
-          const chunk = await reader.read();
-          if (chunk.done) break;
-          received += chunk.value?.byteLength ?? 0;
-          if (!cancelled) setProgress(Math.min(0.999, received / total));
-        }
-
+              const reader = response.body.getReader();
+              for (;;) {
+                const chunk = await reader.read();
+                if (chunk.done) break;
+                const byteLen = chunk.value ? chunk.value.byteLength : 0;
+                receiveds[idx] = (receiveds[idx] ?? 0) + byteLen;
+                calcCombined();
+              }
+            } catch {
+              receiveds[idx] = totals[idx] ?? 1;
+              calcCombined();
+            }
+          }),
+        );
         if (!cancelled) {
           setProgress(1);
           setDone(true);
         }
       } catch {
-        // An abort, an offline cell, a 404 on a placeholder vehicle. None of them is a reason
-        // to hold the door shut.
         if (!cancelled) {
           setProgress(1);
           setDone(true);
@@ -110,7 +125,7 @@ function useModelPreload(url: string | undefined): { progress: number; done: boo
       cancelled = true;
       controller.abort();
     };
-  }, [url]);
+  }, [activeUrls.join(',')]);
 
   return { progress, done };
 }
@@ -119,6 +134,7 @@ function useModelPreload(url: string | undefined): { progress: number; done: boo
 
 export function BootScreen({
   modelUrl,
+  stageModelUrl = STAGE_PLATFORM_URL,
   segment,
   paintHex,
   wordmark,
@@ -126,6 +142,7 @@ export function BootScreen({
   sceneReady = false,
 }: {
   modelUrl?: string;
+  stageModelUrl?: string;
   segment: Segment;
   paintHex: string;
   wordmark: string;
@@ -148,7 +165,7 @@ export function BootScreen({
   const [showSkip, setShowSkip] = useState(false);
   const [shown, setShown] = useState(0);
 
-  const { progress, done } = useModelPreload(modelUrl);
+  const { progress, done } = useModelsPreload([modelUrl, stageModelUrl]);
   const finish = useRef<() => void>(() => {});
 
   /*

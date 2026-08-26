@@ -21,11 +21,11 @@
     ],
     "minDistance": 2.2,
     "maxDistance": 7,
-    "glbUrl": "/models/bike-high.f6b25152.glb",
+    "glbUrl": "/models/bike-high.d92f13dd.glb",
     "lodUrls": [
-      "/models/bike-high.f6b25152.glb",
-      "/models/bike-mid.7b3abfd3.glb",
-      "/models/bike-low.7d2ab499.glb"
+      "/models/bike-high.d92f13dd.glb",
+      "/models/bike-high.d92f13dd.glb",
+      "/models/bike-high.d92f13dd.glb"
     ],
     "frameExtent": [
       1.07,

@@ -10,20 +10,20 @@
 
 import type { Locale, Localized } from '@/lib/types';
 
-export const LOCALES = ['bn', 'en'] as const;
-export const DEFAULT_LOCALE: Locale = 'bn';
+export const LOCALES = ['en', 'bn'] as const;
+export const DEFAULT_LOCALE: Locale = 'en';
 
 export function isLocale(value: string): value is Locale {
   return (LOCALES as readonly string[]).includes(value);
 }
 
 /**
- * Build an href for the active locale. Bangla is prefix-free; English is prefixed.
+ * Build an href for the active locale. English is the DEFAULT and prefix-free.
  * `path` is always written in its canonical, prefix-free form: '/', '/pricing', '/demo/bike'.
  */
 export function localePath(locale: Locale, path: string): string {
   const clean = path === '/' ? '' : path.startsWith('/') ? path : `/${path}`;
-  return locale === DEFAULT_LOCALE ? clean || '/' : `/en${clean}`;
+  return locale === DEFAULT_LOCALE ? clean || '/' : `/${locale}${clean}`;
 }
 
 /** Strip the locale prefix off a real pathname, giving back the canonical form. */

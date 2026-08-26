@@ -3,4 +3,4 @@
  * The circular stage platform (turntable + slatted backdrop + light rig) that floors
  * every 3D bay. Re-run the script on a new source to re-point the site.
  */
-export const STAGE_PLATFORM_URL = '/models/stage-platform.fe76e38e.glb';
+export const STAGE_PLATFORM_URL = '/models/stage-platform.11f2168b.glb';

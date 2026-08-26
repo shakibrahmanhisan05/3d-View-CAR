@@ -45,12 +45,9 @@ const sourceTris = countTris(doc);
 
 await doc.transform(
   weld(),
-  // A turntable, a backdrop wall and some tubing do not need six figures of triangles.
-  // 45k keeps every slat edge crisp at hero distance and lands the file well under 1 MB.
-  simplify({ simplifier: MeshoptSimplifier, ratio: Math.min(1, 45_000 / sourceTris), error: 0.001 }),
   dedup(),
   prune(),
-  textureCompress({ encoder: sharp, targetFormat: 'webp', resize: [1024, 1024], quality: 82 }),
+  textureCompress({ encoder: sharp, targetFormat: 'webp', quality: 90 }),
 );
 
 // KHR_materials_volume on an opaque platform is inert weight; drop it so the runtime

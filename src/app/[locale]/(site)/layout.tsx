@@ -11,7 +11,7 @@ import { Header } from '@/components/chrome/Header';
 import { LocalBusinessJsonLd } from '@/components/seo/LocalBusinessJsonLd';
 import { getCredits } from '@/lib/credits';
 import { getDictionary } from '@/lib/i18n';
-import { isLocale } from '@/lib/i18n/config';
+import { DEFAULT_LOCALE, isLocale } from '@/lib/i18n/config';
 
 export default async function SiteLayout({
   children,
@@ -21,7 +21,7 @@ export default async function SiteLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale: raw } = await params;
-  const locale = isLocale(raw) ? raw : 'bn';
+  const locale = isLocale(raw) ? raw : DEFAULT_LOCALE;
   const dict = getDictionary(locale);
   // Read once on the server; the modal is client-side but the data never needs fetching.
   const credits = getCredits();

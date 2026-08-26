@@ -17,7 +17,7 @@ import { BrandProvider } from '@/components/brand/BrandProvider';
 import { brandFromProspect } from '@/lib/brand';
 import { ProspectChrome } from '@/components/prospect/ProspectChrome';
 import { getDictionary } from '@/lib/i18n';
-import { isLocale } from '@/lib/i18n/config';
+import { DEFAULT_LOCALE, isLocale } from '@/lib/i18n/config';
 import { getProspect, getProspects } from '@/lib/vehicles';
 import type { Locale } from '@/lib/types';
 
@@ -36,7 +36,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { locale: raw, slug } = await params;
-  const locale: Locale = isLocale(raw) ? raw : 'bn';
+  const locale: Locale = isLocale(raw) ? raw : DEFAULT_LOCALE;
   const prospect = getProspect(slug);
   if (!prospect) return {};
 
@@ -56,7 +56,7 @@ export default async function ProspectLayout({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale: raw, slug } = await params;
-  const locale: Locale = isLocale(raw) ? raw : 'bn';
+  const locale: Locale = isLocale(raw) ? raw : DEFAULT_LOCALE;
   const prospect = getProspect(slug);
   if (!prospect) notFound();
 

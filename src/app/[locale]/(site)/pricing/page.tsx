@@ -7,18 +7,18 @@ import dynamic from 'next/dynamic';
 const RoiCalculator = dynamic(() => import('@/components/roi/RoiCalculator').then((m) => m.RoiCalculator));
 import { Section } from '@/components/sheet/Section';
 import { getDictionary } from '@/lib/i18n';
-import { isLocale } from '@/lib/i18n/config';
+import { DEFAULT_LOCALE, isLocale } from '@/lib/i18n/config';
 import type { Locale } from '@/lib/types';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale: raw } = await params;
-  const dict = getDictionary(isLocale(raw) ? raw : 'bn');
+  const dict = getDictionary(isLocale(raw) ? raw : DEFAULT_LOCALE);
   return { title: dict.pricingSection.title, description: dict.pricingSection.oneTimeNote };
 }
 
 export default async function PricingPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: raw } = await params;
-  const locale: Locale = isLocale(raw) ? raw : 'bn';
+  const locale: Locale = isLocale(raw) ? raw : DEFAULT_LOCALE;
   const dict = getDictionary(locale);
 
   return (

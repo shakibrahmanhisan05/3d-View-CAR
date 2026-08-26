@@ -9,13 +9,13 @@ import { notFound } from 'next/navigation';
 import { Hero } from '@/components/home/Hero';
 import { SiteExperience } from '@/components/home/SiteExperience';
 import { FaqJsonLd } from '@/components/seo/LocalBusinessJsonLd';
-import { isLocale } from '@/lib/i18n/config';
+import { DEFAULT_LOCALE, isLocale } from '@/lib/i18n/config';
 import { getCaptures, getVehicle, getVehicleBySegment } from '@/lib/vehicles';
 import type { Locale } from '@/lib/types';
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: raw } = await params;
-  const locale: Locale = isLocale(raw) ? raw : 'bn';
+  const locale: Locale = isLocale(raw) ? raw : DEFAULT_LOCALE;
 
   const car = getVehicleBySegment('car');
   const bike = getVehicleBySegment('motorcycle');

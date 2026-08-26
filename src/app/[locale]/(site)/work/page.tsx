@@ -4,18 +4,18 @@ import { Arrow, Seal } from '@/components/frame/StageChrome';
 import { Section } from '@/components/sheet/Section';
 import { Button } from '@/components/ui/button';
 import { getDictionary } from '@/lib/i18n';
-import { isLocale, localePath } from '@/lib/i18n/config';
+import { DEFAULT_LOCALE, isLocale, localePath } from '@/lib/i18n/config';
 import type { Locale } from '@/lib/types';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale: raw } = await params;
-  const dict = getDictionary(isLocale(raw) ? raw : 'bn');
+  const dict = getDictionary(isLocale(raw) ? raw : DEFAULT_LOCALE);
   return { title: dict.work.title, description: dict.work.sub };
 }
 
 export default async function WorkPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: raw } = await params;
-  const locale: Locale = isLocale(raw) ? raw : 'bn';
+  const locale: Locale = isLocale(raw) ? raw : DEFAULT_LOCALE;
   const dict = getDictionary(locale);
 
   return (

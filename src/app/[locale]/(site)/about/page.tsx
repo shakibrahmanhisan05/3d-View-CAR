@@ -1,17 +1,17 @@
 import type { Metadata } from 'next';
 import { Section } from '@/components/sheet/Section';
 import { getDictionary } from '@/lib/i18n';
-import { isLocale } from '@/lib/i18n/config';
+import { DEFAULT_LOCALE, isLocale } from '@/lib/i18n/config';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale: raw } = await params;
-  const dict = getDictionary(isLocale(raw) ? raw : 'bn');
+  const dict = getDictionary(isLocale(raw) ? raw : DEFAULT_LOCALE);
   return { title: dict.about.title, description: dict.about.sub };
 }
 
 export default async function AboutPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: raw } = await params;
-  const dict = getDictionary(isLocale(raw) ? raw : 'bn');
+  const dict = getDictionary(isLocale(raw) ? raw : DEFAULT_LOCALE);
 
   return (
     <>

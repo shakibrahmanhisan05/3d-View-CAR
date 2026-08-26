@@ -15,7 +15,7 @@ import { Section } from '@/components/sheet/Section';
 import { DeferredLeadForm } from '@/components/contact/DeferredLeadForm';
 import { getDictionary } from '@/lib/i18n';
 import { fill } from '@/lib/i18n';
-import { isLocale } from '@/lib/i18n/config';
+import { DEFAULT_LOCALE, isLocale } from '@/lib/i18n/config';
 import { getCaptures, getProspect, getVehicle, getVehicleBySegment } from '@/lib/vehicles';
 import type { Locale, Vehicle } from '@/lib/types';
 
@@ -25,7 +25,7 @@ export default async function ProspectPage({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale: raw, slug } = await params;
-  const locale: Locale = isLocale(raw) ? raw : 'bn';
+  const locale: Locale = isLocale(raw) ? raw : DEFAULT_LOCALE;
   const dict = getDictionary(locale);
 
   const prospect = getProspect(slug);

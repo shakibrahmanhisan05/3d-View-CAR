@@ -17,7 +17,7 @@ import { DictionaryProvider } from '@/components/i18n/DictionaryProvider';
 import { MotionProvider } from '@/components/motion/MotionProvider';
 import { fontVariables } from '@/lib/fonts';
 import { getDictionary } from '@/lib/i18n';
-import { HTML_LANG, isLocale, LOCALES } from '@/lib/i18n/config';
+import { DEFAULT_LOCALE, HTML_LANG, isLocale, LOCALES } from '@/lib/i18n/config';
 import { SITE_URL } from '@/lib/site';
 import type { Locale } from '@/lib/types';
 import '../globals.css';
@@ -41,7 +41,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale: raw } = await params;
-  const locale: Locale = isLocale(raw) ? raw : 'bn';
+  const locale: Locale = isLocale(raw) ? raw : DEFAULT_LOCALE;
   const dict = getDictionary(locale);
 
   return {
@@ -52,12 +52,12 @@ export async function generateMetadata({
     },
     description: dict.hero.sub,
     alternates: {
-      canonical: locale === 'bn' ? '/' : '/en',
-      languages: { 'bn-BD': '/', 'en-GB': '/en' },
+      canonical: locale === DEFAULT_LOCALE ? '/' : `/${locale}`,
+      languages: { 'en-GB': '/', 'bn-BD': '/bn' },
     },
     openGraph: {
       type: 'website',
-      locale: locale === 'bn' ? 'bn_BD' : 'en_GB',
+      locale: locale === 'en' ? 'en_GB' : 'bn_BD',
       siteName: dict.common.brand,
       title: dict.hero.title,
       description: dict.hero.sub,

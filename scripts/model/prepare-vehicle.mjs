@@ -305,12 +305,13 @@ function classify(p) {
    * This has to run before the wheel test for the same reason: a front wing is compact, low
    * and far off the centreline, which is indistinguishable from a wheel geometrically.
    */
-  const painted = p.exterior && p.blueBias >= 4.5 && p.lum > 28;
+  const compact = Math.max(...p.size) < size[lengthAxis] * 0.20;
+  const isWheelOrTyre = !IS_BIKE && compact && yFrac < 0.52 && Math.abs(Wd(p)) > size[widthAxis] * 0.22;
+  const painted = p.exterior && !isWheelOrTyre && (p.blueBias >= 4.5 || Math.max(...p.size) > size[lengthAxis] * 0.25) && yFrac > 0.12;
   if (painted) return 'body_paint';
 
   // Wheels: compact, low, well off the centreline, and NEUTRAL — the paint test above has
   // already taken every panel that shares those coordinates.
-  const compact = Math.max(...p.size) < size[lengthAxis] * 0.20;
   if (!IS_BIKE && compact && yFrac < 0.52 && Math.abs(Wd(p)) > size[widthAxis] * 0.22) {
     const front = L(p) > 0;
     const right = Wd(p) > 0;

@@ -48,11 +48,15 @@ export function StagePlatform() {
       mesh.receiveShadow = false;
 
       const source = Array.isArray(mesh.material) ? mesh.material[0] : mesh.material;
+      const srcMat = source instanceof THREE.MeshStandardMaterial ? source : null;
       const material = new THREE.MeshStandardMaterial({
-        map: source instanceof THREE.MeshStandardMaterial ? source.map : null,
-        color: new THREE.Color('#b0b0b0'),
-        roughness: 0.62,
-        metalness: 0.08,
+        map: srcMat?.map ?? null,
+        normalMap: srcMat?.normalMap ?? null,
+        roughnessMap: srcMat?.roughnessMap ?? null,
+        metalnessMap: srcMat?.metalnessMap ?? null,
+        color: srcMat?.map ? new THREE.Color('#ffffff') : new THREE.Color('#b0b0b0'),
+        roughness: srcMat?.roughness ?? 0.62,
+        metalness: srcMat?.metalness ?? 0.08,
         envMapIntensity: 0.55,
       });
       mesh.material = material;

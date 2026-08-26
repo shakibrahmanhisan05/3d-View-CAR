@@ -3,12 +3,12 @@ import { notFound } from 'next/navigation';
 import { ConfiguratorRoot } from '@/components/configurator/ConfiguratorRoot';
 import { DemoStage } from '@/components/frame/DemoStage';
 import { getDictionary } from '@/lib/i18n';
-import { isLocale } from '@/lib/i18n/config';
+import { DEFAULT_LOCALE, isLocale } from '@/lib/i18n/config';
 import { getVehicleBySegment } from '@/lib/vehicles';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale: raw } = await params;
-  const dict = getDictionary(isLocale(raw) ? raw : 'bn');
+  const dict = getDictionary(isLocale(raw) ? raw : DEFAULT_LOCALE);
   return { title: dict.nav.demoCar, description: dict.twoProducts.newBody };
 }
 

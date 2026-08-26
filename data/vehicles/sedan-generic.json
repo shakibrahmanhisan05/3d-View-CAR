@@ -26,11 +26,11 @@
     ],
     "minDistance": 4.2,
     "maxDistance": 13,
-    "glbUrl": "/models/sedan-high.c8908213.glb",
+    "glbUrl": "/models/sedan-high.0c9c836d.glb",
     "lodUrls": [
-      "/models/sedan-high.c8908213.glb",
-      "/models/sedan-mid.33ad416e.glb",
-      "/models/sedan-low.c10cc712.glb"
+      "/models/sedan-high.0c9c836d.glb",
+      "/models/sedan-high.0c9c836d.glb",
+      "/models/sedan-high.0c9c836d.glb"
     ],
     "frameExtent": [
       2.56,
